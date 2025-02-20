@@ -1,0 +1,18 @@
+{
+  "name": "dear-day",
+  "short_name": "dear-day",
+  "description": "원하는 생일카페를 쉽게 찾고 주최해보세요!",
+  "theme_color": "#8696BB",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/assets/logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
