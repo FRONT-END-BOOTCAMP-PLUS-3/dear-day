@@ -1,0 +1,151 @@
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  /* Primary */
+  --color-primary: #8696bb;
+  --color-secondary: #8696bb;
+  --color-tertiary: #8696bb;
+
+  /* Text Color */
+  --color-black: #333;
+  --color-gray-1: #464646;
+  --color-gray-2: #767676;
+  --color-gray-3: #b1b1b1;
+  --color-white: #fff;
+
+  /* Backgroung Color */
+  --color-bg: #d8d8d8;
+
+  /* Button Disabled Color */
+  --color-disabled: #d4cfc6;
+
+  /* font-size */
+  --font-size-micro: clamp(12px, 1vw, 14px);
+  --font-size-xs: clamp(15px, 1.5vw, 16px);
+  --font-size-sm: clamp(16px, 2vw, 18px);
+  --font-size-md: clamp(18px, 2vw, 20px);
+  --font-size-lg: clamp(20px, 2vw, 22px);
+  --font-size-xl: clamp(24px, 3vw, 26px);
+  --font-size-xxl: clamp(40px, 4vw, 42px);
+
+  /* size */
+  --size-max-width: 500px;
+  --size-gap: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: min(100%, var(--size-max-width));
+  margin: auto;
+  line-height: 1.5;
+  letter-spacing: -0.02rem;
+  background-color: var(--color-bg);
+  font-family: "Pretendard", sans-serif;
+  font-weight: 400;
+  overflow-y: scroll;
+
+  #root {
+    background-color: var(--color-white);
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+h1,
+h2,
+h3,
+p,
+input,
+button,
+fieldset,
+ul,
+figure,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+input,
+textarea,
+button {
+  background-color: transparent;
+  letter-spacing: inherit;
+  border: none;
+  outline: none;
+  font: inherit;
+  padding: 0;
+  margin: 0;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+input {
+  font-family: "SUIT-Regular", sans-serif;
+}
+
+::placeholder {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: top;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #fff inset;
+  -webkit-text-fill-color: #000;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.a11y-hidden {
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+}

@@ -1,26 +1,26 @@
-"use client";
+import "./globals.scss";
 
-import "./globals.css";
-import { useEffect } from "react";
-import { useAuthStore } from "@/store/authStore";
+export const metadata = {
+  title: "Dear day",
+  description: "원하는 생일카페를 쉽게 찾고 주최해보세요!",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.json",
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  const checkLogin = useAuthStore((state) => state.checkLogin);
-
-  useEffect(() => {
-    checkLogin(); // 새로고침 후 로그인 유지
-  }, [checkLogin]);
-
+}) {
   return (
-    <html lang="ko">
-      <head>
-        <title>Dear Day</title>
-      </head>
-      <body>{children}</body>
+    <html lang="en">
+      <link rel="manifest" href="/manifest.json" />
+      <body>
+        <div id="root">{children}</div>
+      </body>
     </html>
   );
 }
