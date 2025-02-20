@@ -1,0 +1,170 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 모델 스키마 생성 부분에 이 아래거 적으면 됨요
+
+// ENUM 정의
+enum Mode {
+  EDIT
+  VIEW
+}
+
+enum Status {
+  PENDING      // 대기 중
+  CONFIRMED    // 확정됨
+  CANCELLED    // 취소됨
+  ENTERED      // 입장 완료
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String  @unique
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  likedStars  LikedStar[]
+  likedEvents LikedEvent[]
+  courses     Course[]
+  reservations Reservation[]
+  waitingList  Waiting[]
+  events       Event[]
+}
+
+model Star {
+  id        Int       @id @default(autoincrement())
+  image     String
+  realName  String @map("real_name")
+  stageName String? @map("stage_name")
+  group     String?
+  birthday  DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+
+  likedByUsers LikedStar[]
+
+  events       Event[]
+}
+
+model LikedStar {
+  starId   Int     @map("star_id")
+  userId   String  @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  star Star @relation(fields: [starId], references: [id])
+
+  @@id([starId, userId]) // 복합 키
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  starId      Int      @map("star_id")
+  userId      String  @map("user_id")
+  startDate   DateTime  @map("start_date")
+  endDate     DateTime  @map("end_date")
+  title       String
+  content     String
+  twitterId   Int?      @map("twitter_id")
+  mainImage   String    @map("main_image")
+  detailImage String[]  @map("detail_image")
+  benefits    String[]
+  address     String
+  latitude    Decimal
+  longitude   Decimal
+  countLike   Int       @map("count_like")
+  mode        Mode      @default(VIEW)
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  user   User @relation(fields: [userId], references: [id])
+  star   Star @relation(fields: [starId], references: [id])
+  reservations Reservation[]
+  waitingList Waiting[]
+  reservationSettings ReservationSetting[]
+
+  likedByUsers LikedEvent[]
+  courseEvents CourseEvent[]
+}
+
+model LikedEvent {
+  eventId   Int     @map("event_id")
+  userId    String  @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@id([eventId, userId]) // 복합 키
+}
+
+model Course {
+  id        Int      @id @default(autoincrement())
+  userId    String  @map("user_id")
+  name      String
+  date      DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseEvents CourseEvent[]
+}
+
+model CourseEvent {
+  id       Int  @id @default(autoincrement())
+  courseId Int @map("course_id")
+  eventId  Int @map("event_id")
+  order    Int
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  event  Event  @relation(fields: [eventId], references: [id])
+}
+
+model Reservation {
+  id              Int       @id @default(autoincrement())
+  eventId         Int      @map("event_id")
+  userId          String  @map("user_id")
+  reservationTime DateTime  @map("reservation_time")
+  status          Status
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  event Event @relation(fields: [eventId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+}
+
+model ReservationSetting {
+  id       Int      @id @default(autoincrement())
+  eventId  Int     @map("event_id")
+  openTime DateTime @map("open_time")
+  endTime  DateTime @map("end_time")
+  timeUnit Int     @map("time_unit")
+  limit    Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  event Event @relation(fields: [eventId], references: [id])
+}
+
+model Waiting {
+  id            Int       @id @default(autoincrement())
+  eventId       Int     @map("event_id")
+  userId        String @map("user_id")
+  waitingNumber Int       @map("waiting_number")
+  headCount     Int      @map("head_count")
+  status        Status
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  event Event @relation(fields: [eventId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+}
