@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+  <symbol id="arrow-down" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="m7 10 5 5 5-5"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="arrow-left" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="m14 7-5 5 5 5"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="arrow-right" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="m10 17 5-5-5-5"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="arrow-up" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="m17 14-5-5-5 5"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="box" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8ZM8 4h8l4 4H4l4-4ZM8 12h4"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="calendar" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="M4 4h16v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4ZM4 8h16M16 3v2M8 3v2"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="clock" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><circle cx="12" cy="12" r="9"/><path d="M11 8v5h5"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="close-circle" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><circle cx="12" cy="12" r="9"/><path d="m14 10-4 4M10 10l4 4"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="close" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="M17 7 7 17M7 7l10 10"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="copy" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="M16 3H4v13"/><path d="M8 7h12v12a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V7Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="course" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="m5.252 9.975 11.66-5.552c1.7-.81 3.474.965 2.665 2.666l-5.552 11.659c-.759 1.593-3.059 1.495-3.679-.158L9.32 15.851a2 2 0 0 0-1.17-1.17l-2.74-1.027c-1.652-.62-1.75-2.92-.157-3.679Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="edit" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="m5 16-1 4 4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0L5 16ZM15 6l3 3M13 20h8"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="filled-heart" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><path fill="#DD8560" stroke="#DD8560" d="M4.31 5.144a5.042 5.042 0 0 0 0 7.13l7.638 7.638.052-.053.053.053 7.637-7.638a5.042 5.042 0 1 0-7.13-7.13l-.206.205a.5.5 0 0 1-.707 0l-.206-.205a5.042 5.042 0 0 0-7.13 0Z"/></svg>
+  </symbol>
+
+  <symbol id="flag" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="M8 3v2m0 16v-8m0-8h12l-2 4 2 4H8m0-8v8"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="hamburger" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M3 12h18M3 18h18"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="heart" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><path stroke="#DD8560" d="M4.31 5.144a5.042 5.042 0 0 0 0 7.13l7.638 7.638.052-.053.053.053 7.637-7.638a5.042 5.042 0 1 0-7.13-7.13l-.206.205a.5.5 0 0 1-.707 0l-.206-.205a5.042 5.042 0 0 0-7.13 0Z"/></svg>
+  </symbol>
+
+  <symbol id="list" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path fill="#292929" fill-rule="evenodd" d="M3 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Zm0 14a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2ZM18 3a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-2Zm-1 8a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2Zm-6-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-2Zm-8 1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2Zm8-8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-2Zm-1 15a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2Zm8-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-2Z" clip-rule="evenodd"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="map" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" fill="none"><path stroke="#4D4D4D" d="M11.5 13.192c1.22 0 2.21-1.164 2.21-2.6 0-1.436-.99-2.6-2.21-2.6s-2.21 1.164-2.21 2.6c0 1.436.99 2.6 2.21 2.6Z"/><path stroke="#4D4D4D" d="M5.564 9.075c1.396-7.217 10.483-7.208 11.872.008.814 4.234-1.424 7.817-3.386 10.034-1.424 1.616-3.676 1.616-5.107 0C6.988 16.9 4.75 13.308 5.564 9.075Z"/></svg>
+  </symbol>
+
+  <symbol id="minus-circle" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><circle cx="12" cy="11.999" r="9"/><path d="M9 12h6"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="minus" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="M6 12h12"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="more" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linejoin="round" clip-path="url(#a)"><circle cx="12" cy="11.999" r="9" stroke-linecap="round"/><path stroke-width="1.5" d="M12.01 11.999v.01H12v-.01zM16.51 11.999v.01h-.01v-.01zM7.51 11.999v.01H7.5v-.01z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="notification" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" clip-path="url(#a)"><path stroke-linecap="round" stroke-linejoin="round" d="M6 19v-9a6 6 0 0 1 6-6v0a6 6 0 0 1 6 6v9M6 19h12M6 19H4m14 0h2M11 22h2"/><circle cx="12" cy="3" r="1"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="plus-circle" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><circle cx="12" cy="11.999" r="9"/><path d="M12 9v6M9 12h6"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="plus" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="M12 6v12M6 12h12"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="profile" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" clip-path="url(#a)"><path stroke-linejoin="round" d="M4 18a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4 2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="7" r="3"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="search" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g clip-path="url(#a)"><path stroke="#292929" stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="setting" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" clip-path="url(#a)"><circle cx="12" cy="12" r="2"/><path stroke-linejoin="round" d="M5.399 5.88A8.99 8.99 0 0 0 3.4 9.343L5 10.268c1.333.77 1.333 2.694 0 3.464l-1.601.924a9.03 9.03 0 0 0 2 3.464l1.6-.924c1.334-.77 3 .192 3 1.732v1.847a8.99 8.99 0 0 0 4.001.002v-1.849c0-1.54 1.667-2.502 3-1.732l1.601.925a8.99 8.99 0 0 0 1.998-3.466L19 13.732c-1.333-.77-1.333-2.694 0-3.464l1.601-.925a9.028 9.028 0 0 0-.807-1.843 9.03 9.03 0 0 0-1.193-1.62L17 6.803c-1.333.77-3-.193-3-1.732V3.225a8.99 8.99 0 0 0-4-.003v1.85c0 1.54-1.667 2.501-3 1.732l-1.601-.925Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="trash" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="M14 11v6M10 11v6M6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7M4 7h16M7 7l2-4h6l2 4"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+  </symbol>
+
+  <symbol id="x-logo" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><path fill="#1C1C1C" fill-rule="evenodd" d="M9.994 12.448 4 5h4.748l3.7 4.603L16.4 5.021h2.615l-5.303 6.155L20 19h-4.733l-4.007-4.978-4.277 4.964H4.354l5.64-6.538Zm5.963 5.172L6.91 6.38h1.146l9.034 11.24h-1.135Z" clip-rule="evenodd"/></svg>
+  </symbol>
+
+</svg>
