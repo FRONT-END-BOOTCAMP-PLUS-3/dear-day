@@ -1,20 +1,17 @@
 "use client"; // 클라이언트 컴포넌트
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import styles from "./FourTab.module.scss";
 
 interface FourTabProps {
   options: string[];
-  selectedTab: string;
 }
 
-const FourTab = ({ options, selectedTab }: FourTabProps) => {
-  const router = useRouter();
+const FourTab = ({ options }: FourTabProps) => {
+  const [selectedTab, setSelectedTab] = useState(options[0]); // 로컬 상태 관리
 
   const handleTabClick = (tab: string) => {
-    if (tab !== selectedTab) {
-      router.push(`?tab=${encodeURIComponent(tab)}`, { scroll: false });
-    }
+    setSelectedTab(tab);
   };
 
   return (
@@ -31,7 +28,7 @@ const FourTab = ({ options, selectedTab }: FourTabProps) => {
       <div
         className={styles.indicator}
         style={{
-          transform: `translateX(${options.indexOf(selectedTab) * 100}%)`,
+          transform: `translateX(${(options.indexOf(selectedTab) / (options.length - 1)) * 100}%)`,
         }}
       />
     </div>

@@ -1,20 +1,17 @@
-"use client"; // 클라이언트 컴포넌트로 설정
+"use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import styles from "./TwoTab.module.scss";
 
 interface TwoTabProps {
   options: [string, string];
-  selectedTab: string;
 }
 
-const TwoTab = ({ options, selectedTab }: TwoTabProps) => {
-  const router = useRouter();
+const TwoTab = ({ options }: TwoTabProps) => {
+  const [selectedTab, setSelectedTab] = useState(options[0]);
 
   const handleTabClick = (tab: string) => {
-    if (tab !== selectedTab) {
-      router.push(`?tab=${encodeURIComponent(tab)}`, { scroll: false });
-    }
+    setSelectedTab(tab);
   };
 
   return (
