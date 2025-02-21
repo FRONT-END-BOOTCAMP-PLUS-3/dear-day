@@ -1,0 +1,19 @@
+.PosterUploadButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 120px;
+  min-height: 120px;
+  border-radius: 20px;
+  background: var(--color-blue-bg);
+  position: relative;
+  cursor: pointer;
+}
+
+.HiddenPosterUploadButton {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
