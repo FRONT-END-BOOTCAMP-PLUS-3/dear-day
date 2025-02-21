@@ -1,0 +1,31 @@
+.dateSelectContainer {
+  display: flex;
+  width: 100%;
+  padding: var(--padding-xs) var(--padding-md);
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 100px;
+  background: var(--color-blue-bg);
+  font-size: var(--font-size-sm);
+  cursor: pointer; /* 📌 항상 클릭 가능하도록 */
+}
+
+.selectedDate {
+  flex: 1;
+  text-align: left;
+  cursor: pointer;
+  margin-left: var(--margin-xs);
+}
+
+.hiddenDateInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
