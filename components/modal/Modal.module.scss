@@ -1,0 +1,46 @@
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  max-width: var(--size-max-width);
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 20px;
+  background-color: var(--divider);
+  border-radius: 12px;
+  width: min(450px, 75%);
+  text-align: center;
+  color: var(--color-black);
+
+  h2 {
+    font-family: SUIT-Bold, sans-serif;
+    font-size: var(--font-size-md);
+  }
+
+  p {
+    margin-top: 8px;
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-2);
+  }
+
+  input[type="text"] {
+    margin-top: 12px;
+    padding-left: 12px;
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--color-primary);
+    border-radius: 8px;
+    color: var(--color-gray-1);
+  }
+}
