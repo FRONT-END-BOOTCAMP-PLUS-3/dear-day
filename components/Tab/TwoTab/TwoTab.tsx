@@ -1,26 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./TwoTab.module.scss";
 
 interface TwoTabProps {
   options: [string, string];
+  selectedTab: string;
+  onChange: (tab: string) => void;
 }
 
-const TwoTab = ({ options }: TwoTabProps) => {
-  const [selectedTab, setSelectedTab] = useState(options[0]);
-
-  const handleTabClick = (tab: string) => {
-    setSelectedTab(tab);
-  };
-
+const TwoTab = ({ options, selectedTab, onChange }: TwoTabProps) => {
   return (
     <div className={styles.tabContainer}>
       {options.map((tab) => (
         <button
           key={tab}
           className={`${styles.tab} ${selectedTab === tab ? styles.active : ""}`}
-          onClick={() => handleTabClick(tab)}
+          onClick={() => onChange(tab)}
         >
           {tab}
         </button>
