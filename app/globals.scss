@@ -10,6 +10,7 @@
   /* Primary */
   --color-primary: #8696bb;
   --color-secondary: #444e63;
+  --color-white : #ffffff;
 
   --divider: #e7eaf1;
   --color-heart: #dd8560;
@@ -74,7 +75,7 @@ body {
   background-color: var(--color-gray-2);
 
   #root {
-    background-color: white;
+    background-color: var(--color-white);
     min-height: 100vh;
     position: relative;
     display: flex;
