@@ -1,0 +1,44 @@
+.radioLabel {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+}
+
+.customRadio {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-primary);
+  border-radius: 50%;
+  margin-right: 8px;
+  transition: border-color 0.2s ease;
+  position: relative;
+}
+
+.radioInput:checked + .customRadio {
+  border-color: var(--color-primary);
+}
+
+.radioInput:checked + .customRadio::after {
+  content: "✓";
+  font-size: 14px;
+  color: var(--color-primary);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radioText {
+  font-size: 14px;
+}
