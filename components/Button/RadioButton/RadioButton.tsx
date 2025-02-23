@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ChangeEvent } from "react";
 import styles from "./RadioButton.module.scss";
+import React, { ChangeEvent } from "react";
 
 interface RadioButtonProps {
   name: string;
