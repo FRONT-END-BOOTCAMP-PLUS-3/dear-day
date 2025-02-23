@@ -1,7 +1,7 @@
 "use client";
 
-import Icon from "@/components/Icon/Icon";
 import styles from "./StarUploadButton.module.scss";
+import Icon from "@/components/Icon/Icon";
 
 interface StarUploadButtonProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
