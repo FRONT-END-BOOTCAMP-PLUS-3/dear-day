@@ -3,14 +3,14 @@
 import styles from "./FlexibleButton.module.scss";
 
 interface FlexibleButtonProps {
-  value: string;
   onClick: () => void;
+  value: string;
   disabled?: boolean;
 }
 
 const FlexibleButton = ({
-  value,
   onClick,
+  value,
   disabled = false,
 }: FlexibleButtonProps) => {
   return (

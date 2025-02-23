@@ -1,9 +1,9 @@
 .flexibleButtonContainer {
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: auto;
   padding: var(--padding-xs) var(--padding-xl);
-  justify-content: center;
-  align-items: center;
   gap: 9px;
   border-radius: 100px;
   background: var(--color-primary);
