@@ -1,0 +1,31 @@
+.listView {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.listItemContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--margin-md) 0;
+}
+
+.listContent {
+  display: flex;
+  align-items: center;
+  gap: var(--padding-sm);
+}
+
+.listTitle {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}
+
+.listText {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+}
