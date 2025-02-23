@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
 import styles from "./HeartButton.module.scss";
+import React, { useState } from "react";
 import Icon from "@/components/Icon/Icon";
 import { useRouter } from "next/navigation";
 
