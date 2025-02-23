@@ -3,14 +3,14 @@
 import styles from "./FixedButton.module.scss";
 
 interface FixedButtonProps {
-  value: string;
   onClick: () => void;
+  value: string;
   disabled?: boolean;
 }
 
 const FixedButton = ({
-  value,
   onClick,
+  value,
   disabled = false,
 }: FixedButtonProps) => {
   return (
