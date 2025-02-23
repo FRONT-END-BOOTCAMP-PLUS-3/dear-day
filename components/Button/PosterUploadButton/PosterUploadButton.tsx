@@ -15,8 +15,8 @@ const PosterUploadButton = ({ onChange }: PosterUploadButtonProps) => {
     >
       <Icon id="plus" />
       <input
-        type="file"
         id="poster-input"
+        type="file"
         accept="image/*"
         className={styles.HiddenPosterUploadButton}
         onChange={onChange}
