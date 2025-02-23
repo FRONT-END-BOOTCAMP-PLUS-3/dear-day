@@ -40,7 +40,7 @@
   left: 0;
   width: 100%;
   background: var(--color-blue-bg);
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-gray-2);
   margin-top: var(--margin-xs);
   padding: 0;
   list-style: none;
@@ -66,7 +66,7 @@
   cursor: pointer;
   font-size: var(--font-size-sm);
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-white);
   transition: background 0.2s;
 
   &:last-child {
