@@ -18,6 +18,8 @@
 }
 
 .LargeCardTitle {
+  display: flex;
+  justify-content: center;
   font-size: var(--font-size-lg);
   font-weight: 500;
   width: 100%;
