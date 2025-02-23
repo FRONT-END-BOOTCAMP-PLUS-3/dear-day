@@ -1,7 +1,8 @@
-import DatePicker from "react-datepicker";
 import { ModalContent } from "./Modal.type";
-import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import DateSelect from "../Input/DateSelect/DateSelect";
+import Input from "../Input/Input/Input";
+import { useState } from "react";
 
 type ModalTypeProps = {
   content: ModalContent;
@@ -9,31 +10,40 @@ type ModalTypeProps = {
 };
 
 const ModalType = ({ content, onChange }: ModalTypeProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    onChange(e.target.name, e.target.value);
+  };
+
+  const handleDateChange = (name: string, value: string) => {
+    setSelectedDate(value);
+    onChange(name, value);
+  };
+
   if (content.type === "textOnly") {
     return null;
   }
 
-  if (content.type === "input") {
+  if (content.type === "text") {
     return (
-      <input
-        type="input"
+      <Input
+        value={inputValue}
         name="modal_text"
-        maxLength={content.maxLength}
-        onChange={(e) => onChange(e.target.name, e.target.value)}
+        onChange={handleInputChange}
+        placeholder="코스 이름을 입력해 주세요"
       />
     );
   }
 
   if (content.type === "calendar") {
     return (
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date) => {
-          setSelectedDate(date);
-          onChange("calendarValue", date ? date.toISOString() : "");
-        }}
-        placeholderText={content.placeholder || "날짜 선택"}
+      <DateSelect
+        value={selectedDate}
+        name="modal_calendar"
+        onChange={handleDateChange}
       />
     );
   }

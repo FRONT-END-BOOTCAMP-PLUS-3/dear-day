@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ModalProps } from "./Modal.type";
+import React, { useCallback, useEffect, useState } from "react";
+import { InputFormData, ModalProps } from "./Modal.type";
 import ModalType from "./ModalType";
 import styles from "./Modal.module.scss";
 
@@ -11,45 +11,73 @@ const Modal: React.FC<ModalProps> = ({
   confirmText = "확인",
   cancelText = "취소",
 }) => {
-  // 여러 input/달력 데이터를 모을 수 있도록 상태로 관리
-  const [formData, setFormData] = useState<Record<string, string | undefined>>(
-    {}
+  const [inputFormData, setInputFormData] = useState<InputFormData>({});
+  const [isValid, setIsValid] = useState(false);
+
+  const handleChange = (name: string, value: string) => {
+    setInputFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleClose = () => {
+    setInputFormData({});
+    setIsValid(false);
+    onCancel();
+  };
+
+  // 폼 유효성 검사
+  const validateForm = useCallback(
+    (data: InputFormData) => {
+      let valid = true;
+
+      contents.forEach((content) => {
+        if ("textOnly" in content) return;
+
+        const name = `modal_${content.type}`;
+
+        if (content.type === "text") {
+          const textValue = data[name] || "";
+          if (!textValue.trim()) valid = false;
+        }
+        if (content.type === "calendar") {
+          if (!data[name]) valid = false;
+        }
+      });
+      return valid;
+    },
+    [contents]
   );
+
+  // inputFormData 변경 시 유효성 검사 실행
+  useEffect(() => {
+    setIsValid(validateForm(inputFormData));
+  }, [inputFormData, validateForm]);
 
   if (!isOpen) return null;
 
-  const handleChange = (name: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleConfirmClick = () => {
-    // formData를 상위로 전달
-    onConfirm(formData);
-  };
-  // "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
   return (
-    <div className={styles["modalContainer"]}>
-      <div className={styles["modal"]}>
+    <div className={styles["modalContainer"]} onClick={handleClose}>
+      <div className={styles["modal"]} onClick={(e) => e.stopPropagation()}>
         {contents.map((content, idx) => (
-          <div key={idx} className="mb-4">
-            {/* 제목 */}
+          <div key={idx} className={styles["modalItem"]}>
             <h2>{content.title}</h2>
-            {/* 실제 입력/달력/텍스트 렌더링 */}
             <ModalType content={content} onChange={handleChange} />
           </div>
         ))}
-
-        {/* 버튼들 */}
-        <div className="mt-6 flex justify-between">
+        <div className={styles["actions"]}>
           <button
-            className="px-4 py-2 bg-gray-300 rounded-md"
-            onClick={onCancel}
+            type="button"
+            className={styles["cancel-btn"]}
+            onClick={handleClose}
           >
             {cancelText}
           </button>
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            onClick={handleConfirmClick}
+            type="button"
+            className={styles["confirm-btn"]}
+            onClick={() => {
+              onConfirm(inputFormData);
+            }}
+            disabled={!isValid}
           >
             {confirmText}
           </button>

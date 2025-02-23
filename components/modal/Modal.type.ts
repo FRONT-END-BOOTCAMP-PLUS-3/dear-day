@@ -9,9 +9,8 @@ type TextOnlyModalContent = {
 };
 
 type TextInputModalContent = {
-  type: "input";
+  type: "text";
   title: string;
-  maxLength?: number;
 };
 
 type CalendarModalContent = {
