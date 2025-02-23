@@ -6,19 +6,19 @@ import styles from "./RadioButton.module.scss";
 interface RadioButtonProps {
   name: string;
   value: string;
-  label?: string;
+  label: string;
   checked: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RadioButton: React.FC<RadioButtonProps> = ({
+const RadioButton = ({
   name,
   value,
   label,
   checked,
   onChange,
   ...props
-}) => {
+}: RadioButtonProps) => {
   return (
     <label className={styles.radioLabel}>
       <input
