@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Icon from "@/components/Icon/Icon";
-import styles from "./TimeSelectButton.module.scss";
+import styles from "./TimeComboBox.module.scss";
 
 interface TimeSelectButtonProps {
   value: string;

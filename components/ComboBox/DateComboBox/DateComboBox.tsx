@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import Icon from "@/components/Icon/Icon";
-import styles from "./DateSelectButton.module.scss";
+import styles from "./DateComboBox.module.scss";
 
 interface DateSelectButtonProps {
   value: string;
