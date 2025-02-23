@@ -1,0 +1,52 @@
+.courseListView {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-blue-bg);
+  border-radius: 16px;
+  padding: var(--padding-md) 18px;
+  width: 100%;
+}
+
+.courseListImg {
+  width: 56px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.courseListContent {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-left: var(--padding-md);
+  overflow: hidden;
+}
+
+.courseListText {
+  overflow: hidden;
+}
+
+.courseListTitle {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 85%;
+}
+
+.courseListTime {
+  color: var(--color-gray-2);
+  font-size: var(--font-size-sm);
+}
+
+.courseCount {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  min-width: 50px;
+}
