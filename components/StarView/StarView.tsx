@@ -1,5 +1,5 @@
-import styles from "./StarView.module.scss";
 import Image from "next/image";
+import styles from "./StarView.module.scss";
 
 interface StarViewProps {
   starImage: string;
