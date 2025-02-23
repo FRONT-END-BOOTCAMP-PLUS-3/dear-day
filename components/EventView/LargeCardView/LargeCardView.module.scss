@@ -1,0 +1,68 @@
+.LargeCardView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.LargeCardImg {
+  width: 100%;
+  height: auto;
+}
+
+.LargeCardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.LargeCardTitle {
+  display: flex;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.LargeCardText {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+}
+
+.LargeCardTime {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.LargeCardEndTime {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.LargeCardNameLocation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.LargeCardLocation {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

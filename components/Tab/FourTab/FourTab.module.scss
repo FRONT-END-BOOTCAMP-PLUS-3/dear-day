@@ -1,0 +1,34 @@
+.tabContainer {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &.active {
+    font-weight: 500;
+    color: black;
+  }
+  color: var(--color-gray-1);
+}
+
+.indicator {
+  position: absolute;
+  bottom: 0;
+  width: 25%;
+  height: 2px;
+  background-color: black;
+  transition: transform 0.3s ease;
+
+  &[data-selected="second"] {
+    transform: translateX(100%);
+  }
+  &[data-selected="first"] {
+    transform: translateX(0%);
+  }
+}

@@ -1,0 +1,36 @@
+.smallCardView {
+  width: auto;
+}
+
+.smallCardImg {
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+}
+
+.smallCardContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.smallCardTitle {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  padding-right: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 24px); /* 하트 아이콘 공간 고려 */
+}
+
+.smallCardText {
+  color: var(--color-gray-2);
+  font-size: var(--font-size-sm);
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
