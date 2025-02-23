@@ -28,7 +28,7 @@ const ListView: React.FC<ListViewProps> = ({
     <Link className={styles.listView} href={`/event/${id}`} passHref>
       <li className={styles.listItemContainer}>
         <div className={styles.listContent}>
-          <Image src={imgSrc} alt="poster" width={78} height={100} />
+          <Image src={imgSrc} alt={title} width={78} height={100} />
           <div>
             <h3 className={styles.listTitle}>{title}</h3>
             <div className={styles.listText}>
@@ -37,7 +37,7 @@ const ListView: React.FC<ListViewProps> = ({
                   {startDate.toLocaleDateString("ko-KR")}
                 </time>
                 ~{" "}
-                <time dateTime={startDate.toISOString()}>
+                <time dateTime={endDate.toISOString()}>
                   {" "}
                   {endDate.toLocaleDateString("ko-KR")}
                 </time>
