@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import styles from "./TimeSelectButton.module.scss";
 import Icon from "@/components/Icon/Icon";
+import styles from "./TimeSelectButton.module.scss";
 
 interface TimeSelectButtonProps {
   value: string;
