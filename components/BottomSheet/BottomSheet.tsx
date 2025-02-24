@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
 import styles from "./BottomSheet.module.scss";
+import React, { useState, useEffect, useRef } from "react";
 
 type SheetState = "closed" | "min" | "middle" | "open";
 
