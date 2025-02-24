@@ -24,6 +24,14 @@ const ListView: React.FC<ListViewProps> = ({
   address,
   liked,
 }) => {
+  const formatShortDate = (date: Date): string => {
+    const year = date.getFullYear().toString(); // 두 자리 연도 (2024 → 24)
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 두 자리 월 (1 → 01, 10 → 10)
+    const day = String(date.getDate()).padStart(2, "0"); // 두 자리 일 (1 → 01, 10 → 10)
+
+    return `${year}.${month}.${day}`;
+  };
+
   return (
     <Link className={styles.listView} href={`/event/${id}`} passHref>
       <li className={styles.listItemContainer}>
@@ -34,12 +42,11 @@ const ListView: React.FC<ListViewProps> = ({
             <div className={styles.listText}>
               <p>
                 <time dateTime={startDate.toISOString()}>
-                  {startDate.toLocaleDateString("ko-KR")}
+                  {formatShortDate(startDate)}
                 </time>
-                ~{" "}
+                &nbsp;~&nbsp;
                 <time dateTime={endDate.toISOString()}>
-                  {" "}
-                  {endDate.toLocaleDateString("ko-KR")}
+                  {formatShortDate(endDate)}
                 </time>
               </p>
               <p>
