@@ -1,0 +1,34 @@
+.ButtonListContainer {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 100px 0;
+}
+
+.ButtonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Button {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: var(--color-gray-bg);
+  cursor: pointer;
+}
+
+.ButtonCategory {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
