@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,158 +7,162 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 모델 스키마 생성 부분에 이 아래거 적으면 됨요
+/// 사용자를 나타내는 테이블
+model User {
+  id           String        @id @default(uuid()) /// 사용자 고유 ID (UUID)
+  username     String        @unique /// 사용자명 (유니크)
+  email        String        @unique /// 이메일 (유니크)
+  password     String        /// 비밀번호 (암호화됨)
+  createdAt    DateTime      @default(now()) @map("created_at") /// 계정 생성 시간
+  courses      Course[]      /// 사용자가 만든 코스 목록
+  events       Event[]       /// 사용자가 만든 생카 목록
+  likedEvents  LikedEvent[]  /// 사용자가 좋아요한 생카 목록
+  likedStars   LikedStar[]   /// 사용자가 좋아요한 스타 목록
+  reservations Reservation[] /// 사용자의 예약 내역
+  waitingList  Waiting[]     /// 사용자의 대기 목록
+}
+
+/// 스타 정보를 저장하는 테이블
+model Star {
+  id           Int         @id @default(autoincrement()) /// 스타 고유 ID
+  image        String      /// 스타 이미지 URL
+  realName     String?     @map("real_name") /// 스타의 본명 (선택 사항)
+  stageName    String      @map("stage_name") /// 스타의 활동명
+  group        String?     /// 스타가 속한 그룹 (없을 수도 있음)
+  birthday     DateTime    /// 스타의 생일
+  createdAt    DateTime    @default(now()) @map("created_at") /// 등록된 날짜
+  events       Event[]     /// 스타와 관련된 생카 목록
+  likedByUsers LikedStar[] /// 해당 스타를 좋아하는 사용자 목록
+}
+
+/// 사용자가 특정 스타를 좋아요한 기록을 저장하는 테이블
+model LikedStar {
+  starId    Int      @map("star_id") /// 좋아요한 스타의 ID
+  userId    String   @map("user_id") /// 좋아요한 사용자의 ID
+  createdAt DateTime @default(now()) @map("created_at") /// 좋아요한 날짜
+  star      Star     @relation(fields: [starId], references: [id]) /// 연결된 스타
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) /// 연결된 사용자
+
+  @@id([starId, userId]) /// 복합 키 설정 (중복 좋아요 방지)
+}
+
+/// 생카 정보를 저장하는 테이블
+model Event {
+  id                  Int                  @id @default(autoincrement()) /// 생카 고유 ID
+  starId              Int                  @map("star_id") /// 관련된 스타 ID
+  userId              String               @map("user_id") /// 생카 주최자의 사용자 ID
+  startDate           DateTime             @map("start_date") /// 생카 시작 날짜
+  endDate             DateTime             @map("end_date") /// 생카 종료 날짜
+  title               String               /// 생카 제목
+  twitterId           Int?                 @map("twitter_id") /// 주최자의 트위터 ID (선택 사항)
+  mainImage           String               @map("main_image") /// 생카 메인 이미지 URL
+  detailImage         String[]             @map("detail_image") /// 생카 상세 이미지들
+  benefits            String[]             /// 생카 특젙 목록
+  address             String               /// 생카 개최 장소 주소
+  latitude            Decimal              /// 개최장소 위도
+  longitude           Decimal              /// 개최장소 경도
+  countLike           Int                  @map("count_like") /// 생카 좋아요 수
+  mode                Mode                 @default(WAITING) /// 예약/대기 모드 설정
+  createdAt           DateTime             @default(now()) @map("created_at") /// 생카 게시물 등록 날짜
+  courseEvents        CourseEvent[]        /// 생카가 포함된 코스 목록
+  star                Star                 @relation(fields: [starId], references: [id]) /// 관련된 스타
+  user                User                 @relation(fields: [userId], references: [id]) /// 생카를 생성한 유저
+  likedByUsers        LikedEvent[]         /// 좋아요한 유저 목록
+  reservations        Reservation[]        /// 예약된 사용자 목록
+  reservationSettings ReservationSetting[] /// 예약 설정 목록
+  waitingList         Waiting[]            /// 대기자 목록
+}
+
+
+/// 사용자가 좋아요한 생카 목록을 저장하는 테이블
+model LikedEvent {
+  eventId   Int      @map("event_id") /// 좋아요한 생카 ID
+  userId    String   @map("user_id") /// 좋아요한 사용자의 ID
+  createdAt DateTime @default(now()) @map("created_at") /// 좋아요한 날짜
+  event     Event    @relation(fields: [eventId], references: [id]) /// 연결된 생카
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) /// 연결된 사용자
+
+  @@id([eventId, userId]) /// 복합 키 설정
+}
+
+/// 사용자가 만든 코스 정보를 저장하는 테이블
+model Course {
+  id           Int           @id @default(autoincrement()) /// 코스 고유 ID
+  userId       String        @map("user_id") /// 코스를 만든 사용자 ID
+  name         String        /// 코스 이름
+  date         DateTime      /// 해당 코스대로 생카투어 하는 날짜
+  createdAt    DateTime      @default(now()) @map("created_at") /// 코스 생성 날짜
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade) /// 사용자 관계
+  courseEvents CourseEvent[] /// 포함된 생카 목록
+}
+
+/// 코스에 포함된 생카 정보를 저장하는 테이블
+model CourseEvent {
+  id       Int    @id @default(autoincrement()) /// 코스-생카 관계 ID
+  courseId Int    @map("course_id") /// 연결된 코스 ID
+  eventId  Int    @map("event_id") /// 연결된 생카 ID
+  order    Int    /// 생카 투어 순서
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade) /// 연결된 코스
+  event    Event  @relation(fields: [eventId], references: [id]) /// 연결된 생카
+}
+
+/// 예약 정보를 저장하는 테이블
+model Reservation {
+  id              Int      @id @default(autoincrement()) /// 예약 고유 ID
+  eventId         Int      @map("event_id") /// 예약한 생카 ID
+  userId          String   @map("user_id") /// 예약한 사용자 ID
+  reservationTime DateTime @map("reservation_time") /// 예약한 시간
+  status          ReservationStatus /// 예약 상태 (확정/입장 완료)
+  createdAt       DateTime @default(now()) @map("created_at") /// 예약 생성 시간
+  event           Event    @relation(fields: [eventId], references: [id]) /// 연결된 생카
+  user            User     @relation(fields: [userId], references: [id]) /// 연결된 사용자
+}
+
+/// 예약 설정 정보를 저장하는 테이블
+model ReservationSetting {
+  id        Int      @id @default(autoincrement()) /// 예약 설정 고유 ID
+  eventId   Int      @map("event_id") /// 연결된 생카 ID
+  openTime  DateTime @map("open_time") /// 예약 가능 시작 시간
+  endTime   DateTime @map("end_time") /// 예약 가능 종료 시간
+  breaktime Breaktime @default(NONE) /// 쉬는 시간 (10, 15, 20분 또는 없음)
+  limit     Int      /// 한 타임당 예약 가능 인원
+  createdAt DateTime @default(now()) @map("created_at") /// 생성 날짜
+  event     Event    @relation(fields: [eventId], references: [id]) /// 연결된 생카
+}
+
+/// 사용자의 대기 상태를 저장하는 테이블
+model Waiting {
+  id            Int      @id @default(autoincrement()) /// 대기 목록의 고유 ID
+  eventId       Int      @map("event_id") /// 대기 중인 생카 ID
+  userId        String   @map("user_id") /// 대기 중인 사용자 ID
+  waitingNumber Int      @map("waiting_number") /// 사용자의 대기 번호
+  headCount     Int      @map("head_count") /// 함께 입장할 인원 수 (본인 포함)
+  status        WatingStatus /// 현재 대기 상태 (대기 중, 입장 완료 등)
+  createdAt     DateTime @default(now()) @map("created_at") /// 대기 신청 시간
+  updatedAt     DateTime @updatedAt @map("updated_at") /// 마지막으로 업데이트된 시간
+  event         Event    @relation(fields: [eventId], references: [id]) /// 대기 중인 생카 정보
+  user          User     @relation(fields: [userId], references: [id]) /// 대기 중인 사용자 정보
+}
 
 // ENUM 정의
 enum Mode {
-  EDIT
-  VIEW
+  RESERVATION   // 예약 모드
+  WAITING       // 대기 모드
 }
 
-enum Status {
+enum WatingStatus {
   PENDING      // 대기 중
-  CONFIRMED    // 확정됨
-  CANCELLED    // 취소됨
   ENTERED      // 입장 완료
 }
 
-model User {
-  id        String    @id @default(uuid())
-  username  String  @unique
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now()) @map("created_at")
-
-  likedStars  LikedStar[]
-  likedEvents LikedEvent[]
-  courses     Course[]
-  reservations Reservation[]
-  waitingList  Waiting[]
-  events       Event[]
+enum ReservationStatus {
+  CONFIRMED    // 예약 확정
+  ENTERED      // 입장 완료
 }
 
-model Star {
-  id        Int       @id @default(autoincrement())
-  image     String
-  realName  String @map("real_name")
-  stageName String? @map("stage_name")
-  group     String?
-  birthday  DateTime
-  createdAt DateTime @default(now()) @map("created_at")
-
-  likedByUsers LikedStar[]
-
-  events       Event[]
-}
-
-model LikedStar {
-  starId   Int     @map("star_id")
-  userId   String  @map("user_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  star Star @relation(fields: [starId], references: [id])
-
-  @@id([starId, userId]) // 복합 키
-}
-
-model Event {
-  id          Int       @id @default(autoincrement())
-  starId      Int      @map("star_id")
-  userId      String  @map("user_id")
-  startDate   DateTime  @map("start_date")
-  endDate     DateTime  @map("end_date")
-  title       String
-  content     String
-  twitterId   Int?      @map("twitter_id")
-  mainImage   String    @map("main_image")
-  detailImage String[]  @map("detail_image")
-  benefits    String[]
-  address     String
-  latitude    Decimal
-  longitude   Decimal
-  countLike   Int       @map("count_like")
-  mode        Mode      @default(VIEW)
-  createdAt   DateTime  @default(now()) @map("created_at")
-
-  user   User @relation(fields: [userId], references: [id])
-  star   Star @relation(fields: [starId], references: [id])
-  reservations Reservation[]
-  waitingList Waiting[]
-  reservationSettings ReservationSetting[]
-
-  likedByUsers LikedEvent[]
-  courseEvents CourseEvent[]
-}
-
-model LikedEvent {
-  eventId   Int     @map("event_id")
-  userId    String  @map("user_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event Event @relation(fields: [eventId], references: [id])
-
-  @@id([eventId, userId]) // 복합 키
-}
-
-model Course {
-  id        Int      @id @default(autoincrement())
-  userId    String  @map("user_id")
-  name      String
-  date      DateTime
-  createdAt DateTime @default(now()) @map("created_at")
-
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  courseEvents CourseEvent[]
-}
-
-model CourseEvent {
-  id       Int  @id @default(autoincrement())
-  courseId Int @map("course_id")
-  eventId  Int @map("event_id")
-  order    Int
-
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  event  Event  @relation(fields: [eventId], references: [id])
-}
-
-model Reservation {
-  id              Int       @id @default(autoincrement())
-  eventId         Int      @map("event_id")
-  userId          String  @map("user_id")
-  reservationTime DateTime  @map("reservation_time")
-  status          Status
-  createdAt       DateTime  @default(now()) @map("created_at")
-
-  event Event @relation(fields: [eventId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
-}
-
-model ReservationSetting {
-  id       Int      @id @default(autoincrement())
-  eventId  Int     @map("event_id")
-  openTime DateTime @map("open_time")
-  endTime  DateTime @map("end_time")
-  timeUnit Int     @map("time_unit")
-  limit    Int
-  createdAt DateTime @default(now()) @map("created_at")
-
-  event Event @relation(fields: [eventId], references: [id])
-}
-
-model Waiting {
-  id            Int       @id @default(autoincrement())
-  eventId       Int     @map("event_id")
-  userId        String @map("user_id")
-  waitingNumber Int       @map("waiting_number")
-  headCount     Int      @map("head_count")
-  status        Status
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-
-  event Event @relation(fields: [eventId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
+enum Breaktime {
+  TEN     @map("10")  // 10분
+  FIFTEEN @map("15")  // 15분
+  TWENTY  @map("20")  // 20분
+  NONE                // 쉬는시간 없음
 }
