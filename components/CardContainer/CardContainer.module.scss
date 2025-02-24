@@ -22,12 +22,18 @@
 }
 
 .gridStar {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  width: 100%;
-  margin: 0 auto;
-  gap: 10px;
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 7px;
 }
+.gridStar::-webkit-scrollbar {
+  display: none;
+}
+.gridStar > * {
+  flex: 0 0 auto; /* 아이템들이 축소되지 않도록 설정 */
+}
+
 .swipeContainer {
   background-color: var(--color-primary);
   border-radius: 16px;
