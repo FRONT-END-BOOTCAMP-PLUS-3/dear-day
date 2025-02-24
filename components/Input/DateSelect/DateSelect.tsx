@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import styles from "./DateSelect.module.scss";
 import Icon from "@/components/Icon/Icon";
 
@@ -16,11 +16,9 @@ const formatDate = (date: string) => {
 };
 
 const DateSelect = ({ value, onChange }: DateSelectProps) => {
-  const [selectedDate, setSelectedDate] = useState(value);
   const dateInputRef = useRef<HTMLInputElement>(null);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
     onChange(event.target.value);
   };
 
@@ -29,20 +27,20 @@ const DateSelect = ({ value, onChange }: DateSelectProps) => {
       className={styles.dateSelectContainer}
       onClick={() => {
         if (dateInputRef.current) {
-          dateInputRef.current.showPicker(); // 📌 항상 날짜 선택 모달을 띄움
+          dateInputRef.current.showPicker();
         }
       }}
     >
       <Icon id="calendar" />
 
       {/* 사용자가 선택한 날짜를 표시하는 텍스트 */}
-      <span className={styles.selectedDate}>{formatDate(selectedDate)}</span>
+      <span className={styles.selectedDate}>{formatDate(value)}</span>
 
       {/* 숨겨진 date input */}
       <input
         ref={dateInputRef}
         type="date"
-        value={selectedDate}
+        value={value} // ✅ 부모 상태를 직접 반영
         onChange={handleDateChange}
         className={styles.hiddenDateInput}
       />
