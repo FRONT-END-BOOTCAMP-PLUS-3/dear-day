@@ -1,0 +1,8 @@
+.joinLink {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  .link {
+    color: var(--color-primary);
+  }
+}
