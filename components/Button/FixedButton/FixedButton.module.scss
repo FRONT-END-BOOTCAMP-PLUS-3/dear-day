@@ -1,0 +1,20 @@
+.fixedButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--padding-xs) var(--padding-md);
+  gap: 9px;
+  border-radius: 100px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+
+  &.disabled {
+    background: var(--color-disabled);
+    color: var(--color-gray-1);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

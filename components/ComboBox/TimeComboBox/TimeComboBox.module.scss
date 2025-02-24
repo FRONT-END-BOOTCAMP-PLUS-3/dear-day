@@ -1,0 +1,79 @@
+.timeSelectWrapper {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  min-width: 160px;
+}
+
+.timeSelectContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  padding: var(--padding-xs) var(--padding-sm);
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 100px;
+  background: var(--color-blue-bg);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.selectedTime {
+  flex: 1;
+  text-align: left;
+  cursor: pointer;
+  margin-left: var(--margin-xs);
+  white-space: nowrap;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  margin-right: var(--margin-xs);
+}
+
+.dropdownList {
+  position: absolute;
+  top: calc(100% + var(--margin-xs));
+  left: 0;
+  width: 100%;
+  background: var(--color-blue-bg);
+  border: 1px solid var(--color-gray-2);
+  margin-top: var(--margin-xs);
+  padding: 0;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 100px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
+  }
+}
+
+.dropdownItem {
+  padding: var(--padding-xs) var(--padding-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  text-align: left;
+  border-bottom: 1px solid var(--color-white);
+  transition: background 0.2s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
