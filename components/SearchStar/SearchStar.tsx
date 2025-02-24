@@ -6,9 +6,25 @@ import SearchInput from "../Input/SearchInput/SearchInput";
 import Image from "next/image";
 
 const SearchStar = () => {
-  const [query, setQuery] = useState(""); // ✅ 검색어 상태
-  // const [results, setResults] = useState<string[]>([]); // ✅ 검색 결과 상태
+  const [query, setQuery] = useState(""); // 검색어 상태
+  // const [results, setResults] = useState<string[]>([]); // 검색 결과 상태
   // const [debouncedQuery, setDebouncedQuery] = useState(query);
+
+  // 데베 연결 전 임시 데이터
+  const data = [
+    { id: 1, name: "원빈", image: "/images/wonbin.jpg" },
+    { id: 2, name: "윈터", image: "/images/winter.jpg" },
+    { id: 3, name: "윈디", image: "/images/windy.jpg" },
+    { id: 4, name: "보이넥스트도어", image: "/images/boynextdoor.jpg" },
+    { id: 5, name: "워너원", image: "/images/wannaone.jpg" },
+    { id: 6, name: "위너", image: "/images/winner.jpg" },
+    { id: 6, name: "위너", image: "/images/winner.jpg" },
+    { id: 6, name: "위너", image: "/images/winner.jpg" },
+    { id: 6, name: "위너", image: "/images/winner.jpg" },
+    { id: 6, name: "위너", image: "/images/winner.jpg" },
+    { id: 6, name: "위너", image: "/images/winner.jpg" },
+    { id: 6, name: "위너", image: "/images/winner.jpg" },
+  ];
 
   // useEffect(() => {
   //   const timer = setTimeout(() => {
@@ -29,6 +45,11 @@ const SearchStar = () => {
   //   }
   // }, [debouncedQuery]);
 
+  // 데베 연결 전 임시 필터링
+  const filteredResults = data.filter((item) =>
+    item.name.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
     <>
       <SearchInput
@@ -39,8 +60,9 @@ const SearchStar = () => {
 
       {query && (
         <ul className={styles.searchStarContainer}>
-          {results.length > 0 ? (
-            results.map((item) => (
+          {/* 데이터베이스 연결하면 filteredResults 대신 results 사용 */}
+          {filteredResults.length > 0 ? (
+            filteredResults.map((item) => (
               <li key={item.id} className={styles.searchStarItem}>
                 <Image
                   className={styles.searchStarItemImg}
