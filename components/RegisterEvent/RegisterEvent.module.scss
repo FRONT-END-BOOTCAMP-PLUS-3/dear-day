@@ -1,0 +1,11 @@
+.container {
+  width: 100%;
+  box-sizing: border-box;
+}
+.containerItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  gap: 7px;
+}
