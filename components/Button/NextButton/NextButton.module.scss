@@ -1,0 +1,21 @@
+.nextButtonContainer {
+  position: fixed;
+  z-index: 1000;
+  bottom: 24px;
+  text-align: center;
+  max-width: calc(var(--size-max-width) - 2 * var(--size-gap));
+  width: calc(100% - 2 * var(--size-gap));
+  padding: var(--padding-xs) var(--padding-md);
+  border-radius: 100px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+
+  &.disabled {
+    background: var(--color-disabled);
+    color: var(--color-gray-1);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

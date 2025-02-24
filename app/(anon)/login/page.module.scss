@@ -1,3 +1,7 @@
 .loginContainer {
   @include pageContainer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--margin-lg);
 }
