@@ -10,7 +10,7 @@ datasource db {
 /// 사용자를 나타내는 테이블
 model User {
   id           String        @id @default(uuid()) /// 사용자 고유 ID (UUID)
-  username     String        @unique /// 사용자명 (유니크)
+  username     String        /// 사용자 이름
   email        String        @unique /// 이메일 (유니크)
   password     String        /// 비밀번호 (암호화됨)
   createdAt    DateTime      @default(now()) @map("created_at") /// 계정 생성 시간
