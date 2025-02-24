@@ -13,15 +13,15 @@ const MainButtonList = [
 
 const MainButton = () => {
   return (
-    <div className={styles.ButtonListContainer}>
+    <div className={styles.buttonListContainer}>
       {MainButtonList.map((e) => (
         <Link href={`${e.route}`} key={e.route}>
-          <div className={styles.ButtonContainer}>
-            <button className={styles.Button}>
+          <div className={styles.buttonContainer}>
+            <button className={styles.button}>
               <Icon id={`${e.icon}`} />
             </button>
           </div>
-          <p className={styles.ButtonCategory}>{e.text}</p>
+          <p className={styles.buttonCategory}>{e.text}</p>
         </Link>
       ))}
     </div>

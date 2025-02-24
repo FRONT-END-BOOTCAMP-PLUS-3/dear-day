@@ -1,16 +1,16 @@
-.ButtonListContainer {
+.buttonListContainer {
   display: flex;
   justify-content: space-evenly;
   margin: 100px 0;
 }
 
-.ButtonContainer {
+.buttonContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.Button {
+.button {
   width: 52px;
   height: 52px;
   display: flex;
@@ -21,7 +21,7 @@
   cursor: pointer;
 }
 
-.ButtonCategory {
+.buttonCategory {
   display: flex;
   justify-content: center;
   align-items: center;
