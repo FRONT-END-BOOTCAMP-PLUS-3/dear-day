@@ -1,9 +1,28 @@
 .titleBox {
   width: calc(100% - 2 * var(--margin-xl));
   padding: var(--margin-xl);
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 30px;
   text-align: center;
   position: relative;
   margin: 20px auto;
+}
+
+.titleBox > div {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 아이콘과 텍스트 간격 */
+  margin-top: var(--margin-xs);
+}
+
+.titleBox h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+}
+
+.titleBox > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
 }
