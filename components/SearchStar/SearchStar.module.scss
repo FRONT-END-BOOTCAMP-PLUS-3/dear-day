@@ -1,0 +1,22 @@
+.searchStarContainer {
+  width: 100%;
+  height: auto;
+  padding: var(--padding-md) var(--padding-xxl);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 16px;
+  justify-content: center;
+}
+
+.searchStarItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.searchStarNoItem {
+  grid-column: 1 / -1;
+  text-align: center;
+  place-self: center;
+}
