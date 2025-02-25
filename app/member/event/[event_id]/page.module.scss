@@ -1,0 +1,6 @@
+.eventDetailPage {
+  @include pageContainer;
+  .titleHeader {
+    margin: calc(-1 * var(--margin-xl));
+  }
+}
