@@ -18,9 +18,9 @@ const ModalType = ({ content, onChange }: ModalTypeProps) => {
     onChange(e.target.name, e.target.value);
   };
 
-  const handleDateChange = (name: string, value: string) => {
-    setSelectedDate(value);
-    onChange(name, value);
+  const handleDateChange = (date: string) => {
+    setSelectedDate(date);
+    onChange("modal_calendar", date);
   };
 
   if (content.type === "textOnly") {

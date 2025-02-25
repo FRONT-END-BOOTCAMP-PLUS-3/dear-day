@@ -9,7 +9,8 @@ type TicketModalProps =
       imageUrl: string;
       userId: string;
       date: string;
-      time: string;
+      time: Date;
+      breakTime: number;
       onClick: () => void;
       isOpen: boolean;
     }
@@ -28,7 +29,24 @@ type TicketModalProps =
 
 const TicketModal = (props: TicketModalProps) => {
   if (!props.isOpen) return null;
+  // 시간 포맷 변환 함수
+  const formatTime = (date: Date) => {
+    const h = date.getHours().toString().padStart(2, "0");
+    const m = date.getMinutes().toString().padStart(2, "0");
+    return `${h}:${m}`;
+  };
 
+  // 종료 시간 계산 (예약 티켓인 경우)
+  let startTimeStr = "";
+  let endTimeStr = "";
+  if (props.variant === "isReservation") {
+    const startTime = new Date(props.time);
+    const endTime = new Date(startTime);
+    endTime.setMinutes(startTime.getMinutes() + 60 - props.breakTime);
+
+    startTimeStr = formatTime(startTime);
+    endTimeStr = formatTime(endTime);
+  }
   return (
     <div className={styles.modalContainer}>
       <div className={styles.ticketModal}>
@@ -65,13 +83,16 @@ const TicketModal = (props: TicketModalProps) => {
                   <strong>예약 날짜:</strong> {props.date}
                 </p>
                 <p>
-                  <strong>예약 시간:</strong> {props.time}
+                  <strong>예약 시간:</strong> {props.time.toDateString()}
                 </p>
               </div>
 
               <div className={styles.ticketNotice}>
-                예약은 본인명의 아이디로만 가능하며, 예약 날짜 및 시간은 변경이
-                불가능합니다.
+                예약한 시간대 (
+                <strong>
+                  {startTimeStr} ~ {endTimeStr}
+                </strong>
+                ) 내에 자유롭게 입장 및 퇴장이 가능합니다
               </div>
 
               <div className={styles.ticketFooter}>
