@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--margin-lg);
+  .emailValidation {
+    display: flex;
+    flex-direction: row;
+    gap: var(--margin-md);
+  }
+  .label {
+    margin-bottom: var(--margin-sm);
+  }
+}

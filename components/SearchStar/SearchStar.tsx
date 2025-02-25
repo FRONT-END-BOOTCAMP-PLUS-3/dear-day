@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./SearchStar.module.scss";
 import SearchInput from "../Input/SearchInput/SearchInput";
-import Image from "next/image";
+import StarView from "../StarView/StarView";
 
 const SearchStar = () => {
   const [query, setQuery] = useState(""); // 검색어 상태
@@ -64,14 +64,7 @@ const SearchStar = () => {
           {filteredResults.length > 0 ? (
             filteredResults.map((item) => (
               <li key={item.id} className={styles.searchStarItem}>
-                <Image
-                  className={styles.searchStarItemImg}
-                  src={item.image}
-                  alt={item.name}
-                  width={50}
-                  height={50}
-                />
-                <span>{item.name}</span>
+                <StarView starImage={item.image} starName={item.name} />
               </li>
             ))
           ) : (
