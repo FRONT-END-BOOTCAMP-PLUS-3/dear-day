@@ -1,0 +1,9 @@
+.titleBox {
+  width: calc(100% - 2 * var(--margin-xl));
+  padding: var(--margin-xl);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  margin: 20px auto;
+}

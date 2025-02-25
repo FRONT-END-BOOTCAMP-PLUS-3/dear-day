@@ -2,5 +2,6 @@
   @include pageContainer;
   .titleHeader {
     margin: calc(-1 * var(--margin-xl));
+    margin-bottom: 0px;
   }
 }
