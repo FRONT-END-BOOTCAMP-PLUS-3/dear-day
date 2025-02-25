@@ -8,7 +8,12 @@ import Icon from "@/components/Icon/Icon";
 interface Star {
   starId: number;
   stageName: string;
-  group?: string | null; // 그룹이 있을 수도, 없을 수도 있음
+  group?: string | null;
+}
+
+interface DropdownProps {
+  selectedOption: string | number; // string 또는 number로 변경
+  onSelect: (option: string | number) => void; // string 또는 number 전달 가능
 }
 
 // Mock API 함수 (실제 API 요청으로 대체 가능)
@@ -26,9 +31,8 @@ const fetchFavoriteStars = async (): Promise<Star[]> => {
   );
 };
 
-export default function Dropdown() {
+export default function Dropdown({ selectedOption, onSelect }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("전체");
   const [starOptions, setStarOptions] = useState<Star[]>([]);
 
   useEffect(() => {
@@ -43,23 +47,21 @@ export default function Dropdown() {
     getStars();
   }, []);
 
-  // 옵션 목록 구성 (기본 "전체" + 찜한 스타가 있으면 "찜한 스타 전체" 추가)
+  // 옵션 목록 구성
   const options = [
-    "전체",
+    { label: "전체", value: "전체" },
     ...(starOptions.length > 0
       ? [
-          "찜한 스타 전체",
-          ...starOptions.map((star) =>
-            star.group ? `${star.stageName} (${star.group})` : star.stageName
-          ),
+          { label: "찜한 스타 전체", value: "찜한 스타 전체" },
+          ...starOptions.map((star) => ({
+            label: star.group
+              ? `${star.stageName} (${star.group})`
+              : star.stageName,
+            value: star.starId, // ⭐ 선택 시 starId 전달
+          })),
         ]
       : []),
   ];
-
-  const handleSelect = (option: string) => {
-    setSelectedOption(option);
-    setIsOpen(false); // 선택 후 닫기
-  };
 
   return (
     <div className={styles.dropdown}>
@@ -67,16 +69,22 @@ export default function Dropdown() {
         className={styles.dropdownToggle}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedOption}
+        {options.find((opt) => opt.value === selectedOption)?.label || "전체"}
         <span className={styles.icon}>
           <Icon id="arrow-down" />
         </span>
       </button>
       {isOpen && (
         <ul className={styles.dropdownMenu}>
-          {options.map((option) => (
-            <li key={option} onClick={() => handleSelect(option)}>
-              {option}
+          {options.map(({ label, value }) => (
+            <li
+              key={value}
+              onClick={() => {
+                onSelect(value);
+                setIsOpen(false);
+              }}
+            >
+              {label}
             </li>
           ))}
         </ul>
