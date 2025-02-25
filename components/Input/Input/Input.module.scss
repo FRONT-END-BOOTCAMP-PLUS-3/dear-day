@@ -6,9 +6,12 @@
   gap: 9px;
   border-radius: 100px;
   background: var(--color-blue-bg);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
 
   .input {
     width: 100%;
+  }
+  input::placeholder {
+    color: var(--color-gray-1);
   }
 }
