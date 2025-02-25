@@ -1,7 +1,7 @@
 .courseMakingButton {
   display: flex;
   flex-direction: column;
-  flex-direction: center;
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: auto;
@@ -13,6 +13,6 @@
 
   p {
     font-size: var(--font-size-lg);
-    color: white;
+    color: var(--color-white);
   }
 }
