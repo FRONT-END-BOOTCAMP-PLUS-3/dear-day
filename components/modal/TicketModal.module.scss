@@ -1,0 +1,129 @@
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  max-width: var(--size-max-width);
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.ticketModal {
+  width: 320px;
+  background: #fff;
+  border-radius: 16px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 50px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50%;
+    transform: translateX(-50%);
+  }
+
+  &::before {
+    top: -12px;
+  }
+
+  &::after {
+    bottom: -12px;
+  }
+}
+
+.modalContent {
+  padding: 16px;
+}
+
+.ticketHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .thumbnail {
+    width: 107px;
+    height: 127px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .text {
+    h2 {
+      font-size: 16px;
+      margin: 0;
+    }
+    .location {
+      font-size: 12px;
+      color: gray;
+    }
+  }
+}
+.ticketBody {
+  
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+
+  p {
+    margin: 4px 0;
+  }
+}
+
+.ticketNotice {
+  background: var(--color-gray-bg);
+  font-size: var(--font-size-xs);
+  color: var(--color-black);
+  padding: 8px;
+  text-align: center;
+}
+
+.ticketFooter {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #444;
+  border-top: 1px dashed #ccc;
+  position: relative;
+
+  .circleIcon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #4caf50;
+    margin: 0 auto;
+    position: relative;
+    top: -10px;
+  }
+}
+.ticketWaitingInfo {
+  text-align: center;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+
+  p {
+    margin: 5px 0;
+  }
+
+  .waitingNumber {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+}

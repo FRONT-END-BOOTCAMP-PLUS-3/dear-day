@@ -5,6 +5,7 @@ import styles from "./DateSelect.module.scss";
 import Icon from "@/components/Icon/Icon";
 
 interface DateSelectProps {
+  name?: string;
   value: string;
   onChange: (date: string) => void;
 }
@@ -15,7 +16,7 @@ const formatDate = (date: string) => {
   return `${year}. ${month}. ${day}.`;
 };
 
-const DateSelect = ({ value, onChange }: DateSelectProps) => {
+const DateSelect = ({ name, value, onChange }: DateSelectProps) => {
   const dateInputRef = useRef<HTMLInputElement>(null);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +41,7 @@ const DateSelect = ({ value, onChange }: DateSelectProps) => {
       <input
         ref={dateInputRef}
         type="date"
+        name={name}
         value={value} // ✅ 부모 상태를 직접 반영
         onChange={handleDateChange}
         className={styles.hiddenDateInput}
