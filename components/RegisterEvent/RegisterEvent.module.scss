@@ -9,3 +9,21 @@
   margin-bottom: 16px;
   gap: 7px;
 }
+.benefits {
+  width: 100%;
+  display: flex;
+  gap: 7px;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.waitingNotice {
+  background: var(--color-gray-bg);
+  font-size: var(--font-size-xs);
+  color: var(--color-black);
+  padding: 8px;
+  text-align: center;
+}

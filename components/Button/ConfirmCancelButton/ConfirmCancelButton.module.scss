@@ -1,0 +1,29 @@
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 8px 0;
+  flex-grow: 1;
+  border-radius: 100px;
+  border-radius: 100px;
+  font-size: var(--font-size-md);
+  text-align: center;
+}
+
+.cancel-btn {
+  @extend .btn;
+  background-color: var(--color-tertiary);
+  color: var(--color-gray-2);
+}
+
+.confirm-btn {
+  @extend .btn;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+
+  &:disabled {
+    background-color: var(--color-disabled);
+  }
+}
