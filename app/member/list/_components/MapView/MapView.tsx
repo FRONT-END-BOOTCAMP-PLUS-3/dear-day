@@ -1,3 +1,11 @@
+import Bottom from "./_components/Bottom/Bottom";
+import Map from "./_components/Map/Map";
+
 export default function MapView() {
-  return <div>지도</div>;
+  return (
+    <div>
+      <Map />
+      <Bottom />
+    </div>
+  );
 }

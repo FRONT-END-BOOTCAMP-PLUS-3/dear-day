@@ -1,3 +1,3 @@
 export default function Map() {
-  return <div></div>;
+  return <div>지도자리</div>;
 }
