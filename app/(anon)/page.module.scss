@@ -1,3 +1,8 @@
 .homeContainer {
   @include pageContainer;
+
+  padding: 0;
+}
+.contentsWrapper {
+  padding: var(--padding-lg);
 }

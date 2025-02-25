@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Icon from "@/components/Icon/Icon";
 import styles from "./DateComboBox.module.scss";
 
-interface DateSelectButtonProps {
+interface DateComboBoxProps {
   value: string;
   onChange: (value: string) => void;
 }
@@ -15,7 +15,7 @@ const formatDate = (date: string) => {
   return `${year}. ${month}. ${day}.`;
 };
 
-const DateSelectButton = ({ value, onChange }: DateSelectButtonProps) => {
+const DateComboBox = ({ value, onChange }: DateComboBoxProps) => {
   const [selectedValue, setSelectedValue] = useState(value);
   const dateInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,4 +49,4 @@ const DateSelectButton = ({ value, onChange }: DateSelectButtonProps) => {
   );
 };
 
-export default DateSelectButton;
+export default DateComboBox;

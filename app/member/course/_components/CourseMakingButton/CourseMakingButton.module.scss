@@ -1,0 +1,18 @@
+.courseMakingButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: var(--padding-xl) var(--padding-lg);
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 20px;
+  gap: 5px;
+
+  p {
+    font-size: var(--font-size-lg);
+    color: var(--color-white);
+  }
+}

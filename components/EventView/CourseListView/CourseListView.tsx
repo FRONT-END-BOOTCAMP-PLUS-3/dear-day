@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./CourseListView.module.scss";
 import Image from "next/image";
 
-interface CourseListViewProps {
+export interface CourseListViewProps {
   id: number;
   imgSrc: string;
   title: string;
