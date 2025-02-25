@@ -3,6 +3,7 @@
   align-items: center;
   position: relative;
   width: 100%;
+  margin: 10px 0;
   padding-left: 32px;
 }
 
@@ -31,7 +32,6 @@
   border-radius: 16px;
   width: 100%;
   overflow: hidden;
-  cursor: grab;
 }
 
 .courseDetailImg {
@@ -81,4 +81,5 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  cursor: grab;
 }
