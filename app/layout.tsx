@@ -6,6 +6,7 @@ import BackHeader from "@/components/Header/BackHeader/BackHeader";
 import DetailHeader from "@/components/Header/DetailHeader/DetailHeader";
 import { headerConfig } from "@/config/headerConfig";
 import "./globals.scss";
+import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -48,6 +49,10 @@ export default function RootLayout({
           {HeaderComponent} {/* 동적으로 선택된 헤더 렌더링 */}
           {children}
         </div>
+        <Script
+          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&submodules=geocoder`}
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
