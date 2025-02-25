@@ -1,44 +1,53 @@
-import Link from "next/link";
-import styles from "./CourseDetailListView.module.scss";
+"use client";
+
+import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Icon from "@/components/Icon/Icon";
+import styles from "./CourseDetailListView.module.scss";
 
 interface CourseDetailListViewProps {
-  index: number;
   id: number;
-  imgSrc: string;
+  index: number;
   title: string;
+  eventImage: string;
   startDate: Date;
   endDate: Date;
   starName: string;
+  isEditMode: boolean;
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
-  index,
   id,
-  imgSrc,
+  index,
   title,
+  eventImage,
   startDate,
   endDate,
   starName,
+  isEditMode,
+  onDragStart,
+  onDragOver,
+  onDrop,
 }) => {
   const formatShortDate = (date: Date): string => {
-    const year = date.getFullYear().toString(); // 두 자리 연도 (2024 → 24)
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 두 자리 월 (1 → 01, 10 → 10)
-    const day = String(date.getDate()).padStart(2, "0"); // 두 자리 일 (1 → 01, 10 → 10)
-
+    const year = date.getFullYear().toString();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}.${month}.${day}`;
   };
 
   return (
     <div className={styles.courseDetailContainer}>
       <div className={styles.courseDetailIndex}>{index}</div>
-
-      <Link href={`/course/${id}`}>
-        <li className={styles.courseDetailView}>
+      <Link href={`/course/${id}`} className={styles.courseDetailView}>
+        <>
           <Image
             className={styles.courseDetailImg}
-            src={imgSrc}
+            src={eventImage}
             alt={title}
             width={56}
             height={56}
@@ -59,11 +68,18 @@ const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
                 </time>
               </p>
             </div>
-            <div className={styles.courseDetailMoveIcon}>
-              <Icon id="hamburger" />
-            </div>
+            {isEditMode && (
+              <div
+                className={styles.courseDetailMoveIcon}
+                onDragStart={isEditMode ? onDragStart : undefined}
+                onDragOver={isEditMode ? onDragOver : undefined}
+                onDrop={isEditMode ? onDrop : undefined}
+              >
+                <Icon id="hamburger" />
+              </div>
+            )}
           </div>
-        </li>
+        </>
       </Link>
     </div>
   );
