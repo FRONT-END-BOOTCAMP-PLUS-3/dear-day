@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./ListView.module.scss";
 import Link from "next/link";
-import Icon from "@/components/Icon/Icon";
+import HeartButton from "@/components/Button/HeartButton/HeartButton";
 
 interface ListViewProps {
   id: number;
@@ -11,7 +11,6 @@ interface ListViewProps {
   endDate: Date;
   starName: string;
   address: string;
-  liked: boolean;
 }
 
 const ListView: React.FC<ListViewProps> = ({
@@ -22,7 +21,6 @@ const ListView: React.FC<ListViewProps> = ({
   endDate,
   starName,
   address,
-  liked,
 }) => {
   const formatShortDate = (date: Date): string => {
     const year = date.getFullYear().toString(); // 두 자리 연도 (2024 → 24)
@@ -55,7 +53,7 @@ const ListView: React.FC<ListViewProps> = ({
             </div>
           </div>
         </div>
-        <Icon id="heart" />
+        <HeartButton eventId={id} />
       </li>
     </Link>
   );
