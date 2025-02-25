@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Icon from "@/components/Icon/Icon";
 import styles from "./TimeComboBox.module.scss";
 
-interface TimeSelectButtonProps {
+interface TimeComboBoxProps {
   value: string;
   onChange: (value: string) => void;
 }
@@ -21,7 +21,7 @@ const generateTimeOptions = () => {
   return options;
 };
 
-const TimeSelectButton = ({ value, onChange }: TimeSelectButtonProps) => {
+const TimeComboBox = ({ value, onChange }: TimeComboBoxProps) => {
   const [selectedValue, setSelectedValue] = useState(value);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,4 +78,4 @@ const TimeSelectButton = ({ value, onChange }: TimeSelectButtonProps) => {
   );
 };
 
-export default TimeSelectButton;
+export default TimeComboBox;

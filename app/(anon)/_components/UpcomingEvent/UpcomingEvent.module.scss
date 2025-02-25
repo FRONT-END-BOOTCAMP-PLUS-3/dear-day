@@ -1,0 +1,38 @@
+.upcomingEventContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 10px;
+}
+
+.upcomingEventHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.text {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.button {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: var(--color-gray-bg);
+  cursor: pointer;
+}
+
+.cardScroller {
+  display: flex;
+  overflow-x: scroll;
+  gap: 15px;
+}
+
+.cardScroller::-webkit-scrollbar {
+  display: none;
+}
