@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./SmallCardView.module.scss";
 import Image from "next/image";
-import Icon from "@/components/Icon/Icon";
+import HeartButton from "@/components/Button/HeartButton/HeartButton";
 
 interface SmallCardViewProps {
   id: number;
@@ -9,7 +9,6 @@ interface SmallCardViewProps {
   title: string;
   starName: string;
   address: string;
-  liked: boolean;
 }
 
 const SmallCardView: React.FC<SmallCardViewProps> = ({
@@ -18,7 +17,6 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
   title,
   starName,
   address,
-  liked,
 }) => {
   return (
     <Link href={`/event/${id}`}>
@@ -32,7 +30,7 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
         />
         <div className={styles.smallCardContent}>
           <h3 className={styles.smallCardTitle}>{title}</h3>
-          <Icon id="heart" />
+          <HeartButton eventId={id} />
         </div>
         <p className={styles.smallCardText}>
           {starName} · {address}
