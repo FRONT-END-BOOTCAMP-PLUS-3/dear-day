@@ -1,0 +1,17 @@
+@mixin pageContainer {
+  --gray-rgb: 0, 0, 0;
+  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+
+  display: flex; /* Grid 대신 flex 사용 */
+  flex-direction: column;
+  justify-content: flex-start; /* 상단 정렬 */
+  min-height: calc(100svh - 60px);
+  padding: var(--padding-xl);
+  gap: var(--margin-md);
+  font-family: var(--font-geist-sans);
+  margin-top: 60px;
+}

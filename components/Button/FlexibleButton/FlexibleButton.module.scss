@@ -1,0 +1,21 @@
+.flexibleButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: var(--padding-xs) var(--padding-xl);
+  gap: 9px;
+  border-radius: 100px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  white-space: nowrap;
+
+  &.disabled {
+    background: var(--color-disabled);
+    color: var(--color-gray-1);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,85 @@
+.courseDetailContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin: 10px 0;
+  padding-left: 32px;
+}
+
+.courseDetailIndex {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+}
+
+.courseDetailView {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px var(--padding-md);
+  background-color: var(--color-blue-bg);
+  border-radius: 16px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.courseDetailImg {
+  border-radius: 10px;
+  height: 100%;
+  width: auto;
+}
+
+.courseDetailContent {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.courseDetailText {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.courseDetailHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.courseDetailStarName {
+  font-size: var(--font-size-xs);
+}
+
+.courseDetailTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 85%;
+}
+
+.courseDetailTime {
+  color: var(--color-gray-2);
+  font-size: var(--font-size-sm);
+}
+
+.courseDetailMoveIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: grab;
+}
