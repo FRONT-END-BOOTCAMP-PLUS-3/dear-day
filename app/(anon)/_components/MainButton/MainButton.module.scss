@@ -1,7 +1,7 @@
 .buttonListContainer {
   display: flex;
   justify-content: space-evenly;
-  margin: 100px 0;
+  margin: var(--margin-sm) 0;
 }
 
 .buttonContainer {
