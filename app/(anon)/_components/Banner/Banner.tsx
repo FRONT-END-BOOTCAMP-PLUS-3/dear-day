@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSwipeable } from "react-swipeable";
 import Image from "next/image";
 import styles from "./Banner.module.scss";
@@ -13,6 +13,14 @@ const Banner: React.FC = () => {
     "/img/header-logo.png",
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % banners.length);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [banners.length]);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
