@@ -1,4 +1,13 @@
 .actions {
+  position: fixed;
+  z-index: 1000;
+  bottom: 24px;
+  text-align: center;
+  max-width: calc(var(--size-max-width) - 2 * var(--size-gap));
+  width: calc(100% - 2 * var(--size-gap));
+  padding: var(--padding-xs) var(--padding-md);
+  font-size: var(--font-size-md);
+  cursor: pointer;
   display: flex;
   gap: 12px;
 }
@@ -14,8 +23,8 @@
 
 .cancel-btn {
   @extend .btn;
-  background-color: var(--color-tertiary);
-  color: var(--color-gray-2);
+  background-color: var(--color-gray-2);
+  color: var(--color-white);
 }
 
 .confirm-btn {
