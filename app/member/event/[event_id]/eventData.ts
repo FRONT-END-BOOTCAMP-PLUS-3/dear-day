@@ -1,8 +1,3 @@
-export enum Mode {
-  RESERVATION = "RESERVATION",
-  WAITING = "WAITING",
-}
-
 export interface EventData {
   id: number;
   starName: string;
@@ -18,7 +13,7 @@ export interface EventData {
   address: string;
   latitude: number;
   longitude: number;
-  mode: Mode;
+  mode: "RESERVATION" | "WAITING";
 }
 
 // ✅ `Date` 타입을 적용한 `demoEventData`
@@ -44,5 +39,5 @@ export const demoEventData: EventData = {
   address: "서울시 강남구 스타벅스",
   latitude: 37.4979,
   longitude: 127.0276,
-  mode: Mode.WAITING, // ✅ 문자열 Enum과 일치
+  mode: "RESERVATION",
 };
