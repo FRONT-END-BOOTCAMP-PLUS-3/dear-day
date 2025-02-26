@@ -44,7 +44,7 @@ export default function ReservationSection({ eventData }: Props) {
       {isOpen ? (
         <div className={styles.reservationInfo}>
           <SelectDateTime eventData={eventData} />
-          <Notice />
+          <Notice breaktime={eventData.breaktime} />
           <FixedButton onClick={() => alert("예약 완료!")} value={"예약하기"} />
         </div>
       ) : (
