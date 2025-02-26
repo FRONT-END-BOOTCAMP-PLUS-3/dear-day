@@ -44,7 +44,7 @@ export default function EventDetail() {
       </div>
       <div className={styles.divider}></div>
       <div>
-        <BenefitList eventData={eventData} />
+        <BenefitList benefitList={eventData.benefits} />
       </div>
       <div className={styles.divider}></div>
       <div>
