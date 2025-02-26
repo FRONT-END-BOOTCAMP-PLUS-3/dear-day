@@ -1,0 +1,8 @@
+.mapContainer {
+  width: min(500px, 100vw);
+  height: calc(100svh - 112px - var(--margin-md));
+  position: fixed;
+  left: calc(-1 * (var(--margin-xl)));
+  top: calc(-1 * (var(--margin-md)));
+  z-index: 100;
+}

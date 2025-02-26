@@ -1,0 +1,32 @@
+.eventInfoContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--padding-md);
+  border-bottom: 1px solid var(--divider);
+  padding-bottom: var(--padding-xs);
+  margin-bottom: var(--margin-xs);
+}
+
+.eventInfoImg {
+  width: 110px;
+  height: auto;
+}
+
+.eventInfoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--color-gray-1);
+}
+
+.eventInfoTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--color-black);
+}
+
+.eventInfoLocation {
+  display: flex;
+  align-items: center;
+  margin-left: -5px;
+}
