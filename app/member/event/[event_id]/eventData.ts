@@ -14,6 +14,9 @@ export interface EventData {
   latitude: number;
   longitude: number;
   mode: "RESERVATION" | "WAITING";
+  openAt: Date;
+  breaktime: number;
+  limit: number;
 }
 
 // ✅ `Date` 타입을 적용한 `demoEventData`
@@ -21,9 +24,9 @@ export const demoEventData: EventData = {
   id: 123,
   starName: "슬기 (레드벨벳)",
   startDate: new Date("2025-03-01"),
-  endDate: new Date("2025-03-10"),
+  endDate: new Date("2025-03-04"),
   startTime: "10:00:00",
-  endTime: "20:00:00",
+  endTime: "12:00:00",
   title: "Dear Seulgi",
   twitterId: "@seulgi",
   mainImage: "/demo/main-poster.jpeg",
@@ -40,4 +43,7 @@ export const demoEventData: EventData = {
   latitude: 37.4979,
   longitude: 127.0276,
   mode: "RESERVATION",
+  openAt: new Date("2025-02-26T16:26:00"),
+  breaktime: 10, //  브레이크 타임
+  limit: 3, // 타임당 30명 예약 가능
 };
