@@ -5,8 +5,8 @@ import styles from "./DateTimeSelectButton.module.scss";
 interface DateTimeSelectButtonProps {
   startDate: Date;
   endDate: Date;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   onSelectDate: (date: string) => void;
   onSelectTime: (time: string) => void;
 }
@@ -39,23 +39,31 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
     return dates;
   };
 
-  const generateHourlyList = (startTime: Date, endTime: Date) => {
-    const start = new Date(startTime).getHours(); // 시작 시간 (정수)
-    const end = new Date(endTime).getHours(); // 끝 시간 (정수)
+  const generateHourlyList = (startTime: string, endTime: string) => {
+    const start = parseInt(startTime.split(":")[0], 10); // 시작 시간 (정수 변환)
+    const end = parseInt(endTime.split(":")[0], 10); // 끝 시간 (정수 변환)
+    const startMinute = parseInt(startTime.split(":")[1], 10); // 시작 분 (정수 변환)
 
     const timeList = [];
+
     if (start < end) {
       // 같은 날 내에서 시간이 증가하는 경우 (예: 10:00 ~ 14:00)
       for (let i = start; i < end; i++) {
-        timeList.push(`${String(i).padStart(2, "0")}:00`);
+        timeList.push(
+          `${String(i).padStart(2, "0")}:${String(startMinute).padStart(2, "0")}`
+        );
       }
     } else {
       // 밤부터 다음 날 새벽까지 (예: 22:00 ~ 02:00)
       for (let i = start; i < 24; i++) {
-        timeList.push(`${String(i).padStart(2, "0")}:00`);
+        timeList.push(
+          `${String(i).padStart(2, "0")}:${String(startMinute).padStart(2, "0")}`
+        );
       }
       for (let i = 0; i < end; i++) {
-        timeList.push(`${String(i).padStart(2, "0")}:00`);
+        timeList.push(
+          `${String(i).padStart(2, "0")}:${String(startMinute).padStart(2, "0")}`
+        );
       }
     }
 
