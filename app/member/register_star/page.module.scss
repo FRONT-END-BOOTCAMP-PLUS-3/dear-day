@@ -1,0 +1,33 @@
+.homeContainer {
+  @include pageContainer;
+}
+
+.registerStarForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.registerStarForm fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px; // ✅ 라벨과 Input 사이 간격 적용
+}
+
+.registerStarImg,
+.registerStarStageName,
+.registerstarRealName,
+.registerStarGroup,
+.registerStarBirth {
+  width: 100%;
+}
+
+.registerStarImg label {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
