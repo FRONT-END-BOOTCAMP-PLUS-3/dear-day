@@ -24,11 +24,4 @@
   height: 2px;
   background-color: black;
   transition: transform 0.3s ease;
-
-  &[data-selected="second"] {
-    transform: translateX(100%);
-  }
-  &[data-selected="first"] {
-    transform: translateX(0%);
-  }
 }
