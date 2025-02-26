@@ -1,4 +1,3 @@
-// types.ts
 export enum Mode {
   RESERVATION = "RESERVATION",
   WAITING = "WAITING",
@@ -6,9 +5,9 @@ export enum Mode {
 
 export interface EventData {
   id: number;
-  starId: number;
-  startDate: string; // Date 객체를 받으면 변환이 필요함
-  endDate: string;
+  starName: string;
+  startDate: Date;
+  endDate: Date;
   startTime: string;
   endTime: string;
   title: string;
@@ -22,20 +21,21 @@ export interface EventData {
   mode: Mode;
 }
 
+// ✅ `Date` 타입을 적용한 `demoEventData`
 export const demoEventData: EventData = {
   id: 123,
-  starId: 456,
-  startDate: "2025-03-01",
-  endDate: "2025-03-10",
-  startTime: "10:00",
-  endTime: "18:00",
-  title: "이벤트 제목",
-  twitterId: "@example",
+  starName: "슬기 (레드벨벳)",
+  startDate: new Date("2025-03-01"),
+  endDate: new Date("2025-03-10"),
+  startTime: "10:00:00",
+  endTime: "20:00:00",
+  title: "Dear Seulgi",
+  twitterId: "@seulgi",
   mainImage: "/demo/main-poster.jpeg",
   detailImage: ["/demo/detail-poster.jpeg"],
   benefits: ["무료 음료", "기념품 제공", "사진 촬영 가능"],
   address: "서울시 강남구 스타벅스",
   latitude: 37.4979,
   longitude: 127.0276,
-  mode: Mode.RESERVATION,
+  mode: Mode.WAITING, // ✅ 문자열 Enum과 일치
 };

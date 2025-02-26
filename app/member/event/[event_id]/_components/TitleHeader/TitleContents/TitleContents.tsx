@@ -1,29 +1,49 @@
 import HeartButton from "@/components/Button/HeartButton/HeartButton";
 import styles from "./TitleContents.module.scss";
 import Icon from "@/components/Icon/Icon";
+import { EventData } from "../../../eventData";
 
-export default function TitleContents() {
+interface Props {
+  eventData: EventData;
+}
+
+// 날짜 변환 함수
+const formatDateRange = (startDate: Date, endDate: Date): string => {
+  const start = new Date(startDate).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const end = new Date(endDate).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return `${start} ~ ${end}`;
+};
+
+export default function TitleContents({ eventData }: Props) {
   return (
     <div className={styles.titleBox}>
       <div>
-        <h1>{"생카 제목"}</h1>
-        <HeartButton eventId={0} />
+        <h1>{eventData.title}</h1>
+        <HeartButton eventId={eventData.id} />
       </div>
       <div>
         <Icon id="x-logo" />
-        <p>{"트위터 아이디"}</p>
+        <p>{eventData.twitterId}</p>
       </div>
       <div>
         <Icon id="calendar" />
-        <p>{"날짜"}</p>
+        <p>{formatDateRange(eventData.startDate, eventData.endDate)}</p>{" "}
       </div>
       <div>
         <Icon id="map" />
-        <p>{"주소"}</p>
+        <p>{eventData.address}</p>
       </div>
       <div>
         <Icon id="profile" />
-        <p>{"생카 주인공"}</p>
+        <p>{eventData.starName}</p>
       </div>
     </div>
   );

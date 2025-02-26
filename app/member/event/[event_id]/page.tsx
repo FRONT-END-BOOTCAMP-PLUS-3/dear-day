@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { useParams } from "next/navigation"; // URL params 가져오기
+import { useRef, useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { EventData, demoEventData } from "./eventData"; // 데모 데이터 가져오기
 import FourTab from "@/components/Tab/FourTab/FourTab";
 import TitleHeader from "./_components/TitleHeader/TitleHeader";
@@ -14,23 +14,22 @@ import styles from "./page.module.scss";
 
 export default function EventDetail() {
   const params = useParams();
-  const eventId = params?.eventId as string; // eventId를 문자열로 변환
+  const eventId = params?.event_id as string; // eventId를 문자열로 변환
 
-  const [eventData, setEventData] = useState<EventData | null>(null);
+  // 🔽 API 호출 대신 데모 데이터 직접 사용
+  const [eventData, setEventData] = useState<EventData>(demoEventData);
 
   useEffect(() => {
-    if (!eventId) {
-      setEventData(demoEventData); // eventId가 없으면 데모 데이터 사용
-      return;
-    }
-
-    fetch(`/api/event/${eventId}`)
-      .then((res) => res.json())
-      .then((data: EventData) => setEventData(data))
-      .catch((err) => {
-        console.error("Error fetching event data:", err);
-        setEventData(demoEventData); // 오류 발생 시 데모 데이터 사용
-      });
+    console.log("eventId:", eventId); // 콘솔에서 eventId 확인
+    // 🔽 API 요청 주석 처리
+    // if (!eventId) return;
+    // fetch(`/api/event/${eventId}`)
+    //   .then((res) => res.json())
+    //   .then((data: EventData) => setEventData(data))
+    //   .catch((err) => {
+    //     console.error("Error fetching event data:", err);
+    //     setEventData(demoEventData); // 오류 발생 시 데모 데이터 사용
+    //   });
   }, [eventId]);
 
   // 탭 변경 시 해당 섹션으로 스크롤 이동
@@ -59,8 +58,6 @@ export default function EventDetail() {
     }
   };
 
-  if (!eventData) return <p>Loading...</p>;
-
   return (
     <div className={styles.eventDetailPage}>
       <div className={styles.titleHeader}>
@@ -80,15 +77,13 @@ export default function EventDetail() {
       <div ref={locationRef}>
         <LocationSection eventData={eventData} />
       </div>
-      {eventData.mode == "RESERVATION" ? (
-        <div ref={reservAndWaitRef}>
+      <div ref={reservAndWaitRef}>
+        {eventData.mode === "RESERVATION" ? (
           <ReservationSection eventData={eventData} />
-        </div>
-      ) : (
-        <div ref={reservAndWaitRef}>
+        ) : (
           <WaitingSection eventData={eventData} />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

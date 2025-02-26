@@ -12,7 +12,7 @@ export default function TitleHeader({ eventData }: Props) {
       className={styles.titleHeader}
       style={{ backgroundImage: `url(${eventData.mainImage})` }}
     >
-      <TitleContents />
+      <TitleContents eventData={eventData} />
     </div>
   );
 }
