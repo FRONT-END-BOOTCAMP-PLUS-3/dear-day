@@ -4,4 +4,8 @@
     margin: calc(-1 * var(--margin-xl));
     margin-bottom: 0px;
   }
+  .divider {
+    width: 100%;
+    border-bottom: 1px solid var(--divider);
+  }
 }

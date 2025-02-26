@@ -42,12 +42,15 @@ export default function EventDetail() {
       <div>
         <DetailSection eventData={eventData} />
       </div>
+      <div className={styles.divider}></div>
       <div>
         <BenefitList eventData={eventData} />
       </div>
+      <div className={styles.divider}></div>
       <div>
         <LocationSection eventData={eventData} />
       </div>
+      <div className={styles.divider}></div>
       <div>
         {eventData.mode === "RESERVATION" ? (
           <ReservationSection eventData={eventData} />
