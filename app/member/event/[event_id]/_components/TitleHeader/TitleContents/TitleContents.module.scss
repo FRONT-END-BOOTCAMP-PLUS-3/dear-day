@@ -15,9 +15,19 @@
   margin-top: var(--margin-xs);
 }
 
+.titleBox > div > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .titleBox h1 {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-xxl);
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  max-width: 100%;
 }
 
 .titleBox > div:first-child {
