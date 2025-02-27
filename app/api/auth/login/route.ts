@@ -1,37 +1,37 @@
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-
-// 임시 유저 데이터 (실제 DB 사용 시 교체 필요)
-const users = [
-  {
-    id: "1687342937773762",
-    email: "test123@naver.com",
-    password: "test123",
-  },
-];
+import { PgUserRepository } from "@/infrastructure/repositories/PgUserRepository";
+import { LoginUsecase } from "@/application/usecases/login/Login";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
-  const user = users.find((u) => u.email === email && u.password === password);
+  try {
+    const loginInfo = await req.json();
 
-  if (!user) {
-    return NextResponse.json(
-      { message: "Invalid credentials" },
-      { status: 401 }
+    // 이메일 및 비밀번호가 존재하는지 확인
+    if (!loginInfo.email || !loginInfo.password) {
+      return NextResponse.json(
+        { error: "아이디 / 비밀번호를 모두 입력해주세요." },
+        { status: 400 }
+      );
+    }
+
+    const userRepository: UserRepository = new PgUserRepository();
+    const data = await LoginUsecase(loginInfo, userRepository);
+
+    if (!data.user) {
+      return NextResponse.json({ error: "로그인 실패" }, { status: 401 });
+    }
+
+    // JWT 토큰을 HTTP-Only 쿠키에 저장
+    const response = NextResponse.json({ id: data.user.id });
+    response.headers.set(
+      "Set-Cookie",
+      `auth_token=${data.token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=3600`
     );
+
+    return response;
+  } catch (error) {
+    console.error("로그인 처리 중 서버 오류 발생:", error);
+    return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
-
-  // ✅ 토큰 발급 (id 포함)
-  const token = jwt.sign({ id: user.id }, "SECRET_KEY", { expiresIn: "1h" });
-
-  // ✅ HTTP-Only 쿠키에 토큰 저장
-  const response = NextResponse.json({ id: user.id });
-  response.cookies.set("auth_token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // ✅ 프로덕션에서는 HTTPS 적용
-    sameSite: "strict",
-    maxAge: 60 * 60 * 1000, // 1시간 후 만료
-  });
-
-  return response;
 }

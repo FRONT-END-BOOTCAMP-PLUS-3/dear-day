@@ -22,9 +22,8 @@ const LoginForm = () => {
       await login(email, password);
       alert("로그인 성공!");
       router.push("/member");
-    } catch (err) {
-      console.error(err);
-      alert("로그인 실패!");
+    } catch (error) {
+      alert("로그인 실패"); // ✅ 사용자에게 에러 메시지 표시
     }
   }
 

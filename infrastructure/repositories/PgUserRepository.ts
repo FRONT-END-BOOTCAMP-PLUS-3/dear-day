@@ -30,4 +30,19 @@ export class PgUserRepository implements UserRepository {
       await prisma.$disconnect();
     }
   }
+
+  async execute(email: string): Promise<User | null> {
+    try {
+      // 이메일로 사용자 조회
+      const user = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      // 사용자가 존재하지 않으면 로그인 실패
+      if (!user) return null;
+      return user;
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
