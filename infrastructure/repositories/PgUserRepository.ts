@@ -14,8 +14,11 @@ export class PgUserRepository implements UserRepository {
   // 유저 생성하는 메서드
   async createUser(user: User): Promise<User> {
     const createdUser = await prisma.user.create({
+      // id와 createdAt은 일부러 넣지 않았음! DB에서 기본값으로 넣어줘요
       data: {
-        ...user,
+        username: user.username,
+        email: user.email,
+        password: user.password,
       },
     });
 
