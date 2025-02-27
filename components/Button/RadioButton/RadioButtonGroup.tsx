@@ -1,28 +1,25 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 import RadioButton from "./RadioButton";
 import styles from "./RadioButton.module.scss";
 
 interface RadioButtonGroupProps {
   name: string;
-  options: { label: string; value: string }[];
-  defaultValue?: string;
+  options: { label: string; value: string | number }[];
+  value?: string | number; // 🔹 추가: 외부에서 선택된 값 전달
+  defaultValue?: string | number;
   onChange?: (value: string) => void;
 }
 
 const RadioButtonGroup = ({
   name,
   options,
+  value, // 🔹 추가
   defaultValue,
   onChange,
 }: RadioButtonGroupProps) => {
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(
-    defaultValue
-  );
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(e.target.value);
     if (onChange) {
       onChange(e.target.value);
     }
@@ -37,7 +34,9 @@ const RadioButtonGroup = ({
               name={name}
               value={option.value}
               label={option.label}
-              checked={selectedValue === option.value}
+              checked={
+                value ? value === option.value : defaultValue === option.value
+              } // 🔹 value 추가
               onChange={handleChange}
             />
           </div>
