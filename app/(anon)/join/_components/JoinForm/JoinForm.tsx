@@ -1,16 +1,24 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import Input from "@/components/Input/Input/Input";
 import styles from "./JoinForm.module.scss";
 import FlexibleButton from "@/components/Button/FlexibleButton/FlexibleButton";
 
-export default function JoinForm({
-  setIsFormValid,
-}: {
+interface JoinFormProps {
   setIsFormValid: (valid: boolean) => void;
-}) {
-  const [formData, setFormData] = useState({
+  onSubmit: (formData: FormDataType) => void; // ✅ 부모에게 데이터 전달
+}
+
+interface FormDataType {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
+  const [formData, setFormData] = useState<FormDataType>({
     username: "",
     email: "",
     password: "",
@@ -19,6 +27,7 @@ export default function JoinForm({
 
   const [isEmailValid, setIsEmailValid] = useState(false); // 이메일 중복 검사 상태
   const [emailError, setEmailError] = useState<string | null>(null); // 이메일 에러 메시지
+  const [isValidForm, setIsValidForm] = useState(false); // ✅ 전체 폼 유효 상태
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -36,16 +45,21 @@ export default function JoinForm({
     checkFormValidity({ ...formData, [name]: value }, isEmailValid);
   };
 
-  const checkFormValidity = (data: typeof formData, emailValid: boolean) => {
+  const checkFormValidity = (data: FormDataType, emailValid: boolean) => {
     const allFilled = Object.values(data).every((val) => val.trim() !== "");
     const passwordMatch = data.password === data.passwordConfirm;
-    setIsFormValid(allFilled && emailValid && passwordMatch);
+    const isValid = allFilled && emailValid && passwordMatch;
+
+    setIsFormValid(isValid);
+    setIsValidForm(isValid);
   };
 
   // 이메일 중복 검사 API 호출
   const handleEmailCheck = async () => {
-    if (!formData.email.includes("@")) {
-      setEmailError("올바른 이메일 형식을 입력하세요.");
+    const isValid =
+      formData.email.includes("@") && formData.email.includes(".");
+    if (!isValid) {
+      alert("이메일 형식에 맞게 다시 입력하세요.");
       return;
     }
 
@@ -76,6 +90,12 @@ export default function JoinForm({
       console.error("이메일 확인 중 오류 발생:", error);
     }
   };
+  // ✅ 폼이 유효해지면 부모 컴포넌트로 데이터 전달
+  useEffect(() => {
+    if (isValidForm) {
+      onSubmit(formData);
+    }
+  }, [isValidForm, formData, onSubmit]);
 
   return (
     <form className={styles.form}>
