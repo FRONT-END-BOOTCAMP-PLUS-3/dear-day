@@ -6,6 +6,7 @@ import SelectDateTime from "./SelectDateTime/SelectDateTime";
 import Notice from "./Notice/Notice";
 import FixedButton from "@/components/Button/FixedButton/FixedButton";
 import styles from "./ReservationSection.module.scss";
+import useReservationStore from "@/store/reservationStore";
 
 interface Props {
   eventData: EventData;
@@ -14,6 +15,7 @@ interface Props {
 export default function ReservationSection({ eventData }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
+  const { isSoldOut } = useReservationStore();
   const [timeLeft, setTimeLeft] = useState<string>("");
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function ReservationSection({ eventData }: Props) {
     return () => clearInterval(interval);
   }, [eventData.openAt, eventData.endDate]);
 
-  // ✅ 24시간제 변환 함수
+  // 24시간제 변환 함수
   const formatTo24Hour = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -64,7 +66,11 @@ export default function ReservationSection({ eventData }: Props) {
         <div className={styles.reservationInfo}>
           <SelectDateTime eventData={eventData} />
           <Notice breaktime={eventData.breaktime} />
-          <FixedButton onClick={() => alert("예약 완료!")} value={"예약하기"} />
+          <FixedButton
+            onClick={() => alert("예약 완료!")}
+            value={isSoldOut ? "매진" : "예약하기"}
+            disabled={isSoldOut} // 예약 불가능하면 버튼 비활성화
+          />
         </div>
       ) : (
         <div className={styles.openInfo}>

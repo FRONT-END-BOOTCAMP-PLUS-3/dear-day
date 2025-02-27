@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./DateTimeSelectButton.module.scss";
 import SelectButton from "./SelectButton/SelectButton";
 import useReservations from "./_hooks/useReservations";
 import { generateDateList, generateHourlyList } from "./_hooks/utils";
 import { DateTimeSelectButtonProps } from "./_hooks/types";
+import useReservationStore from "@/store/reservationStore";
 
 const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   startDate,
@@ -26,6 +27,7 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
     endTime,
     selectedDate
   );
+  const { isSoldOut, setSoldOut } = useReservationStore(); // ✅ Zustand에서 솔드아웃 상태 가져오기
 
   const dates = generateDateList(startDate, endDate);
   const times = selectedDate ? generateHourlyList(startTime, endTime) : [];
@@ -42,6 +44,22 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
     setSelectedTime(time);
     onSelectTime(time);
   };
+
+  // 모든 날짜가 마감되었는지 체크하여 Zustand에 저장
+  // ✅ 모든 날짜가 마감되었는지 체크하여 Zustand에 저장 (무한 루프 방지)
+  useEffect(() => {
+    const allDatesSoldOut =
+      dates.length > 0 && dates.every((date) => disabledDates.includes(date));
+    const allTimesSoldOut =
+      times.length > 0 && times.every((time) => disabledTimes.includes(time));
+
+    const newSoldOutState = allDatesSoldOut || allTimesSoldOut;
+
+    // 🔥 상태가 변경될 때만 setSoldOut 실행 (무한 루프 방지)
+    if (isSoldOut !== newSoldOutState) {
+      setSoldOut(newSoldOutState);
+    }
+  }, [dates, disabledDates, times, disabledTimes, isSoldOut, setSoldOut]);
 
   return (
     <div className={styles.dateTimeSelectContainer}>
