@@ -34,7 +34,7 @@ export default function JoinPage() {
 
     try {
       // 회원가입 API 요청
-      const response = await fetch("/api/join/create-user", {
+      const response = await fetch("/api/auth/join/create-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
