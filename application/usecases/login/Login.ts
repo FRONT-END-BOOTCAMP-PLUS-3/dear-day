@@ -22,7 +22,7 @@ export const LoginUsecase = async (
 
   const token = jwt.sign(
     { id: userInfo.id }, // 페이로드 (유저 정보 일부 포함)
-    process.env.JWT_SECRET!, // 환경 변수에서 비밀키 가져오기
+    process.env.NEXT_PUBLIC_JWT_SECRET!, // 환경 변수에서 비밀키 가져오기
     { expiresIn: "1h" } // 토큰 만료 시간 설정
   );
 
