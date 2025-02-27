@@ -13,42 +13,65 @@ interface Props {
 
 export default function WaitingSection({ eventData }: Props) {
   const [openWaiting, setOpenWaiting] = useState(false);
+  const [isEnded, setIsEnded] = useState(false);
 
   useEffect(() => {
-    const checkWaitingAvailability = () => {
-      const now = new Date();
+    const now = new Date();
 
-      const startDate = new Date(eventData.startDate);
-      const endDate = new Date(eventData.endDate);
-      endDate.setHours(23, 59, 59, 999); // ✅ endDate의 마지막 시간까지 포함
+    const startDate = new Date(eventData.startDate);
+    const endDate = new Date(eventData.endDate);
+    endDate.setHours(23, 59, 59, 999); // endDate 마지막까지 포함
 
-      const [startHours, startMinutes] = eventData.startTime
-        .split(":")
-        .map(Number);
-      const [endHours, endMinutes] = eventData.endTime.split(":").map(Number);
+    const [startHours, startMinutes] = eventData.startTime
+      .split(":")
+      .map(Number);
+    const [endHours, endMinutes] = eventData.endTime.split(":").map(Number);
 
-      const startDateTime = new Date(now);
-      startDateTime.setHours(startHours, startMinutes, 0, 0);
+    const startDateTime = new Date(now);
+    startDateTime.setHours(startHours, startMinutes, 0, 0);
 
-      const endDateTime = new Date(now);
-      endDateTime.setHours(endHours, endMinutes, 0, 0);
+    const endDateTime = new Date(eventData.endDate);
+    endDateTime.setHours(endHours, endMinutes, 0, 0);
 
-      const isWithinDateRange = now >= startDate && now <= endDate;
-      const isWithinTimeRange = now >= startDateTime && now <= endDateTime;
+    // 종료 날짜(endDate) 이후거나, 종료 날짜의 종료 시간(endTime)이 지나면 종료 상태
+    if (now > endDateTime || now > endDate) {
+      setIsEnded(true);
+      return;
+    }
 
-      setOpenWaiting(isWithinDateRange && isWithinTimeRange);
-    };
+    const isWithinDateRange = now >= startDate && now <= endDate;
+    const isWithinTimeRange = now >= startDateTime && now <= endDateTime;
 
-    checkWaitingAvailability();
-    const interval = setInterval(checkWaitingAvailability, 1000);
+    setOpenWaiting(isWithinDateRange && isWithinTimeRange);
 
-    return () => clearInterval(interval);
+    let nextUpdate: number | null = null;
+
+    if (!isWithinDateRange) {
+      return;
+    } else if (!isWithinTimeRange && now < startDateTime) {
+      nextUpdate = startDateTime.getTime() - now.getTime();
+    } else if (isWithinTimeRange && now < endDateTime) {
+      nextUpdate = endDateTime.getTime() - now.getTime();
+    } else if (now < endDate) {
+      nextUpdate = endDate.getTime() - now.getTime();
+    }
+
+    if (nextUpdate !== null) {
+      const timeout = setTimeout(() => {
+        setOpenWaiting(!isWithinTimeRange);
+        if (now >= endDateTime || now >= endDate) setIsEnded(true);
+      }, nextUpdate);
+
+      return () => clearTimeout(timeout);
+    }
   }, [eventData]);
 
   return (
     <div className={styles.waitingSection}>
       <h3>대기</h3>
-      {openWaiting ? (
+      {isEnded ? (
+        <div className={styles.closeWaiting}>종료된 생일카페입니다.</div>
+      ) : openWaiting ? (
         <div>
           <Waiting eventId={eventData.id} />
           <Notice />
