@@ -4,7 +4,7 @@ import { User, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export class PguserRepository implements UserRepository {
+export class PgUserRepository implements UserRepository {
   // 이메일로 사용자 찾는 메서드
   async findUserByEmail(email: string): Promise<User | null> {
     return await prisma.user.findUnique({
