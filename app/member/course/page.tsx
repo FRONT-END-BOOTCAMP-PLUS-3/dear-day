@@ -47,7 +47,7 @@ export default function CoursePage() {
     }
 
     toggleModal();
-    router.push("/course/create");
+    router.push("/member/course/create");
   };
 
   const handleCancel = () => {
