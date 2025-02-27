@@ -18,9 +18,9 @@ export default function RegisterEventPage() {
     useRegisterEventStore();
   const router = useRouter();
 
-  // 📌 `handleNext`가 step1, step2, step3의 모든 타입을 받을 수 있도록 변경
+  // `handleNext`가 step1, step2, step3의 모든 타입을 받을 수 있도록 변경
   type RegisterEventForm =
-    | Partial<RegisterEventStep1Form>
+    | RegisterEventStep1Form
     | RegisterEventStep2Form
     | RegisterEventStep3Form;
 
@@ -40,14 +40,14 @@ export default function RegisterEventPage() {
     // if (step < 3) {
     //   setStep(step + 1);
     // } else {
-    //   // 📌 마지막 단계: 모든 데이터를 DB에 저장
+    //   // step3에서 모든 데이터를 DB에 저장
     //   try {
     //     const response = await fetch("/api/register-event", {
     //       method: "POST",
     //       headers: {
     //         "Content-Type": "application/json",
     //       },
-    //       body: JSON.stringify(eventData), // 🔥 store에 저장된 모든 데이터 전송
+    //       body: JSON.stringify(eventData),
     //     });
 
     //     if (!response.ok) {
@@ -55,8 +55,8 @@ export default function RegisterEventPage() {
     //     }
 
     //     console.log("이벤트 등록 성공!");
-    //     resetEventData(); // ✅ 데이터 초기화
-    //     router.push("/events"); // ✅ 성공 후 이동
+    //     resetEventData(); // 데이터 초기화
+    //     router.push("/events"); // 성공 후 이동
     //   } catch (error) {
     //     console.error("등록 중 오류 발생:", error);
     //   }
