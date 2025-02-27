@@ -6,6 +6,7 @@ import { useRegisterEventStore } from "@/store/registerEventStore";
 import TimeSelectButton from "../ComboBox/TimeComboBox/TimeComboBox";
 import Input from "../Input/Input/Input";
 import RadioButtonGroup from "../Button/RadioButton/RadioButtonGroup";
+import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmCancelButton/ConfirmCancelBytton";
 
 export interface RegisterEventStep2Form {
   mode: string;
@@ -16,21 +17,28 @@ export interface RegisterEventStep2Form {
 
 const RegisterEventStep2 = ({
   onNext,
+  onPrev,
 }: {
   onNext: (data: RegisterEventStep2Form) => void;
+  onPrev: () => void;
 }) => {
   const { eventData, updateEventData } = useRegisterEventStore();
-  const { control, handleSubmit, reset, watch } =
-    useForm<RegisterEventStep2Form>({
-      defaultValues: {
-        mode: eventData.mode || "RESERVATION",
-        openAt: eventData.openAt || "",
-        breakTime: eventData.breakTime ?? 10,
-        limit: eventData.limit || 0,
-      },
-    });
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { isValid },
+  } = useForm<RegisterEventStep2Form>({
+    mode: "onChange", // 입력값 변경될 때마다 유효성 검사
+    defaultValues: {
+      mode: eventData.mode || "RESERVATION",
+      openAt: eventData.openAt || "",
+      breakTime: eventData.breakTime ?? 10,
+      limit: eventData.limit || 0,
+    },
+  });
 
-  // `watch`를 사용해서 mode 값 추적
   const modeValue = watch("mode");
 
   useEffect(() => {
@@ -66,6 +74,7 @@ const RegisterEventStep2 = ({
         <Controller
           name="mode"
           control={control}
+          rules={{ required: true }} // 필수 값
           render={({ field }) => (
             <RadioButtonGroup
               name={field.name}
@@ -78,8 +87,8 @@ const RegisterEventStep2 = ({
               onChange={(value) => {
                 field.onChange(value);
                 reset({
-                  ...watch(), // 현재 입력된 값 유지
-                  mode: value, // ✅ mode 값 업데이트
+                  ...watch(),
+                  mode: value,
                   openAt: value === "WAITING" ? "" : watch("openAt"),
                   breakTime: value === "WAITING" ? 0 : watch("breakTime"),
                   limit: value === "WAITING" ? 0 : watch("limit"),
@@ -90,7 +99,6 @@ const RegisterEventStep2 = ({
         />
       </div>
 
-      {/* mode가 "WAITING"일 경우 아래 요소들을 숨김 */}
       {modeValue === "WAITING" ? (
         <div className={styles.waitingNotice}>
           대기는 카페 운영시간 동안 활성화됩니다.
@@ -102,6 +110,7 @@ const RegisterEventStep2 = ({
             <Controller
               name="openAt"
               control={control}
+              rules={{ required: true }} // 필수 값
               render={({ field }) => (
                 <TimeSelectButton
                   value={field.value ? new Date(field.value) : undefined}
@@ -113,6 +122,7 @@ const RegisterEventStep2 = ({
           <Controller
             name="breakTime"
             control={control}
+            rules={{ required: true }} // 필수 값
             render={({ field }) => (
               <RadioButtonGroup
                 name={field.name}
@@ -136,6 +146,7 @@ const RegisterEventStep2 = ({
             <Controller
               name="limit"
               control={control}
+              rules={{ required: true, min: 1 }} // 필수 값 및 최소 1명 이상
               render={({ field }) => (
                 <Input
                   type="text"
@@ -154,6 +165,13 @@ const RegisterEventStep2 = ({
           </div>
         </>
       )}
+
+      {/* ✅ 버튼 추가 - isValid에 따라 disabled 설정 */}
+      <ConfirmCancelButton
+        onConfirm={handleSubmit(onSubmit)}
+        onCancel={onPrev}
+        isConfirmDisabled={!isValid} // 버튼 활성화 조건
+      />
     </form>
   );
 };

@@ -30,20 +30,27 @@ const RegisterEventStep1 = ({
 }) => {
   const { eventData, updateEventData } = useRegisterEventStore();
 
-  const { control, handleSubmit, reset, watch, setValue } =
-    useForm<RegisterEventStep1Form>({
-      defaultValues: {
-        address: eventData.address || "",
-        latitude: eventData.latitude,
-        longitude: eventData.longitude,
-        title: eventData.title || "",
-        twitterId: eventData.twitterId || "",
-        startDate: eventData.startDate ? eventData.startDate.toString() : "",
-        endDate: eventData.endDate ? eventData.endDate.toString() : "",
-        startTime: eventData.startTime || "",
-        endTime: eventData.endTime || "",
-      },
-    });
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { isValid },
+  } = useForm<RegisterEventStep1Form>({
+    mode: "onChange",
+    defaultValues: {
+      address: eventData?.address || "",
+      latitude: eventData?.latitude || 0,
+      longitude: eventData?.longitude || 0,
+      title: eventData?.title || "",
+      twitterId: eventData?.twitterId || "",
+      startDate: eventData?.startDate ? eventData.startDate.toString() : "",
+      endDate: eventData?.endDate ? eventData.endDate.toString() : "",
+      startTime: eventData?.startTime || "",
+      endTime: eventData?.endTime || "",
+    },
+  });
 
   const startDate = watch("startDate");
   const endDate = watch("endDate");
@@ -55,21 +62,23 @@ const RegisterEventStep1 = ({
   }, [startDate, endDate, setValue]);
 
   useEffect(() => {
-    reset({
-      address: eventData.address || "",
-      latitude: eventData.latitude,
-      longitude: eventData.longitude,
-      title: eventData.title || "",
-      twitterId: eventData.twitterId || "",
-      startDate: eventData.startDate
-        ? eventData.startDate.toISOString().split("T")[0]
-        : "",
-      endDate: eventData.endDate
-        ? eventData.endDate.toISOString().split("T")[0]
-        : "",
-      startTime: eventData.startTime || "",
-      endTime: eventData.endTime || "",
-    });
+    if (eventData && Object.keys(eventData).length > 0) {
+      reset({
+        address: eventData.address || "",
+        latitude: eventData.latitude,
+        longitude: eventData.longitude,
+        title: eventData.title || "",
+        twitterId: eventData.twitterId || "",
+        startDate: eventData.startDate
+          ? eventData.startDate.toISOString().split("T")[0]
+          : "",
+        endDate: eventData.endDate
+          ? eventData.endDate.toISOString().split("T")[0]
+          : "",
+        startTime: eventData.startTime || "",
+        endTime: eventData.endTime || "",
+      });
+    }
   }, [eventData, reset]);
 
   const onSubmit = (data: RegisterEventStep1Form) => {
@@ -87,7 +96,6 @@ const RegisterEventStep1 = ({
 
     onNext(data);
   };
-
   return (
     <form id="step1-form" onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.container}>
@@ -97,6 +105,7 @@ const RegisterEventStep1 = ({
           <Controller
             name="address"
             control={control}
+            rules={{ required: "주소를 입력해주세요." }} // 필수 입력
             render={({ field }) => (
               <AddressSearchInput
                 value={field.value}
@@ -113,9 +122,10 @@ const RegisterEventStep1 = ({
             <Controller
               name="startDate"
               control={control}
+              rules={{ required: "시작 날짜를 선택해주세요." }} // 필수 입력
               render={({ field }) => (
                 <DateSelectButton
-                  value={new Date(field.value)}
+                  value={field.value ? new Date(field.value) : null}
                   onChange={field.onChange}
                 />
               )}
@@ -124,9 +134,10 @@ const RegisterEventStep1 = ({
             <Controller
               name="endDate"
               control={control}
+              rules={{ required: "종료 날짜를 선택해주세요." }} // 필수 입력
               render={({ field }) => (
                 <DateSelectButton
-                  value={new Date(field.value)}
+                  value={field.value ? new Date(field.value) : null}
                   onChange={field.onChange}
                   minDate={new Date(startDate)}
                 />
@@ -142,10 +153,11 @@ const RegisterEventStep1 = ({
             <Controller
               name="startTime"
               control={control}
+              rules={{ required: "운영 시작 시간을 선택해주세요." }} // 필수 입력
               render={({ field }) => (
                 <TimeSelectButton
                   value={field.value ? new Date(field.value) : undefined}
-                  onChange={(date) => field.onChange(date.toISOString())} // Date → string 변환
+                  onChange={(date) => field.onChange(date.toISOString())}
                 />
               )}
             />
@@ -153,6 +165,7 @@ const RegisterEventStep1 = ({
             <Controller
               name="endTime"
               control={control}
+              rules={{ required: "운영 종료 시간을 선택해주세요." }} // 필수 입력
               render={({ field }) => (
                 <TimeSelectButton
                   value={field.value ? new Date(field.value) : undefined}
@@ -183,6 +196,7 @@ const RegisterEventStep1 = ({
           <Controller
             name="title"
             control={control}
+            rules={{ required: "생일 카페 제목을 입력해주세요." }} // 필수 입력
             render={({ field }) => (
               <Input
                 value={field.value}
@@ -200,6 +214,7 @@ const RegisterEventStep1 = ({
           <Controller
             name="twitterId"
             control={control}
+            rules={{ required: "주최자의 X(구 twitter) 계정을 입력해주세요." }} // 필수 입력
             render={({ field }) => (
               <Input
                 value={field.value}
@@ -212,7 +227,11 @@ const RegisterEventStep1 = ({
         </div>
 
         {/* 📌 다음 버튼 */}
-        <NextButton onClick={handleSubmit(onSubmit)} value="다음" />
+        <NextButton
+          onClick={handleSubmit(onSubmit)}
+          value="다음"
+          disabled={!isValid} // 모든 입력값이 채워져야 활성화
+        />
       </div>
     </form>
   );
