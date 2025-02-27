@@ -1,0 +1,24 @@
+import { UserRepository } from "@/domain/repositories/UserRepository";
+
+import { User, PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+export class PguserRepository implements UserRepository {
+  // 이메일로 사용자 찾는 메서드
+  async findUserByEmail(email: string): Promise<User | null> {
+    return await prisma.user.findUnique({
+      where: { email },
+    });
+  }
+  // 유저 생성하는 메서드
+  async createUser(user: User): Promise<User> {
+    const createdUser = await prisma.user.create({
+      data: {
+        ...user,
+      },
+    });
+
+    return createdUser;
+  }
+}
