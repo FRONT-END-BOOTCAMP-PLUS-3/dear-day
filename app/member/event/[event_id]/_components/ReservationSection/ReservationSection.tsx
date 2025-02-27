@@ -13,14 +13,18 @@ interface Props {
 
 export default function ReservationSection({ eventData }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isEnded, setIsEnded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<string>("");
 
   useEffect(() => {
-    const updateCountdown = () => {
+    const updateStatus = () => {
       const now = new Date();
       const openTime = new Date(eventData.openAt);
+      const endTime = new Date(eventData.endDate);
 
-      if (now >= openTime) {
+      if (now >= endTime) {
+        setIsEnded(true);
+      } else if (now >= openTime) {
         setIsOpen(true);
       } else {
         const diff = openTime.getTime() - now.getTime();
@@ -31,17 +35,32 @@ export default function ReservationSection({ eventData }: Props) {
       }
     };
 
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
+    updateStatus();
+    const interval = setInterval(updateStatus, 1000);
 
     return () => clearInterval(interval);
-  }, [eventData.openAt]);
+  }, [eventData.openAt, eventData.endDate]);
+
+  // ✅ 24시간제 변환 함수
+  const formatTo24Hour = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+  };
 
   return (
     <div className={styles.reservationSection}>
       <h3>예약</h3>
 
-      {isOpen ? (
+      {isEnded ? (
+        <div className={styles.openInfo}>
+          <p>종료된 생일카페입니다 :)</p>
+        </div>
+      ) : isOpen ? (
         <div className={styles.reservationInfo}>
           <SelectDateTime eventData={eventData} />
           <Notice breaktime={eventData.breaktime} />
@@ -49,8 +68,15 @@ export default function ReservationSection({ eventData }: Props) {
         </div>
       ) : (
         <div className={styles.openInfo}>
-          <p>📅 예약 오픈: {eventData.openAt.toLocaleString()}</p>
-          <p>⏳ 오픈까지 {timeLeft} 남았습니다.</p>
+          <p>
+            <span className={styles.bold}>
+              {formatTo24Hour(new Date(eventData.openAt))}
+            </span>{" "}
+            오픈 예정
+          </p>
+          <p>
+            <span className={styles.bold}>{timeLeft}</span> 남았어요!
+          </p>
         </div>
       )}
     </div>
