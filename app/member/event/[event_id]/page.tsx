@@ -39,7 +39,7 @@ export default function EventDetail() {
       .then((data: ShowEventDetailDto) => setEventData(data))
       .catch((err) => {
         console.log(err.message);
-        router.push("/");
+        setEventData(demoEventData);
       });
   }, [eventId]);
 
