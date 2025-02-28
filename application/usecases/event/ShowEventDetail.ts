@@ -48,16 +48,7 @@ export const ShowEventDetail = async (
     hasWaiting = waitings.some((wait) => wait.userId === userId);
   }
 
-  // 6. 이미지를 string으로 변환
-  const mainImage = `data:image/png;base64,${Buffer.from(event.mainImage).toString("base64")}`;
-
-  const detailImages = event.detailImage
-    ? event.detailImage.map(
-        (img) => `data:image/png;base64,${Buffer.from(img).toString("base64")}`
-      )
-    : [];
-
-  // 7. DTO 변환 및 반환
+  // 6. DTO 변환 및 반환
   return {
     id: event.id,
     starName: star
@@ -69,8 +60,8 @@ export const ShowEventDetail = async (
     endTime: event.endTime,
     title: event.title,
     twitterId: event.twitterId || " ",
-    mainImage,
-    detailImage: detailImages,
+    mainImage: event.mainImage,
+    detailImage: event.detailImage,
     benefits: event.benefits,
     address: event.address,
     latitude: event.latitude,
