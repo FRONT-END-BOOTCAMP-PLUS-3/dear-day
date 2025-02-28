@@ -1,12 +1,11 @@
 .bottomSheet {
   position: absolute;
-  height: 100%;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   background-color: var(--color-white);
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: height 0.3s ease;
   display: flex;
   flex-direction: column;
   z-index: 1000;
@@ -32,7 +31,6 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 16px;
-
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
