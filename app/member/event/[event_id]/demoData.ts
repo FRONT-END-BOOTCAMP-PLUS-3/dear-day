@@ -23,7 +23,7 @@ export const demoEventData: ShowEventDetailDto = {
   latitude: 37.4979,
   longitude: 127.0276,
   mode: "RESERVATION",
-  openAt: new Date("2025-02-26T16:26:00"),
+  openAt: new Date("2025-02-28T17:30:00"),
   breaktime: 10, //  브레이크 타임
   limit: 3, // 타임당 30명 예약 가능
   hasReservation: true,

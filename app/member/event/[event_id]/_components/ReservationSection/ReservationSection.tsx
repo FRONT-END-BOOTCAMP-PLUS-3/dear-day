@@ -21,15 +21,17 @@ export default function ReservationSection({ eventData }: Props) {
   useEffect(() => {
     const updateStatus = () => {
       const now = new Date();
-      const startTime = new Date(eventData.startTime);
+      const openTime = eventData.openAt
+        ? new Date(eventData.openAt)
+        : new Date();
       const endTime = new Date(eventData.endDate);
 
       if (now >= endTime) {
         setIsEnded(true);
-      } else if (now >= startTime) {
+      } else if (now >= openTime) {
         setIsOpen(true);
       } else {
-        const diff = startTime.getTime() - now.getTime();
+        const diff = openTime.getTime() - now.getTime();
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
@@ -61,6 +63,10 @@ export default function ReservationSection({ eventData }: Props) {
       {isEnded ? (
         <div className={styles.openInfo}>
           <p>종료된 생일카페입니다 :)</p>
+        </div>
+      ) : eventData.hasReservation ? ( // ✅ 이미 예약한 경우 메시지 표시
+        <div className={styles.openInfo}>
+          <p>이미 예약을 완료한 생일카페입니다.</p>
         </div>
       ) : isOpen ? (
         <div className={styles.reservationInfo}>

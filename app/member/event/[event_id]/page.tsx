@@ -11,7 +11,7 @@ import WaitingSection from "./_components/WaitingSection/WaitingSection";
 import styles from "./page.module.scss";
 import TabNavigation from "./_components/TabNavigation/TabNavigation";
 import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
-import { demoEventData } from "./eventData";
+import { demoEventData } from "./demoData";
 
 export default function EventDetail() {
   const params = useParams();
@@ -23,21 +23,25 @@ export default function EventDetail() {
 
   const [activeTab, setActiveTab] = useState<string>("상세");
 
-  useEffect(() => {
-    if (!eventId) {
-      router.replace("/"); // ✅ eventId가 없으면 /로 리디렉트
-      return;
-    }
-    fetch(`/api/event/${eventId}`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data: ShowEventDetailDto) => setEventData(data))
-      .catch((err) => {
-        console.error("Error fetching event data:", err);
-      });
-  }, [eventId]);
+  // useEffect(() => {
+  //   if (!eventId) {
+  //     router.replace("/"); // ✅ eventId가 없으면 /로 리디렉트
+  //     return;
+  //   }
+  //   fetch(`/api/event/${eventId}`, {
+  //     method: "GET",
+  //     credentials: "include",
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Failed to fetch event data"); // ✅ 응답 실패 처리
+  //       return res.json();
+  //     })
+  //     .then((data: ShowEventDetailDto) => setEventData(data))
+  //     .catch((err) => {
+  //       console.error("Error fetching event data:", err);
+  //       setEventData(demoEventData);
+  //     });
+  // }, [eventId]);
 
   return (
     <div className={styles.eventDetailPage}>

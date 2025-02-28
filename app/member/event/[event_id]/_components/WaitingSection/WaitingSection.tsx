@@ -71,6 +71,10 @@ export default function WaitingSection({ eventData }: Props) {
       <h3>대기</h3>
       {isEnded ? (
         <div className={styles.closeWaiting}>종료된 생일카페입니다.</div>
+      ) : eventData.hasWaiting ? ( // ✅ 이미 예약한 경우 메시지 표시
+        <div className={styles.openInfo}>
+          <p>이미 대기중인 생일카페입니다.</p>
+        </div>
       ) : openWaiting ? (
         <div>
           <Waiting eventId={eventData.id} />
