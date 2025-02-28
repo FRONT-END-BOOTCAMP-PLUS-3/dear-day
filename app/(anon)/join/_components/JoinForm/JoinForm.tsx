@@ -64,7 +64,7 @@ export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
     }
 
     try {
-      const response = await fetch("/api/join/check-email", {
+      const response = await fetch("/api/auth/join/check-email", {
         method: "POST",
         body: JSON.stringify({ email: formData.email }),
         headers: { "Content-Type": "application/json" },
