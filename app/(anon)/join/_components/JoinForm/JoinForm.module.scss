@@ -11,4 +11,8 @@
   .label {
     margin-bottom: var(--margin-sm);
   }
+  .errorText {
+    font-size: var(--font-size-sm);
+    color: rgb(240, 110, 110);
+  }
 }

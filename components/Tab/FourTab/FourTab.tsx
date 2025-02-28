@@ -23,7 +23,7 @@ const FourTab = ({ options, selectedTab, onChange }: FourTabProps) => {
       <div
         className={styles.indicator}
         style={{
-          transform: `translateX(${(options.indexOf(selectedTab) / (options.length - 1)) * 100}%)`,
+          transform: `translateX(${(options.indexOf(selectedTab) / (options.length - 3)) * 100}%)`,
         }}
       />
     </div>

@@ -1,0 +1,16 @@
+.waitingSection {
+  h3 {
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .button {
+    margin-top: var(--margin-md);
+  }
+  .closeWaiting {
+    color: #9e9e9e;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+}

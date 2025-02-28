@@ -1,0 +1,23 @@
+.reservationSection {
+  h3 {
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+  .reservationInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-md);
+  }
+  .openInfo {
+    color: #9e9e9e;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .bold {
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,36 @@
+.locationSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-xs);
+
+  h3 {
+    font-size: var(--font-size-md);
+    font-weight: 400;
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    gap: var(--padding-lg);
+    align-items: center;
+
+    .address {
+      display: flex;
+      flex-direction: row;
+      gap: var(--padding-sm);
+      align-items: center;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .mapSection {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    background: var(--divider);
+  }
+}
