@@ -38,8 +38,8 @@ export default function EventDetail() {
       })
       .then((data: ShowEventDetailDto) => setEventData(data))
       .catch((err) => {
-        console.error("Error fetching event data:", err);
-        setEventData(demoEventData);
+        console.log(err.message);
+        router.push("/");
       });
   }, [eventId]);
 

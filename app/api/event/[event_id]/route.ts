@@ -60,17 +60,26 @@ export async function GET(req: Request) {
     const reservationRepository = new PgReservationRepository();
     const waitingRepository = new PgWaitingRepository();
 
-    const eventDetail = await ShowEventDetail(
-      eventId,
-      userId,
-      eventRepository,
-      starRepository,
-      reservationSettingRepository,
-      reservationRepository,
-      waitingRepository
-    );
-
-    return NextResponse.json(eventDetail);
+    try {
+      const eventDetail = await ShowEventDetail(
+        eventId,
+        userId,
+        eventRepository,
+        starRepository,
+        reservationSettingRepository,
+        reservationRepository,
+        waitingRepository
+      );
+      return NextResponse.json(eventDetail);
+    } catch (error) {
+      if (error.message === "이벤트를 찾을 수 없습니다.") {
+        return NextResponse.json(
+          { error: "이벤트를 찾을 수 없습니다." },
+          { status: 404 }
+        );
+      }
+      throw error; // 다른 예상치 못한 에러는 그대로 던짐
+    }
   } catch (error) {
     console.error("서버 오류 발생:", error);
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
