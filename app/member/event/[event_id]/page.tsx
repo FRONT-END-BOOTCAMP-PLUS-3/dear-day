@@ -23,25 +23,25 @@ export default function EventDetail() {
 
   const [activeTab, setActiveTab] = useState<string>("상세");
 
-  // useEffect(() => {
-  //   if (!eventId) {
-  //     router.replace("/"); // ✅ eventId가 없으면 /로 리디렉트
-  //     return;
-  //   }
-  //   fetch(`/api/event/${eventId}`, {
-  //     method: "GET",
-  //     credentials: "include",
-  //   })
-  //     .then((res) => {
-  //       if (!res.ok) throw new Error("Failed to fetch event data"); // ✅ 응답 실패 처리
-  //       return res.json();
-  //     })
-  //     .then((data: ShowEventDetailDto) => setEventData(data))
-  //     .catch((err) => {
-  //       console.error("Error fetching event data:", err);
-  //       setEventData(demoEventData);
-  //     });
-  // }, [eventId]);
+  useEffect(() => {
+    if (!eventId) {
+      router.replace("/"); // eventId가 없으면 /로 리디렉트
+      return;
+    }
+    fetch(`/api/event/${eventId}`, {
+      method: "GET",
+      credentials: "include", // ⭐️ 서버에서 userId가 필요하니까 쿠키를 포함하여 전송 ⭐️
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch event data"); // 응답 실패 처리
+        return res.json();
+      })
+      .then((data: ShowEventDetailDto) => setEventData(data))
+      .catch((err) => {
+        console.error("Error fetching event data:", err);
+        setEventData(demoEventData);
+      });
+  }, [eventId]);
 
   return (
     <div className={styles.eventDetailPage}>
