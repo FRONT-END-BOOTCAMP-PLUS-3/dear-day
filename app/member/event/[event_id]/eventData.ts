@@ -1,26 +1,6 @@
-export interface EventData {
-  id: number;
-  starName: string;
-  startDate: Date;
-  endDate: Date;
-  startTime: string;
-  endTime: string;
-  title: string;
-  twitterId: string;
-  mainImage: string;
-  detailImage: string[];
-  benefits: string[];
-  address: string;
-  latitude: number;
-  longitude: number;
-  mode: "RESERVATION" | "WAITING";
-  openAt: Date;
-  breaktime: number;
-  limit: number;
-}
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 
-// ✅ `Date` 타입을 적용한 `demoEventData`
-export const demoEventData: EventData = {
+export const demoEventData: ShowEventDetailDto = {
   id: 123,
   starName: "슬기 (레드벨벳)",
   startDate: new Date("2025-03-01"),
@@ -46,4 +26,5 @@ export const demoEventData: EventData = {
   openAt: new Date("2025-02-26T16:26:00"),
   breaktime: 10, //  브레이크 타임
   limit: 3, // 타임당 30명 예약 가능
+  hasReservation: true,
 };

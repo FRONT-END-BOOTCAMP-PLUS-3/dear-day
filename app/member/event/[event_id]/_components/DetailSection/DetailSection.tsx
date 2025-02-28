@@ -1,8 +1,8 @@
-import { EventData } from "../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import Image from "next/image";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function DetailSection({ eventData }: Props) {

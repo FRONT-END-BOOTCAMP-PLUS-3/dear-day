@@ -4,11 +4,11 @@ import FixedButton from "@/components/Button/FixedButton/FixedButton";
 import Notice from "./Notice/Notice";
 import Waiting from "./Waiting/Waiting";
 import styles from "./WaitingSection.module.scss";
-import { EventData } from "../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import { useState, useEffect } from "react";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function WaitingSection({ eventData }: Props) {

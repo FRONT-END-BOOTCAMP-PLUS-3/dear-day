@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { EventData } from "../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import SelectDateTime from "./SelectDateTime/SelectDateTime";
 import Notice from "./Notice/Notice";
 import FixedButton from "@/components/Button/FixedButton/FixedButton";
@@ -9,7 +9,7 @@ import styles from "./ReservationSection.module.scss";
 import useReservationStore from "@/store/reservationStore";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function ReservationSection({ eventData }: Props) {
@@ -21,15 +21,15 @@ export default function ReservationSection({ eventData }: Props) {
   useEffect(() => {
     const updateStatus = () => {
       const now = new Date();
-      const openTime = new Date(eventData.openAt);
+      const startTime = new Date(eventData.startTime);
       const endTime = new Date(eventData.endDate);
 
       if (now >= endTime) {
         setIsEnded(true);
-      } else if (now >= openTime) {
+      } else if (now >= startTime) {
         setIsOpen(true);
       } else {
-        const diff = openTime.getTime() - now.getTime();
+        const diff = startTime.getTime() - now.getTime();
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
@@ -65,7 +65,7 @@ export default function ReservationSection({ eventData }: Props) {
       ) : isOpen ? (
         <div className={styles.reservationInfo}>
           <SelectDateTime eventData={eventData} />
-          <Notice breaktime={eventData.breaktime} />
+          <Notice breaktime={eventData.breaktime || 0} />
           <FixedButton
             onClick={() => alert("예약 완료!")}
             value={isSoldOut ? "매진" : "예약하기"}
@@ -76,7 +76,9 @@ export default function ReservationSection({ eventData }: Props) {
         <div className={styles.openInfo}>
           <p>
             <span className={styles.bold}>
-              {formatTo24Hour(new Date(eventData.openAt))}
+              {eventData.openAt
+                ? formatTo24Hour(new Date(eventData.openAt))
+                : "날짜 정보 없음"}
             </span>{" "}
             오픈 예정
           </p>

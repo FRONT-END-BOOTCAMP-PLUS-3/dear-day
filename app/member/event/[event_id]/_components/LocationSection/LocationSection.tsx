@@ -1,12 +1,12 @@
 "use client";
 
 import Icon from "@/components/Icon/Icon";
-import { EventData } from "../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import styles from "./LocationSection.module.scss";
 import MapLoader from "@/components/MapLoader/MapLoader";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function LocationSection({ eventData }: Props) {

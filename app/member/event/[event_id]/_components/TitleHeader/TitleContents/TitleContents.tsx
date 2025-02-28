@@ -1,10 +1,10 @@
 import HeartButton from "@/components/Button/HeartButton/HeartButton";
 import styles from "./TitleContents.module.scss";
 import Icon from "@/components/Icon/Icon";
-import { EventData } from "../../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 // 날짜 변환 함수
