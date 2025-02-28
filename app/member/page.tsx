@@ -1,12 +1,18 @@
 "use client";
 
+import { ChangeEvent, useState } from "react";
+import UpcomingEvent from "../(anon)/_components/UpcomingEvent/UpcomingEvent";
+import MainButton from "../(anon)/_components/MainButton/MainButton";
+import Banner from "../(anon)/_components/Banner/Banner";
+import styles from "./page.module.scss";
+import SearchInput from "@/components/Input/SearchInput/SearchInput";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-  const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
+  const [searchWord, setSearchWord] = useState("");
 
   async function handleLogout() {
     await logout();
@@ -14,10 +20,19 @@ export default function HomePage() {
   }
   console.log(process.env.NEXT_PUBLIC_JWT_SECRET!);
 
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.target.value);
+  };
+
   return (
-    <div>
-      <h1>안녕하세요, {user?.id}님!</h1>
-      <button onClick={handleLogout}>로그아웃</button>
+    <div className={styles.homeContainer}>
+      <Banner />
+      <div className={styles.contentsWrapper}>
+        <button onClick={handleLogout}>로그아웃</button>
+        <SearchInput value={searchWord} onChange={handleSearch} />
+        <MainButton />
+        <UpcomingEvent />
+      </div>
     </div>
   );
 }
