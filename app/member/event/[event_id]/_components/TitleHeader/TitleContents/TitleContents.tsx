@@ -29,10 +29,12 @@ export default function TitleContents({ eventData }: Props) {
         <h1>{eventData.title}</h1>
         <HeartButton eventId={eventData.id} />
       </div>
-      <div>
-        <Icon id="x-logo" />
-        <p>{eventData.twitterId}</p>
-      </div>
+      {eventData.twitterId ?? (
+        <div>
+          <Icon id="x-logo" />
+          <p>{eventData.twitterId}</p>
+        </div>
+      )}
       <div>
         <Icon id="calendar" />
         <p>{formatDateRange(eventData.startDate, eventData.endDate)}</p>{" "}

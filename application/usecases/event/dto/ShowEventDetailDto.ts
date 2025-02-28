@@ -9,7 +9,7 @@ export interface ShowEventDetailDto {
   endTime: string;
 
   title: string;
-  twitterId: string;
+  twitterId?: string;
 
   mainImage: string;
   detailImage: string[];
