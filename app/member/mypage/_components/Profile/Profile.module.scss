@@ -1,0 +1,16 @@
+.profileSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 양 끝 정렬 */
+  width: 100%;
+  padding: 50px 20px 20px;
+  align-items: flex-end; /* 아래쪽 정렬 */
+}
+.textContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.iconContainer {
+  cursor: pointer;
+}
