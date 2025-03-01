@@ -46,7 +46,6 @@ export default function CoursePage() {
       console.log(new Date(courseDate));
     }
 
-    toggleModal();
     router.push("/member/course/create");
   };
 
