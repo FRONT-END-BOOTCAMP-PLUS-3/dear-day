@@ -1,0 +1,16 @@
+.dateTimeSelectContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .dateTimeSection {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dateTimeSelectTitle {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+  }
+}

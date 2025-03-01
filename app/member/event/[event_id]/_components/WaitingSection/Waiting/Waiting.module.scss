@@ -1,0 +1,52 @@
+.waitingContainer {
+  h4 {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .waitingNotice {
+    font-size: var(--font-size-sm);
+    margin-bottom: 16px;
+  }
+
+  .waitingCount {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .counterContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--color-white);
+    border: 1px solid var(--divider);
+    padding: 0px 16px;
+    border-radius: 24px;
+    width: fit-content;
+    margin-top: 8px;
+  }
+
+  .decreaseButton,
+  .increaseButton {
+    background: none;
+    border: none;
+    font-size: var(--font-size-xl);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .decreaseButton:disabled,
+  .increaseButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .reservationCount {
+    font-size: var(--font-size-sm);
+    min-width: 24px;
+    text-align: center;
+  }
+}
