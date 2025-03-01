@@ -1,0 +1,15 @@
+.benefitListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-lg);
+  h3 {
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+  .benefitList {
+    display: flex;
+    flex-wrap: wrap; /* ✅ 자동 줄바꿈 */
+    gap: 8px; /* ✅ 태그 간 간격 조절 */
+  }
+}

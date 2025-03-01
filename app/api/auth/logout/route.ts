@@ -6,7 +6,7 @@ export async function POST() {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    expires: new Date(0), // ✅ 쿠키 삭제 (만료 시간 0)
+    expires: new Date(0), // 쿠키 삭제 (만료 시간 0)
   });
 
   return response;
