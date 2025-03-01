@@ -7,8 +7,10 @@ import DateSelect from "@/components/Input/DateSelect/DateSelect";
 import React, { useEffect, useState } from "react";
 import NextButton from "@/components/Button/NextButton/NextButton";
 import { createStar } from "./_api/createStar";
+import { CreateStarDto } from "@/application/usecases/star/dto/CreateStarDto";
 
 const RegisterStarPage = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string>("");
   const [starStageName, setStarStageName] = useState<string>("");
   const [starRealName, setstarRealName] = useState<string>("");
@@ -18,8 +20,11 @@ const RegisterStarPage = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const imageUrl = URL.createObjectURL(e.target.files[0]);
-      setPreviewImage(imageUrl); // 단일 이미지 업데이트
+      const file = e.target.files[0];
+      setSelectedFile(file);
+
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewImage(previewUrl); // 단일 이미지 업데이트
     }
   };
 
@@ -41,33 +46,31 @@ const RegisterStarPage = () => {
     }
   }, [previewImage, starStageName, starBirth]);
 
-  const convertUrlToBlob = async (url: string): Promise<Blob> => {
-    const response = await fetch(url);
-    return await response.blob();
-  };
-
   const handleCreateStar = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid || !previewImage) return;
+    if (!isFormValid || !selectedFile) return;
 
-    const blobImg = await convertUrlToBlob(previewImage);
+    try {
+      const starData: CreateStarDto = {
+        image: "",
+        stageName: starStageName,
+        realName: starRealName || "",
+        group: starGroup || "",
+        birthday: new Date(starBirth),
+      };
 
-    const formData = new FormData();
-    formData.append("image", blobImg);
-    formData.append("stageName", starStageName);
-    formData.append("realName", starRealName || "");
-    formData.append("group", starGroup || "");
-    formData.append("birthday", new Date(starBirth).toISOString());
-
-    await createStar(formData);
-    alert("스타 등록이 완료되었습니다.");
-    window.location.href = "/";
+      await createStar(starData, selectedFile);
+      alert("스타 등록이 완료되었습니다!");
+      // window.location.href = "/";
+    } catch (error) {
+      console.error("스타 등록 실패(page): ", error);
+    }
   };
 
   return (
     <>
       <div className={styles.homeContainer}>
-        <form className={styles.registerStarForm}>
+        <form className={styles.registerStarForm} onSubmit={handleCreateStar}>
           <fieldset className={styles.registerStarImg}>
             스타이미지
             <StarUploadButton
@@ -119,7 +122,6 @@ const RegisterStarPage = () => {
             type="submit"
             value="스타 등록하기"
             disabled={!isFormValid}
-            onSubmit={handleCreateStar}
           />
         </form>
       </div>

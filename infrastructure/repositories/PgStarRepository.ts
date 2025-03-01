@@ -1,4 +1,4 @@
-import StarRepository from "@/domain/repositories/StarRepository";
+import { StarRepository } from "@/domain/repositories/StarRepository";
 import { Star, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

@@ -1,5 +1,5 @@
 export interface CreateStarDto {
-  image: Blob;
+  image: string;
   realName?: string | null;
   stageName: string;
   group?: string | null;
