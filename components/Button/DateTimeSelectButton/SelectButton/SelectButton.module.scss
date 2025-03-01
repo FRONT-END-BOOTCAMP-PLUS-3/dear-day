@@ -1,0 +1,52 @@
+.selectButtonWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  padding: var(--padding-xs) 0;
+}
+
+// 스크롤바 숨기기 (크로스 브라우징 대응)
+.selectButtonWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.selectButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--padding-xs) var(--padding-md);
+  border-radius: 40px;
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid var(--color-primary);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+
+  &:hover {
+    background-color: var(--color-blue-hover);
+  }
+}
+
+// 선택된 버튼 스타일
+.selectButton.selected {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+}
+
+// 예약 완료(비활성화)된 버튼 스타일
+.selectButton.disabled {
+  background-color: var(--color-gray-bg);
+  color: var(--color-gray-2);
+  cursor: not-allowed;
+  pointer-events: none;
+  border: 1px solid var(--color-gray-bg);
+}
