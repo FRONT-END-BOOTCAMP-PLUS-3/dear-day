@@ -22,7 +22,7 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   },
   {
     pattern: /^\/member\/course\/create$/,
-    config: { type: "dynamic", title: "코스 만들기" },
+    config: { type: "back", title: "코스 만들기" },
   },
   {
     pattern: /^\/member\/course\/[^/]+$/,
