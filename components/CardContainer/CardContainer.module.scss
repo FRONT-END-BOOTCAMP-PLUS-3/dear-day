@@ -35,7 +35,7 @@
 }
 
 .swipeContainer {
-  background-color: var(--color-primary);
+  background-color: var(--color-white);
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -47,6 +47,7 @@
   display: flex;
   transition: transform 0.4s ease-in-out;
   will-change: transform;
+  padding: 10px;
 }
 
 .swipeItem {
