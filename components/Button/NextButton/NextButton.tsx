@@ -3,19 +3,27 @@
 import styles from "./NextButton.module.scss";
 
 interface NextButtonProps {
-  onClick: () => void;
+  type: "button" | "submit";
+  onSubmit?: () => void;
+  onClick?: () => void;
   value: string;
   disabled?: boolean;
 }
 
-const NextButton = ({ onClick, value, disabled = false }: NextButtonProps) => {
+const NextButton = ({
+  onSubmit,
+  onClick,
+  value,
+  disabled = false,
+}: NextButtonProps) => {
   return (
-    <div
+    <button
       className={`${styles.nextButtonContainer} ${disabled ? styles.disabled : ""}`}
       onClick={!disabled ? onClick : undefined}
+      onSubmit={!disabled ? onSubmit : undefined}
     >
       <p>{value}</p>
-    </div>
+    </button>
   );
 };
 
