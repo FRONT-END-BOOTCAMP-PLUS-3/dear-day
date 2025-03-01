@@ -26,4 +26,24 @@
   color: var(--color-black);
   padding: 8px;
   text-align: center;
+}.imageScrollContainer {
+  overflow-x: auto; /* 가로 스크롤 */
+  white-space: nowrap;
+  padding-bottom: 10px; /* 스크롤 바 영역 확보 */
+}
+
+.imagePreviewContainer {
+  display: flex;
+  flex-wrap: nowrap; /* 한 줄 유지 */
+  gap: 10px; /* 이미지 간격 */
+}
+
+.imageWrapper {
+  flex: 0 0 auto; /* 크기 고정 (줄어들지 않도록) */
+  position: relative;
+}
+
+.previewImage {
+  width: 150px; /* 이미지 크기 고정 */
+  object-fit: cover;
 }
