@@ -74,7 +74,7 @@ const RegisterEventStep2 = ({
         <Controller
           name="mode"
           control={control}
-          rules={{ required: true }} // 필수 값
+          rules={{ required: true }}
           render={({ field }) => (
             <RadioButtonGroup
               name={field.name}
@@ -110,7 +110,7 @@ const RegisterEventStep2 = ({
             <Controller
               name="openAt"
               control={control}
-              rules={{ required: true }} // 필수 값
+              rules={{ required: true }}
               render={({ field }) => (
                 <TimeSelectButton
                   value={field.value ? new Date(field.value) : undefined}
@@ -119,34 +119,41 @@ const RegisterEventStep2 = ({
               )}
             />
           </div>
-          <Controller
-            name="breakTime"
-            control={control}
-            rules={{ required: true }} // 필수 값
-            render={({ field }) => (
-              <RadioButtonGroup
-                name={field.name}
-                options={[
-                  { label: "10분", value: 10 },
-                  { label: "15분", value: 15 },
-                  { label: "20분", value: 20 },
-                  { label: "없음", value: 0 },
-                ]}
-                defaultValue={10}
-                value={field.value}
-                onChange={(value) => {
-                  field.onChange(Number(value));
-                }}
-              />
-            )}
-          />
+          <div className={styles.containerItem}>
+            <p>쉬는 시간</p>
+            <p>
+              * 타임당 이용 단위는 1시간으로 고정이며, 각 타임 사이에 정해진
+              쉬는 시간이 포함됩니다.
+            </p>
+            <Controller
+              name="breakTime"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <RadioButtonGroup
+                  name={field.name}
+                  options={[
+                    { label: "10분", value: 10 },
+                    { label: "15분", value: 15 },
+                    { label: "20분", value: 20 },
+                    { label: "없음", value: 0 },
+                  ]}
+                  defaultValue={10}
+                  value={field.value}
+                  onChange={(value) => {
+                    field.onChange(Number(value));
+                  }}
+                />
+              )}
+            />
+          </div>
 
           <div className={styles.containerItem}>
             <p>타임 당 인원</p>
             <Controller
               name="limit"
               control={control}
-              rules={{ required: true, min: 1 }} // 필수 값 및 최소 1명 이상
+              rules={{ required: true, min: 1 }}
               render={({ field }) => (
                 <Input
                   type="text"
@@ -166,11 +173,10 @@ const RegisterEventStep2 = ({
         </>
       )}
 
-      {/* ✅ 버튼 추가 - isValid에 따라 disabled 설정 */}
       <ConfirmCancelButton
         onConfirm={handleSubmit(onSubmit)}
         onCancel={onPrev}
-        isConfirmDisabled={!isValid} // 버튼 활성화 조건
+        isConfirmDisabled={!isValid}
       />
     </form>
   );

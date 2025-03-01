@@ -10,7 +10,6 @@ import { useRegisterEventStore } from "@/store/registerEventStore";
 import { useEffect } from "react";
 import AddressSearchInput from "@/app/member/register_event/components/AddressSearchInput/AddressSearchInput";
 
-// Step1에서 사용할 폼 데이터 타입 정의
 export interface RegisterEventStep1Form {
   address: string;
   latitude: number;
@@ -99,13 +98,13 @@ const RegisterEventStep1 = ({
   return (
     <form id="step1-form" onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.container}>
-        {/* 📌 주소 입력 */}
+        {/* 주소 */}
         <div className={styles.containerItem}>
           <p>장소</p>
           <Controller
             name="address"
             control={control}
-            rules={{ required: "주소를 입력해주세요." }} // 필수 입력
+            rules={{ required: "주소를 입력해주세요." }}
             render={({ field }) => (
               <AddressSearchInput
                 value={field.value}
@@ -115,14 +114,14 @@ const RegisterEventStep1 = ({
           />
         </div>
 
-        {/* 📌 이벤트 기간 선택 */}
+        {/* 이벤트 기간 */}
         <div className={styles.containerItem}>
           <p>이벤트 기간</p>
           <div className={styles.item}>
             <Controller
               name="startDate"
               control={control}
-              rules={{ required: "시작 날짜를 선택해주세요." }} // 필수 입력
+              rules={{ required: "시작 날짜를 선택해주세요." }}
               render={({ field }) => (
                 <DateSelectButton
                   value={field.value ? new Date(field.value) : null}
@@ -134,7 +133,7 @@ const RegisterEventStep1 = ({
             <Controller
               name="endDate"
               control={control}
-              rules={{ required: "종료 날짜를 선택해주세요." }} // 필수 입력
+              rules={{ required: "종료 날짜를 선택해주세요." }}
               render={({ field }) => (
                 <DateSelectButton
                   value={field.value ? new Date(field.value) : null}
@@ -146,14 +145,14 @@ const RegisterEventStep1 = ({
           </div>
         </div>
 
-        {/* 📌 카페 운영 시간 */}
+        {/* 카페 운영 시간 */}
         <div className={styles.containerItem}>
           <p>카페 운영 시간</p>
           <div className={styles.item}>
             <Controller
               name="startTime"
               control={control}
-              rules={{ required: "운영 시작 시간을 선택해주세요." }} // 필수 입력
+              rules={{ required: "운영 시작 시간을 선택해주세요." }}
               render={({ field }) => (
                 <TimeSelectButton
                   value={field.value ? new Date(field.value) : undefined}
@@ -165,7 +164,7 @@ const RegisterEventStep1 = ({
             <Controller
               name="endTime"
               control={control}
-              rules={{ required: "운영 종료 시간을 선택해주세요." }} // 필수 입력
+              rules={{ required: "운영 종료 시간을 선택해주세요." }}
               render={({ field }) => (
                 <TimeSelectButton
                   value={field.value ? new Date(field.value) : undefined}
@@ -174,7 +173,7 @@ const RegisterEventStep1 = ({
                       ? new Date(watch("startTime"))
                       : null;
                     if (startTime && date < startTime) {
-                      field.onChange(startTime.toISOString()); // 📌 startTime보다 빠르면 startTime으로 변경
+                      field.onChange(startTime.toISOString()); // startTime보다 빠르면 startTime으로 변경
                     } else {
                       field.onChange(date.toISOString());
                     }
@@ -183,20 +182,20 @@ const RegisterEventStep1 = ({
                     watch("startTime")
                       ? new Date(watch("startTime"))
                       : undefined
-                  } // 📌 startTime 이후만 선택 가능
+                  } // startTime 이후만 선택 가능
                 />
               )}
             />
           </div>
         </div>
 
-        {/* 📌 생카 제목 입력 */}
+        {/* 생카 제목 */}
         <div className={styles.containerItem}>
           <p>생카 제목</p>
           <Controller
             name="title"
             control={control}
-            rules={{ required: "생일 카페 제목을 입력해주세요." }} // 필수 입력
+            rules={{ required: "생일 카페 제목을 입력해주세요." }}
             render={({ field }) => (
               <Input
                 value={field.value}
@@ -208,13 +207,13 @@ const RegisterEventStep1 = ({
           />
         </div>
 
-        {/* 📌 주최자 계정 입력 */}
+        {/* 주최자 계정 */}
         <div className={styles.containerItem}>
           <p>주최자 계정</p>
           <Controller
             name="twitterId"
             control={control}
-            rules={{ required: "주최자의 X(구 twitter) 계정을 입력해주세요." }} // 필수 입력
+            rules={{ required: "주최자의 X(구 twitter) 계정을 입력해주세요." }}
             render={({ field }) => (
               <Input
                 value={field.value}
@@ -226,11 +225,10 @@ const RegisterEventStep1 = ({
           />
         </div>
 
-        {/* 📌 다음 버튼 */}
         <NextButton
           onClick={handleSubmit(onSubmit)}
           value="다음"
-          disabled={!isValid} // 모든 입력값이 채워져야 활성화
+          disabled={!isValid}
         />
       </div>
     </form>

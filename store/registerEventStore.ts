@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-// ✅ Step 1, 2, 3의 데이터를 각각 인터페이스로 정의
+// Step 1, 2, 3의 데이터를 각각 인터페이스로 정의
 interface RegisterEventStep1 {
   address: string;
   latitude: number;
@@ -26,27 +26,26 @@ interface RegisterEventStep3 {
   benefits: string[];
 }
 
-// ✅ 전체 이벤트 데이터 타입
+// 전체 이벤트 데이터 타입
 interface RegisterEventData
   extends RegisterEventStep1,
     RegisterEventStep2,
     RegisterEventStep3 {}
 
-// ✅ Zustand Store 타입 정의
+// Store 타입 정의
 interface RegisterEventState {
   step: number;
   setStep: (step: number) => void;
   eventData: RegisterEventData;
-  updateEventData: (data: Partial<RegisterEventData>) => void;
+  updateEventData: (data: Partial<RegisterEventData>) => Promise<void>;
   resetEventData: () => void;
 }
 
-// ✅ Zustand Store 생성
+// Store 생성
 export const useRegisterEventStore = create<RegisterEventState>((set) => ({
   step: 1,
   setStep: (step) => set({ step }),
   eventData: {
-    // Step1 초기값
     address: "",
     latitude: 0,
     longitude: 0,
@@ -57,21 +56,22 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
     startTime: "",
     endTime: "",
 
-    // Step2 초기값
     mode: "",
     openAt: "",
     breakTime: 0,
     limit: 0,
 
-    // Step3 초기값
     mainImage: "",
     detailImage: [],
     benefits: [],
   },
   updateEventData: (data) =>
-    set((state) => ({
-      eventData: { ...state.eventData, ...data },
-    })),
+    new Promise((resolve) => {
+      set((state) => ({
+        eventData: { ...state.eventData, ...data },
+      }));
+      resolve(); // 상태 업데이트 후 resolve 호출
+    }),
   resetEventData: () =>
     set({
       eventData: {

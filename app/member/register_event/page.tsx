@@ -25,7 +25,7 @@ export default function RegisterEventPage() {
     | RegisterEventStep3Form;
 
   const handleNext = async (data: RegisterEventForm) => {
-    updateEventData({
+    await updateEventData({
       ...data,
       startDate:
         "startDate" in data && data.startDate
@@ -37,30 +37,30 @@ export default function RegisterEventPage() {
           : eventData.endDate,
     });
 
-    // if (step < 3) {
-    //   setStep(step + 1);
-    // } else {
-    //   // step3에서 모든 데이터를 DB에 저장
-    //   try {
-    //     const response = await fetch("/api/register-event", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(eventData),
-    //     });
+    console.log(
+      "최신 Store 데이터:",
+      useRegisterEventStore.getState().eventData
+    );
 
-    //     if (!response.ok) {
-    //       throw new Error("이벤트 등록 실패");
-    //     }
-
-    //     console.log("이벤트 등록 성공!");
-    //     resetEventData(); // 데이터 초기화
-    //     router.push("/events"); // 성공 후 이동
-    //   } catch (error) {
-    //     console.error("등록 중 오류 발생:", error);
-    //   }
-    // }
+    if (step < 3) {
+      setStep(step + 1);
+    } else {
+      // try {
+      //   const response = await fetch("/api/register-event", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(useRegisterEventStore.getState().eventData),
+      //   });
+      //   if (!response.ok) throw new Error("이벤트 등록 실패");
+      //   console.log("이벤트 등록 성공!");
+      //   resetEventData(); // 데이터 초기화
+      //   // router.push("/events");
+      // } catch (error) {
+      //   console.error("등록 중 오류 발생:", error);
+      // }
+    }
   };
 
   const handlePrev = () => {

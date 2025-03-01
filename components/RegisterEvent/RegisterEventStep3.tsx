@@ -58,7 +58,7 @@ const RegisterEventStep3 = ({
     onNext(data);
   };
 
-  // ✅ watch를 통해 모든 입력 값 확인
+  // watch를 통해 모든 입력 값 확인
   const mainImage = watch("mainImage");
   const detailImages = watch("detailImage");
   const benefits = watch("benefits");
@@ -192,7 +192,6 @@ const RegisterEventStep3 = ({
         />
       </div>
 
-      {/* 버튼 추가 */}
       <ConfirmCancelButton
         onConfirm={handleSubmit(onSubmit)}
         onCancel={onPrev}
