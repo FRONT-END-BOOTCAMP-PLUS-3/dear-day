@@ -4,8 +4,9 @@ import StarUploadButton from "@/components/Button/StarUploadButton/StarUploadBut
 import styles from "./page.module.scss";
 import Input from "@/components/Input/Input/Input";
 import DateSelect from "@/components/Input/DateSelect/DateSelect";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NextButton from "@/components/Button/NextButton/NextButton";
+import { createStar } from "./_api/createStar";
 
 const RegisterStarPage = () => {
   const [previewImage, setPreviewImage] = useState<string>("");
@@ -40,14 +41,27 @@ const RegisterStarPage = () => {
     }
   }, [previewImage, starStageName, starBirth]);
 
-  const addStar = () => {
-    console.log(
-      previewImage,
-      starStageName,
-      starRealName,
-      starGroup,
-      starBirth
-    );
+  const convertUrlToBlob = async (url: string): Promise<Blob> => {
+    const response = await fetch(url);
+    return await response.blob();
+  };
+
+  const handleCreateStar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid || !previewImage) return;
+
+    const blobImg = await convertUrlToBlob(previewImage);
+
+    const formData = new FormData();
+    formData.append("image", blobImg);
+    formData.append("stageName", starStageName);
+    formData.append("realName", starRealName || "");
+    formData.append("group", starGroup || "");
+    formData.append("birthday", new Date(starBirth).toISOString());
+
+    await createStar(formData);
+    alert("스타 등록이 완료되었습니다.");
+    window.location.href = "/";
   };
 
   return (
@@ -100,13 +114,14 @@ const RegisterStarPage = () => {
               onChange={handleDateChange}
             />
           </fieldset>
-        </form>
 
-        <NextButton
-          onClick={addStar}
-          value="스타 등록하기"
-          disabled={!isFormValid}
-        />
+          <NextButton
+            type="submit"
+            value="스타 등록하기"
+            disabled={!isFormValid}
+            onSubmit={handleCreateStar}
+          />
+        </form>
       </div>
     </>
   );
