@@ -8,7 +8,7 @@ import DateSelectButton from "../ComboBox/DateComboBox/DateComboBox";
 import TimeSelectButton from "../ComboBox/TimeComboBox/TimeComboBox";
 import { useRegisterEventStore } from "@/store/registerEventStore";
 import { useEffect } from "react";
-import AddressSearchInput from "@/app/member/register_event/components/AddressSearchInput/AddressSearchInput";
+import LocationSearch from "@/app/member/register_event/components/LocationSearch/LocationSearch";
 
 export interface RegisterEventStep1Form {
   address: string;
@@ -32,7 +32,6 @@ const RegisterEventStep1 = ({
   const {
     control,
     handleSubmit,
-    reset,
     watch,
     setValue,
     formState: { isValid },
@@ -60,25 +59,14 @@ const RegisterEventStep1 = ({
     }
   }, [startDate, endDate, setValue]);
 
+  // ✅ store 값이 변경될 때 form 값도 자동 업데이트
   useEffect(() => {
-    if (eventData && Object.keys(eventData).length > 0) {
-      reset({
-        address: eventData.address || "",
-        latitude: eventData.latitude,
-        longitude: eventData.longitude,
-        title: eventData.title || "",
-        twitterId: eventData.twitterId || "",
-        startDate: eventData.startDate
-          ? eventData.startDate.toISOString().split("T")[0]
-          : "",
-        endDate: eventData.endDate
-          ? eventData.endDate.toISOString().split("T")[0]
-          : "",
-        startTime: eventData.startTime || "",
-        endTime: eventData.endTime || "",
-      });
+    if (eventData) {
+      setValue("address", eventData.address || "");
+      setValue("latitude", eventData.latitude || 0);
+      setValue("longitude", eventData.longitude || 0);
     }
-  }, [eventData, reset]);
+  }, [eventData, setValue]);
 
   const onSubmit = (data: RegisterEventStep1Form) => {
     updateEventData({
@@ -95,10 +83,11 @@ const RegisterEventStep1 = ({
 
     onNext(data);
   };
+
   return (
     <form id="step1-form" onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.container}>
-        {/* 주소 */}
+        {/* 주소 검색 */}
         <div className={styles.containerItem}>
           <p>장소</p>
           <Controller
@@ -106,9 +95,22 @@ const RegisterEventStep1 = ({
             control={control}
             rules={{ required: "주소를 입력해주세요." }}
             render={({ field }) => (
-              <AddressSearchInput
-                value={field.value}
-                onChange={field.onChange}
+              <LocationSearch
+                value={{
+                  address: field.value,
+                  latitude: watch("latitude"),
+                  longitude: watch("longitude"),
+                }}
+                onChange={(value) => {
+                  setValue("address", value.address);
+                  setValue("latitude", value.latitude);
+                  setValue("longitude", value.longitude);
+                  updateEventData({
+                    address: value.address,
+                    latitude: value.latitude,
+                    longitude: value.longitude,
+                  });
+                }}
               />
             )}
           />
@@ -173,7 +175,7 @@ const RegisterEventStep1 = ({
                       ? new Date(watch("startTime"))
                       : null;
                     if (startTime && date < startTime) {
-                      field.onChange(startTime.toISOString()); // startTime보다 빠르면 startTime으로 변경
+                      field.onChange(startTime.toISOString());
                     } else {
                       field.onChange(date.toISOString());
                     }
@@ -182,7 +184,7 @@ const RegisterEventStep1 = ({
                     watch("startTime")
                       ? new Date(watch("startTime"))
                       : undefined
-                  } // startTime 이후만 선택 가능
+                  }
                 />
               )}
             />
@@ -201,7 +203,7 @@ const RegisterEventStep1 = ({
                 value={field.value}
                 onChange={field.onChange}
                 placeholder="생일 카페 타이틀을 입력해주세요"
-                name={""}
+                name=""
               />
             )}
           />
@@ -218,8 +220,8 @@ const RegisterEventStep1 = ({
               <Input
                 value={field.value}
                 onChange={field.onChange}
-                placeholder="주최자의 X(구 twitter)계정을 입력해주세요"
-                name={""}
+                placeholder="주최자의 X(구 twitter) 계정을 입력해주세요"
+                name=""
               />
             )}
           />

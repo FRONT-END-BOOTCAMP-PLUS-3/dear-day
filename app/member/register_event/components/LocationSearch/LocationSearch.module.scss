@@ -19,3 +19,26 @@
   max-width: 90%;
   z-index: 1001;
 }
+.resultList {
+  max-height: 200px;
+  overflow-y: auto; /* 검색 결과가 많아도 스크롤 가능 */
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+}
+
+.resultList li {
+  padding: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.resultList li:hover {
+  background: #f2f2f2;
+}
