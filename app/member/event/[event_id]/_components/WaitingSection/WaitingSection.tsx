@@ -4,11 +4,11 @@ import FixedButton from "@/components/Button/FixedButton/FixedButton";
 import Notice from "./Notice/Notice";
 import Waiting from "./Waiting/Waiting";
 import styles from "./WaitingSection.module.scss";
-import { EventData } from "../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import { useState, useEffect } from "react";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function WaitingSection({ eventData }: Props) {
@@ -71,6 +71,10 @@ export default function WaitingSection({ eventData }: Props) {
       <h3>대기</h3>
       {isEnded ? (
         <div className={styles.closeWaiting}>종료된 생일카페입니다.</div>
+      ) : eventData.hasWaiting ? ( // ✅ 이미 예약한 경우 메시지 표시
+        <div className={styles.openInfo}>
+          <p>이미 대기중인 생일카페입니다.</p>
+        </div>
       ) : openWaiting ? (
         <div>
           <Waiting eventId={eventData.id} />
