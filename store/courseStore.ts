@@ -1,14 +1,14 @@
-import { CourseEventProps } from "@/app/member/course/create/page";
 import { create } from "zustand";
 
 interface CourseState {
   name: string;
   date: Date;
-  courseEvent: CourseEventProps[];
+  courseId: number;
+  courseEvent: number[];
   setName: (name: string) => void;
   setDate: (date: Date) => void;
-  setCourseEvent: (events: CourseEventProps[]) => void;
-  removeCourseEvent: (eventId: number) => void;
+  setCourseEvent: (events: number[]) => void;
+  setCourseId: (id: number) => void;
   reset: () => void;
 }
 
@@ -16,15 +16,19 @@ export const useCourseStore = create<CourseState>((set) => ({
   name: "",
   date: new Date(),
   courseEvent: [],
+  courseId: 1,
   setName: (name: string) => set(() => ({ name })),
   setDate: (date: Date) => set(() => ({ date })),
-  setCourseEvent: (events: CourseEventProps[]) =>
+  setCourseEvent: (events: number[]) =>
     set(() => ({
       courseEvent: events,
     })),
-  removeCourseEvent: (eventId: number) =>
-    set((state) => ({
-      courseEvent: state.courseEvent.filter((event) => event.id !== eventId),
+  setCourseId: (id: number) => set(() => ({ courseId: id })),
+  reset: () =>
+    set(() => ({
+      name: "",
+      date: new Date(),
+      courseEvent: [],
+      courseId: 1,
     })),
-  reset: () => set(() => ({ name: "", date: new Date(), courseEvent: [] })),
 }));
