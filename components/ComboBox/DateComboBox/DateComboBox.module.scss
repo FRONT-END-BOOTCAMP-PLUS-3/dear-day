@@ -1,28 +1,22 @@
-.dateSelectWrapper {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  min-width: 160px;
-}
-
 .dateSelectContainer {
   display: flex;
-  position: relative;
   width: 100%;
   padding: var(--padding-xs) var(--padding-md);
   align-items: center;
   justify-content: space-between;
   border-radius: 100px;
   background: var(--color-blue-bg);
-  font-size: var(--font-size-sm);
   cursor: pointer;
+  color: var(--color-gray-1);
+  font-weight: 300;
+  font-size: var(--font-size-sm);
 }
 
 .selectedDate {
   flex: 1;
   text-align: left;
   cursor: pointer;
-  white-space: nowrap;
+  margin-left: var(--margin-xs);
 }
 
 .hiddenDateInput {
@@ -34,7 +28,6 @@
 .iconWrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-  margin-right: var(--margin-xs);
+  gap: 10px;
+  cursor: pointer;
 }

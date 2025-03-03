@@ -1,0 +1,44 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); // 배경 어둡게
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; // ✅ 다른 요소 위로 올리기
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  z-index: 1001;
+}
+.resultList {
+  max-height: 200px;
+  overflow-y: auto; /* 검색 결과가 많아도 스크롤 가능 */
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+}
+
+.resultList li {
+  padding: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.resultList li:hover {
+  background: #f2f2f2;
+}

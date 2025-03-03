@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@prisma/client": "^6.4.0",
-    "@types/navermaps": "^3.7.9",
     "bcrypt": "^5.1.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
@@ -21,6 +20,7 @@
     "react": "^19.0.0",
     "react-datepicker": "^8.1.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
     "react-swipeable": "^7.0.2",
     "sass": "^1.85.0",
     "typescript-eslint": "^8.24.1",
@@ -31,6 +31,7 @@
     "@eslint/eslintrc": "^3",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/navermaps": "^3.7.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

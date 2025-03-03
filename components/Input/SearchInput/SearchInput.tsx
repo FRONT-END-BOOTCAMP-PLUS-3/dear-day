@@ -6,12 +6,14 @@ interface SearchInputProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  onFocus?: () => void;
 }
 
 const SearchInput = ({
   value,
   onChange,
   placeholder = "검색어를 입력하세요",
+  onFocus,
 }: SearchInputProps) => {
   return (
     <div className={styles.searchInputContainer}>
@@ -23,6 +25,7 @@ const SearchInput = ({
         onChange={onChange}
         placeholder={placeholder}
         className={styles.input}
+        onFocus={onFocus}
       />
     </div>
   );

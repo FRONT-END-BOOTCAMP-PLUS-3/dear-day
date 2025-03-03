@@ -1,6 +1,6 @@
 .nextButtonContainer {
   position: fixed;
-  z-index: 1000;
+  z-index: 999;
   bottom: 24px;
   text-align: center;
   max-width: calc(var(--size-max-width) - 2 * var(--size-gap));
