@@ -1,102 +1,55 @@
 "use client";
 
 import NextButton from "@/components/Button/NextButton/NextButton";
-import LargeCardView from "@/components/EventView/LargeCardView/LargeCardView";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./page.module.scss";
-import { useCourseStore } from "@/store/courseStore";
-import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
-import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store/authStore";
-
-export interface CourseEventProps {
-  id: number;
-  title: string;
-  starName: string;
-  startDate: Date;
-  endDate: Date;
-  address: string;
-  imgSrc: string;
-}
+import useToggle from "@/hooks/useToggle";
+import LikedEventsContainer, {
+  CourseEventProps,
+} from "./_components/LikedEventsContainer/LikedEventsContainer";
+import CourseModal from "./_components/CourseModal/CourseModal";
 
 const CourseCreatePage = () => {
-  const router = useRouter();
-  const { user } = useAuthStore();
-  const { name, date, setCourseEvent } = useCourseStore();
-  const [likedEvents, setLikedEvents] = useState<CourseEventProps[]>();
-  const [selectedEvents, setSelectedEvents] = useState<CourseEventProps[]>([]);
+  const [isModalOpen, toggleModal] = useToggle(false);
+  const [selectedEvents, setSelectedEvents] = useState<number[]>([]);
+  const [likedEvents, setLikedEvents] = useState<CourseEventProps[]>([]);
 
-  useEffect(() => {
-    const fetchLikedEventList = async () => {
-      try {
-        const response = await fetch("/api/course/create");
-        const data = await response.json();
-        setLikedEvents(data);
-      } catch (error) {
-        console.error("코스 목록 불러오기 실패:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchLikedEvents = async () => {
+  //     try {
+  //       const response = await fetch("/api/course/liked");
+  //       const data = await response.json();
+  //       setLikedEvents(data);
+  //     } catch (error) {
+  //       console.error("Liked Events Fetch Error:", error);
+  //     }
+  //   };
+  //   fetchLikedEvents();
+  // }, []);
 
-    fetchLikedEventList();
-  }, []);
-
-  const handleToggleEvent = (e: React.MouseEvent, event: CourseEventProps) => {
-    e.stopPropagation();
-    setSelectedEvents((prev) =>
-      prev.find((item) => item.id === event.id)
-        ? prev.filter((item) => item.id !== event.id)
-        : [...prev, event]
-    );
-  };
-
-  const handleMakeCourse = async () => {
-    if (selectedEvents.length > 0) {
-      setCourseEvent(selectedEvents);
-    }
-
-    try {
-      const response = await fetch("/api/course/create", {
-        method: "POST",
-        body: JSON.stringify({
-          user_id: user?.id,
-          name,
-          date,
-        }),
-      });
-      const data = await response.json();
-      const courseId = data.id;
-      alert("코스 만들기 완료!");
-      router.push(`/member/course/${courseId}`);
-    } catch (error) {
-      console.error("코스 생성 실패:", error);
-      alert("코스 생성에 실패했습니다.");
-    }
+  const handleMakeCourse = () => {
+    toggleModal();
   };
 
   return (
     <div className={styles.homeContainer}>
-      <ScrollCardContainer variant="grid">
-        {likedEvents && likedEvents.length > 0 ? (
-          likedEvents.map((event) => (
-            <div
-              key={event.id}
-              onClick={(e) => handleToggleEvent(e, event)}
-              className={
-                selectedEvents.find((item) => item.id === event.id)
-                  ? `${styles.cardWrapper} ${styles.selected}`
-                  : `${styles.cardWrapper}`
-              }
-            >
-              <LargeCardView {...event} readOnly={true} />
-            </div>
-          ))
-        ) : (
-          <div className={styles.emptyBox}>
-            <h3 className={styles.emptyText}>찜한 이벤트가 없습니다.</h3>
-          </div>
-        )}
-        <NextButton onClick={handleMakeCourse} value="코스 만들기" />
-      </ScrollCardContainer>
+      <LikedEventsContainer
+        selectedEvents={selectedEvents}
+        likedEvents={likedEvents}
+        onSelectionChange={(selected) => setSelectedEvents(selected)}
+      />
+      <div className={styles.buttonWrapper}>
+        <NextButton
+          onClick={handleMakeCourse}
+          value="코스 만들기"
+          disabled={likedEvents.length === 0 || selectedEvents.length === 0}
+        />
+        <CourseModal
+          isOpen={isModalOpen}
+          toggleModal={toggleModal}
+          selectedEvents={selectedEvents}
+        />
+      </div>
     </div>
   );
 };

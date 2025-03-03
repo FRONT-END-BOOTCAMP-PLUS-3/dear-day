@@ -2,38 +2,10 @@
   @include pageContainer;
 
   padding: 0;
-  margin-bottom: 50px;
 }
 
-.cardWrapper {
+.buttonWrapper {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   width: 100%;
-}
-
-.selected {
-  position: relative;
-  z-index: 999;
-  outline: 2px solid var(--color-secondary);
-  box-shadow: 0 0 10px rgba(68, 78, 99, 0.5);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.selected:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 15px rgba(68, 78, 99, 0.7);
-}
-
-.emptyBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.emptyText {
-  display: flex;
-  white-space: nowrap;
+  padding: 0 var(--padding-xl);
 }
