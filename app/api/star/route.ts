@@ -15,6 +15,11 @@ export async function POST(req: NextRequest) {
   try {
     const uploadFolder = path.join(process.cwd(), "public/demo/star"); // 이미지 저장될 경로
 
+    // 폴더가 없으면 생성
+    if (!fs.existsSync(uploadFolder)) {
+      fs.mkdirSync(uploadFolder, { recursive: true }); // 하위 폴더까지 생성 가능
+    }
+
     return new Promise(async (resolve) => {
       const formData = await req.formData();
 
