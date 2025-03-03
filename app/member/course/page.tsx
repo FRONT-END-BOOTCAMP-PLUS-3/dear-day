@@ -14,15 +14,18 @@ import { InputFormData } from "@/components/modal/Modal.type";
 
 export default function CoursePage() {
   const router = useRouter();
-  const { setName, setDate } = useCourseStore();
-
-  const [courseList, setCourseList] = useState<CourseListViewProps[]>([]);
   const [isModalOpen, toggleModal] = useToggle(false);
+  const { setName, setDate, setCourseId, setCourseEvent } = useCourseStore();
+  const [courseList, setCourseList] = useState<CourseListViewProps[]>([]);
 
   useEffect(() => {
     const fetchCourseList = async () => {
       try {
         const response = await fetch("/api/course");
+        if (!response.ok) {
+          console.error("코스 목록 불러오기 실패");
+          return;
+        }
         const data = await response.json();
         setCourseList(data);
       } catch (error) {
@@ -43,9 +46,7 @@ export default function CoursePage() {
     }
     if (courseDate) {
       setDate(new Date(courseDate));
-      console.log(new Date(courseDate));
     }
-
     router.push("/member/course/create");
   };
 
@@ -53,6 +54,22 @@ export default function CoursePage() {
     toggleModal();
     setName("");
     setDate(new Date());
+  };
+
+  const handleCourseClick = async (course: CourseListViewProps) => {
+    setCourseId(course.id);
+    try {
+      const response = await fetch(`/api/course/${course.id}/events`);
+      if (!response.ok) {
+        console.error("Course Event 테이블 호출 실패");
+        return;
+      }
+      const data = await response.json();
+      setCourseEvent(data.events);
+      router.push(`/member/course/${course.id}`);
+    } catch (error) {
+      console.error("Error fetching course events:", error);
+    }
   };
 
   return (
@@ -79,7 +96,9 @@ export default function CoursePage() {
       />
       {courseList.length > 0 ? (
         courseList.map((course) => (
-          <CourseListView key={course.id} {...course} />
+          <div key={course.id} onClick={() => handleCourseClick(course)}>
+            <CourseListView {...course} />
+          </div>
         ))
       ) : (
         <div className={styles.emptyNoticeContainer}>
