@@ -1,45 +1,20 @@
 import { NextResponse } from "next/server";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { getUserIdFromToken } from "@/utils/auth"; // 공통 함수 가져오기
 import { ShowEventDetail } from "@/application/usecases/event/ShowEventDetail";
 import { PgEventRepository } from "@/infrastructure/repositories/PgEventRepository";
 import { PgStarRepository } from "@/infrastructure/repositories/PgStarRepository";
 import { PgReservationSettingRepository } from "@/infrastructure/repositories/PgReservationSettingRepository";
 import { PgReservationRepository } from "@/infrastructure/repositories/PgReservationRepository";
 import { PgWaitingRepository } from "@/infrastructure/repositories/PgWaitingRepository";
-import { cookies } from "next/headers"; // 쿠키에서 토큰 가져오기
 
 export async function GET(req: Request) {
   try {
-    // 1. 쿠키에서 토큰 가져오기
-    const cookieStore = await cookies();
-    const token = cookieStore.get("auth_token")?.value;
+    // 인증 처리 (공통 함수 사용)
+    const userId = await getUserIdFromToken();
 
-    if (!token) {
+    if (!userId) {
       return NextResponse.json(
         { error: "인증이 필요합니다." },
-        { status: 401 }
-      );
-    }
-
-    // 2. 토큰 해석하여 userId 추출
-    let userId: string;
-    try {
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET as string
-      ) as JwtPayload;
-
-      if (!decoded || typeof decoded !== "object" || !("id" in decoded)) {
-        return NextResponse.json(
-          { error: "유효하지 않은 토큰입니다." },
-          { status: 401 }
-        );
-      }
-
-      userId = decoded.id as string; // 기존 `let userId`에 할당
-    } catch (error) {
-      return NextResponse.json(
-        { error: "유효하지 않은 토큰입니다." },
         { status: 401 }
       );
     }
