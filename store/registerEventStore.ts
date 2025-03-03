@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 // Step 1, 2, 3의 데이터를 각각 인터페이스로 정의
 interface RegisterEventStep1 {
+  placeName: string;
   address: string;
   latitude: number;
   longitude: number;
@@ -46,6 +47,7 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
   step: 1,
   setStep: (step) => set({ step }),
   eventData: {
+    placeName: "",
     address: "",
     latitude: 0,
     longitude: 0,
@@ -75,6 +77,7 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
   resetEventData: () =>
     set({
       eventData: {
+        placeName: "",
         address: "",
         latitude: 0,
         longitude: 0,
