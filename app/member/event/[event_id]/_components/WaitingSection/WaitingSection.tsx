@@ -66,6 +66,37 @@ export default function WaitingSection({ eventData }: Props) {
     }
   }, [eventData]);
 
+  // 대기 요청 함수
+  const handleWaiting = async () => {
+    if (!eventId || !headCount) {
+      alert("유효하지 않은 이벤트입니다.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/event/make-waiting`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 쿠키 포함 요청
+        body: JSON.stringify({
+          eventId,
+          headCount,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("예약 요청 실패!");
+      }
+
+      alert("예약이 완료되었습니다!"); // TODO: 추후에 성공하면 TicketModal 띄우는거 해야함
+    } catch (error) {
+      alert("예약 중 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("예약 오류:", error);
+    }
+  };
+
   return (
     <div className={styles.waitingSection}>
       <h3>대기</h3>
@@ -80,10 +111,7 @@ export default function WaitingSection({ eventData }: Props) {
           <Waiting eventId={eventData.id} />
           <Notice />
           <div className={styles.button}>
-            <FixedButton
-              onClick={() => alert("대기 신청 완료!")}
-              value={"대기하기"}
-            />
+            <FixedButton onClick={handleWaiting} value={"대기하기"} />
           </div>
         </div>
       ) : (
