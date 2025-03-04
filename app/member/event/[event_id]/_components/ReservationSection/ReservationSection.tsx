@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import SelectDateTime from "./SelectDateTime/SelectDateTime";
 import Notice from "./Notice/Notice";
@@ -17,6 +18,8 @@ export default function ReservationSection({ eventData }: Props) {
   const [isEnded, setIsEnded] = useState(false);
   const { date, time, isSoldOut } = useReservationStore();
   const [timeLeft, setTimeLeft] = useState<string>("");
+  const { event_id } = useParams();
+  const eventId = event_id as string;
 
   useEffect(() => {
     const updateStatus = () => {
@@ -53,7 +56,7 @@ export default function ReservationSection({ eventData }: Props) {
     }
 
     try {
-      const response = await fetch("/api/event/make-reservation", {
+      const response = await fetch(`/api/event/make-reservation/${eventId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
