@@ -1,22 +1,7 @@
 import { useState, useEffect } from "react";
 import { transformReservations, generateHourlyList } from "./utils";
-import { Reservation, ReservationData } from "./types";
-
-// 예약 관련 데모데이터
-const mockReservations: ReservationData[] = [
-  { reservationConfirmedAt: "2025-03-01T10:00:00" },
-  { reservationConfirmedAt: "2025-03-01T10:00:00" },
-  { reservationConfirmedAt: "2025-03-01T10:00:00" },
-  { reservationConfirmedAt: "2025-03-01T11:00:00" },
-  { reservationConfirmedAt: "2025-03-01T11:00:00" },
-  { reservationConfirmedAt: "2025-03-01T11:00:00" },
-  { reservationConfirmedAt: "2025-03-01T12:00:00" },
-  { reservationConfirmedAt: "2025-03-01T12:00:00" },
-  { reservationConfirmedAt: "2025-03-01T12:00:00" },
-  { reservationConfirmedAt: "2025-03-02T11:00:00" },
-  { reservationConfirmedAt: "2025-03-02T11:00:00" },
-  { reservationConfirmedAt: "2025-03-02T11:00:00" },
-];
+import { Reservation } from "./types";
+import { CheckReservationAvailabilityDto } from "@/application/usecases/event/dto/CheckReservationAvailabilityDto";
 
 const useReservations = (
   eventId?: number,
@@ -29,12 +14,28 @@ const useReservations = (
 
   // eventId를 보내서 예약 목록 받아오기 (추후 API추가 예정)
   useEffect(() => {
-    if (eventId && limit) {
-      const transformedData = transformReservations(mockReservations);
-      setReservations(transformedData);
-    } else {
-      setReservations([]);
-    }
+    const fetchReservations = async () => {
+      if (!eventId || !limit) {
+        setReservations([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/event/reservation/${eventId}`);
+        if (!response.ok) {
+          throw new Error(`API 요청 실패: ${response.status}`);
+        }
+
+        // 데이터 변환 후 상태 저장
+        const data: CheckReservationAvailabilityDto = await response.json();
+        const transformedData = transformReservations(data);
+        setReservations(transformedData);
+      } catch (err) {
+        setReservations([]);
+      }
+    };
+
+    fetchReservations();
   }, [eventId, limit]);
 
   const selectedDateReservations =
