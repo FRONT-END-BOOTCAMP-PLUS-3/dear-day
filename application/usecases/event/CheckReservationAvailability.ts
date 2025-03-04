@@ -1,7 +1,7 @@
 import { ReservationRepository } from "@/domain/repositories/ReservationRepository";
 import { CheckReservationAvailabilityDto } from "./dto/CheckReservationAvailabilityDto";
 
-export const CheckReservationAvailabilityUsecase = async (
+export const CheckReservationAvailability = async (
   eventId: number,
   reservationRepository: ReservationRepository
 ): Promise<CheckReservationAvailabilityDto> => {
