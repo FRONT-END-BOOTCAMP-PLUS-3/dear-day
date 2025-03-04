@@ -11,20 +11,26 @@ export default function Waiting({ eventId }: Props) {
   const [waitingCount, setWaitingCount] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [reservationCount, setReservationCount] = useState<number>(1); // ✅ 최소 1명부터 시작
+  const [headCount, setHeadCount] = useState<number>(1);
 
   useEffect(() => {
     const fetchWaitingCount = async () => {
       try {
         setLoading(true);
         setError(null);
-        setWaitingCount(10); // ✅ 데모 데이터 (실제 API 사용 시 변경 가능)
 
-        // 실제 API 사용 시:
-        // const response = await fetch(`/api/waiting?eventId=${eventId}`);
-        // if (!response.ok) throw new Error("대기 정보를 가져오는 데 실패했습니다.");
-        // const data = await response.json();
-        // setWaitingCount(data.waitingCount);
+        const response = await fetch(`/api/waiting`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ eventId, headCount }),
+        });
+        if (!response.ok)
+          throw new Error("대기 정보를 가져오는 데 실패했습니다.");
+        const data = await response.json();
+        setWaitingCount(data.waitingCount);
       } catch (err) {
         setError("대기 정보를 불러올 수 없습니다.");
       } finally {
@@ -36,14 +42,14 @@ export default function Waiting({ eventId }: Props) {
   }, [eventId]);
 
   const handleIncrease = () => {
-    if (reservationCount < 4) {
-      setReservationCount((prev) => prev + 1);
+    if (headCount < 4) {
+      setHeadCount((prev) => prev + 1);
     }
   };
 
   const handleDecrease = () => {
-    if (reservationCount > 1) {
-      setReservationCount((prev) => prev - 1);
+    if (headCount > 1) {
+      setHeadCount((prev) => prev - 1);
     }
   };
 
@@ -65,15 +71,15 @@ export default function Waiting({ eventId }: Props) {
         <button
           className={styles.decreaseButton}
           onClick={handleDecrease}
-          disabled={reservationCount === 1}
+          disabled={headCount === 1}
         >
           −
         </button>
-        <span className={styles.reservationCount}>{reservationCount}</span>
+        <span className={styles.reservationCount}>{headCount}</span>
         <button
           className={styles.increaseButton}
           onClick={handleIncrease}
-          disabled={reservationCount === 4}
+          disabled={headCount === 4}
         >
           +
         </button>
