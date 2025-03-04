@@ -1,9 +1,9 @@
 import { ReservationRepository } from "@/domain/repositories/ReservationRepository";
-import { makeReservationDto } from "./dto/makeReservationDto";
+import { MakeReservationDto } from "./dto/MakeReservationDto";
 import { Reservation } from "@prisma/client";
 
-export const ShowEventDetail = async (
-  data: makeReservationDto,
+export const MakeReservation = async (
+  data: MakeReservationDto,
   reservationRepository: ReservationRepository
 ): Promise<void> => {
   const reservationConfirmedAt = new Date(

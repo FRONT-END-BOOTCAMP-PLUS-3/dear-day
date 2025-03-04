@@ -1,4 +1,4 @@
-export interface makeReservationDto {
+export interface MakeReservationDto {
   userId: string;
   eventId: number;
   selectedDate: string;
