@@ -1,11 +1,12 @@
-import { ReservationData, Reservation } from "./types";
+import { CheckReservationAvailabilityDto } from "@/application/usecases/event/dto/CheckReservationAvailabilityDto";
+import { Reservation } from "./types";
 
 export const transformReservations = (
-  data: ReservationData[]
+  data: CheckReservationAvailabilityDto
 ): Reservation[] => {
   const reservationMap = new Map<string, Map<string, number>>();
 
-  data.forEach(({ reservationConfirmedAt }) => {
+  data.reservationConfirmedAt.forEach((reservationConfirmedAt) => {
     const dateObj = new Date(reservationConfirmedAt);
     const date = new Intl.DateTimeFormat("en-US", {
       month: "short",

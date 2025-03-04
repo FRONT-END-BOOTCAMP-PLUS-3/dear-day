@@ -21,7 +21,8 @@ export async function GET(req: Request) {
 
     // 3. 유즈케이스에 `userId` 전달
     const { searchParams } = new URL(req.url);
-    const eventId = Number(searchParams.get("[event_id]"));
+    const eventId = Number(searchParams.get("eventId"));
+
     if (!eventId) {
       return NextResponse.json(
         { error: "eventId가 필요합니다." },

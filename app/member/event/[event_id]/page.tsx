@@ -28,7 +28,12 @@ export default function EventDetail() {
       router.replace("/"); // eventId가 없으면 /로 리디렉트
       return;
     }
-    fetch(`/api/event/${eventId}`, {
+    const queryParams = new URLSearchParams({
+      eventId: eventId.toString(),
+    }).toString();
+
+    fetch(`/api/event?${queryParams}`, {
+      // eventId를 쿼리 스트링으로 전달
       method: "GET",
       credentials: "include", // ⭐️ 서버에서 userId가 필요하니까 쿠키를 포함하여 전송 ⭐️
     })
