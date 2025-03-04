@@ -15,10 +15,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { searchParams } = new URL(req.url);
-    const eventId = Number(searchParams.get("eventId"));
-    const date = searchParams.get("date");
-    const time = searchParams.get("time");
+    const body = await req.json();
+    const { eventId, date, time } = body;
 
     if (!eventId || !date || !time) {
       return NextResponse.json(

@@ -56,28 +56,24 @@ export default function ReservationSection({ eventData }: Props) {
     }
 
     try {
-      const queryParams = new URLSearchParams({
-        eventId: eventId.toString(), // ✅ eventId를 쿼리 스트링으로 변환
-        date,
-        time,
-      }).toString();
-
-      const response = await fetch(
-        `/api/event/make-reservation?${queryParams}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // ✅ 쿠키 포함 요청
-        }
-      );
+      const response = await fetch(`/api/event/make-reservation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 쿠키 포함 요청
+        body: JSON.stringify({
+          eventId, // body로 eventId 포함
+          date,
+          time,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("예약 요청 실패!");
       }
 
-      alert("예약이 완료되었습니다!");
+      alert("예약이 완료되었습니다!"); // TODO: 추후에 성공하면 TicketModal 띄우는거 해야함
     } catch (error) {
       alert("예약 중 오류가 발생했습니다. 다시 시도해주세요.");
       console.error("예약 오류:", error);
