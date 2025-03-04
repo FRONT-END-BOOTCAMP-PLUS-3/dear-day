@@ -32,11 +32,24 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   const dates = generateDateList(startDate, endDate);
   const times = selectedDate ? generateHourlyList(startTime, endTime) : [];
 
+  const convertToISODate = (formattedDate: string): string => {
+    const today = new Date(); // 현재 날짜
+    const parsedDate = new Date(`${formattedDate}, ${today.getFullYear()}`); // 기본적으로 현재 연도 사용
+
+    // 선택한 날짜가 오늘보다 과거라면 다음 해로 설정
+    if (parsedDate < today) {
+      parsedDate.setFullYear(today.getFullYear() + 1);
+    }
+
+    return parsedDate.toISOString().split("T")[0];
+  };
+
   const handleDateSelect = (date: string) => {
     if (disabledDates.includes(date)) return;
     setSelectedDate(date);
     setSelectedTime(null);
-    onSelectDate(date);
+    const isoDate = convertToISODate(date);
+    onSelectDate(isoDate);
   };
 
   const handleTimeSelect = (time: string) => {

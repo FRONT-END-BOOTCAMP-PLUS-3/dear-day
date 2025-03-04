@@ -1,0 +1,11 @@
+.emptyBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--padding-lg);
+}
+
+.emptyText {
+  text-align: center;
+  color: var(--color-gray-1);
+}

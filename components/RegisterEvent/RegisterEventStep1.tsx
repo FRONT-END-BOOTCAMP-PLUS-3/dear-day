@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import LocationSearch from "@/app/member/register_event/components/LocationSearch/LocationSearch";
 
 export interface RegisterEventStep1Form {
+  placeName: string;
   address: string;
   latitude: number;
   longitude: number;
@@ -38,6 +39,7 @@ const RegisterEventStep1 = ({
   } = useForm<RegisterEventStep1Form>({
     mode: "onChange",
     defaultValues: {
+      placeName: eventData?.placeName || "",
       address: eventData?.address || "",
       latitude: eventData?.latitude || 0,
       longitude: eventData?.longitude || 0,
@@ -59,9 +61,10 @@ const RegisterEventStep1 = ({
     }
   }, [startDate, endDate, setValue]);
 
-  // ✅ store 값이 변경될 때 form 값도 자동 업데이트
+  // store 값이 변경될 때 form 값도 자동 업데이트
   useEffect(() => {
     if (eventData) {
+      setValue("placeName", eventData.placeName || "");
       setValue("address", eventData.address || "");
       setValue("latitude", eventData.latitude || 0);
       setValue("longitude", eventData.longitude || 0);
@@ -69,7 +72,9 @@ const RegisterEventStep1 = ({
   }, [eventData, setValue]);
 
   const onSubmit = (data: RegisterEventStep1Form) => {
+    console.log("Step1 제출 데이터:", data);
     updateEventData({
+      placeName: data.placeName,
       address: data.address,
       latitude: data.latitude,
       longitude: data.longitude,
@@ -91,21 +96,24 @@ const RegisterEventStep1 = ({
         <div className={styles.containerItem}>
           <p>장소</p>
           <Controller
-            name="address"
+            name="placeName"
             control={control}
-            rules={{ required: "주소를 입력해주세요." }}
+            rules={{ required: "장소명을 입력해주세요." }}
             render={({ field }) => (
               <LocationSearch
                 value={{
-                  address: field.value,
+                  placeName: field.value,
+                  address: watch("address"),
                   latitude: watch("latitude"),
                   longitude: watch("longitude"),
                 }}
                 onChange={(value) => {
+                  setValue("placeName", value.placeName);
                   setValue("address", value.address);
                   setValue("latitude", value.latitude);
                   setValue("longitude", value.longitude);
                   updateEventData({
+                    placeName: value.placeName,
                     address: value.address,
                     latitude: value.latitude,
                     longitude: value.longitude,
@@ -128,6 +136,7 @@ const RegisterEventStep1 = ({
                 <DateSelectButton
                   value={field.value ? new Date(field.value) : null}
                   onChange={field.onChange}
+                  minDate={new Date()}
                 />
               )}
             />
@@ -231,6 +240,7 @@ const RegisterEventStep1 = ({
           onClick={handleSubmit(onSubmit)}
           value="다음"
           disabled={!isValid}
+          type={"button"}
         />
       </div>
     </form>

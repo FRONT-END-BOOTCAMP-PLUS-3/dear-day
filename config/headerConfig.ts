@@ -22,12 +22,16 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   },
   {
     pattern: /^\/member\/course\/create$/,
-    config: { type: "dynamic", title: "코스 만들기" },
+    config: { type: "back", title: "코스 만들기" },
   },
   {
     pattern: /^\/member\/course\/[^/]+$/,
-    config: { type: "dynamic", title: "코스이름" },
+    config: { type: "back", title: "코스이름" },
   }, // /member/course/[course_id]
+  {
+    pattern: /^\/member\/course\/[^/]+\/edit$/,
+    config: { type: "back", title: "코스 수정" },
+  }, // /member/course/[courseId]/edit
   { pattern: /^\/member\/event\/[^/]+$/, config: { type: "back", title: "" } }, // /member/event/[event_id]
   { pattern: /^\/member\/list$/, config: { type: "back", title: "생카 목록" } },
   {

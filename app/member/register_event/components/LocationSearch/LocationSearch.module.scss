@@ -4,35 +4,49 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); // 배경 어둡게
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; // ✅ 다른 요소 위로 올리기
+  z-index: 1000;
 }
 
 .modalContent {
-  background: white;
+  position: relative;
+  background: var(--color-white);
   padding: 20px;
   border-radius: 8px;
   width: 400px;
   max-width: 90%;
   z-index: 1001;
 }
-.resultList {
-  max-height: 200px;
-  overflow-y: auto; /* 검색 결과가 많아도 스크롤 가능 */
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 5px;
+.close {
   position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+}
+.searchContainer {
+  position: relative;
   width: 100%;
-  top: 100%;
-  left: 0;
-  z-index: 10;
+}
+.searchInput {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  width: 100%;
 }
 
+.resultList {
+  position: absolute;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--color-white);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); // ✅ 더 뚜렷한 그림자 효과 추가
+  z-index: 1000;
+}
 .resultList li {
   padding: 8px;
   cursor: pointer;
@@ -42,3 +56,4 @@
 .resultList li:hover {
   background: #f2f2f2;
 }
+

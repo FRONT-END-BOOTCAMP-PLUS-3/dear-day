@@ -10,67 +10,67 @@ import RegisterEventStep2, {
 import RegisterEventStep3, {
   RegisterEventStep3Form,
 } from "@/components/RegisterEvent/RegisterEventStep3";
+import SearchStar from "@/components/SearchStar/SearchStar";
 import styles from "./page.module.scss";
-import { useRouter } from "next/navigation";
 
 export default function RegisterEventPage() {
-  const { step, setStep, eventData, updateEventData, resetEventData } =
-    useRegisterEventStore();
-  const router = useRouter();
-
-  // `handleNext`가 step1, step2, step3의 모든 타입을 받을 수 있도록 변경
+  const { step, setStep, eventData, updateEventData } = useRegisterEventStore();
+  // 모든 단계 폼 타입
   type RegisterEventForm =
     | RegisterEventStep1Form
     | RegisterEventStep2Form
     | RegisterEventStep3Form;
 
-  const handleNext = async (data: RegisterEventForm) => {
-    await updateEventData({
-      ...data,
-      startDate:
-        "startDate" in data && data.startDate
-          ? new Date(data.startDate)
-          : eventData.startDate,
-      endDate:
-        "endDate" in data && data.endDate
-          ? new Date(data.endDate)
-          : eventData.endDate,
-    });
+  const handleNext = async (data?: RegisterEventForm) => {
+    if (step === 0) {
+      setStep(1);
+      return;
+    }
 
-    console.log(
-      "최신 Store 데이터:",
-      useRegisterEventStore.getState().eventData
-    );
+    if (data) {
+      await updateEventData({
+        ...data,
+        startDate:
+          "startDate" in data && data.startDate
+            ? new Date(data.startDate)
+            : eventData.startDate,
+        endDate:
+          "endDate" in data && data.endDate
+            ? new Date(data.endDate)
+            : eventData.endDate,
+      });
+
+      console.log(
+        "🚀 최신 Store 데이터:",
+        useRegisterEventStore.getState().eventData
+      );
+    }
 
     if (step < 3) {
       setStep(step + 1);
-    } else {
-      // try {
-      //   const response = await fetch("/api/register-event", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(useRegisterEventStore.getState().eventData),
-      //   });
-      //   if (!response.ok) throw new Error("이벤트 등록 실패");
-      //   console.log("이벤트 등록 성공!");
-      //   resetEventData(); // 데이터 초기화
-      //   // router.push("/events");
-      // } catch (error) {
-      //   console.error("등록 중 오류 발생:", error);
-      // }
     }
   };
 
+  // 스타 선택 시 store에 저장 & step 이동
+  const handleSelectStar = async (selectedStar: { id: number }) => {
+    await updateEventData({ starId: selectedStar.id });
+    console.log("✅ 선택된 스타 ID:", selectedStar.id);
+    console.log(
+      "🚀 최신 Store 데이터:",
+      useRegisterEventStore.getState().eventData
+    );
+    setStep(1);
+  };
+
   const handlePrev = () => {
-    if (step > 1) {
+    if (step > 0) {
       setStep(step - 1);
     }
   };
 
   return (
     <div className={styles.homeContainer}>
+      {step === 0 && <SearchStar onSelectStar={handleSelectStar} />}
       {step === 1 && <RegisterEventStep1 onNext={handleNext} />}
       {step === 2 && (
         <RegisterEventStep2 onNext={handleNext} onPrev={handlePrev} />

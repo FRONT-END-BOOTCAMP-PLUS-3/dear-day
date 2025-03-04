@@ -1,0 +1,29 @@
+.tabButtons {
+  display: flex;
+  border-bottom: 1px solid var(--color-gray-2);
+
+  button {
+    flex: 1;
+    padding: var(--padding-sm);
+    text-align: center;
+    font-size: var(--font-size-md);
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    border-bottom: 2px solid transparent;
+
+    &.active {
+      color: var(--color-black);
+      border-bottom: 2px solid black;
+    }
+
+    &:not(.active) {
+      color: var(--color-gray-1);
+    }
+  }
+}
+.tabContent {
+  padding: 15px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
