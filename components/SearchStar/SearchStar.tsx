@@ -1,55 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import styles from "./SearchStar.module.scss";
 import SearchInput from "../Input/SearchInput/SearchInput";
 import StarView from "../StarView/StarView";
+import { searchStarListDto } from "@/application/usecases/star/dto/SearchStarListDto";
 
-const SearchStar = () => {
-  const [query, setQuery] = useState(""); // 검색어 상태
-  // const [results, setResults] = useState<string[]>([]); // 검색 결과 상태
-  // const [debouncedQuery, setDebouncedQuery] = useState(query);
+interface SearchStarProps {
+  query: string;
+  setQuery: (query: string) => void;
+  results: searchStarListDto[];
+  onSelectStar?: (id: number) => void;
+  onSelectId?: (id: number) => void;
+  isLoading: boolean;
+}
 
-  // 데베 연결 전 임시 데이터
-  const data = [
-    { id: 1, name: "원빈", image: "/images/wonbin.jpg" },
-    { id: 2, name: "윈터", image: "/images/winter.jpg" },
-    { id: 3, name: "윈디", image: "/images/windy.jpg" },
-    { id: 4, name: "보이넥스트도어", image: "/images/boynextdoor.jpg" },
-    { id: 5, name: "워너원", image: "/images/wannaone.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-  ];
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setDebouncedQuery(query);
-  //   }, 300);
-
-  //   return () => clearTimeout(timer);
-  // }, [query]);
-
-  // useEffect(() => {
-  //   if (debouncedQuery) {
-  //     fetch(`/api/search?query=${debouncedQuery}`)
-  //       .then((res) => res.json())
-  //       .then((data) => setResults(data))
-  //       .catch((error) => console.error("검색 오류:", error));
-  //   } else {
-  //     setResults([]);
-  //   }
-  // }, [debouncedQuery]);
-
-  // 데베 연결 전 임시 필터링
-  const filteredResults = data.filter((item) =>
-    item.name.toLowerCase().includes(query.toLowerCase())
-  );
-
+const SearchStar: React.FC<SearchStarProps> = ({
+  query,
+  setQuery,
+  results,
+  onSelectStar,
+  isLoading,
+}) => {
   return (
     <>
       <SearchInput
@@ -58,19 +29,29 @@ const SearchStar = () => {
         placeholder={"스타의 이름을 검색하세요"}
       />
 
-      {query && (
+      {query.trim() !== "" && (
         <ul className={styles.searchStarContainer}>
-          {/* 데이터베이스 연결하면 filteredResults 대신 results 사용 */}
-          {filteredResults.length > 0 ? (
-            filteredResults.map((item) => (
-              <li key={item.id} className={styles.searchStarItem}>
+          {isLoading ? (
+            <li className={styles.searchStarNoItem}>
+              <p>검색 중...</p>
+            </li>
+          ) : results.length > 0 ? (
+            results.map((item) => (
+              <li
+                key={item.id}
+                className={styles.searchStarItem}
+                onClick={() => onSelectStar(item.id)}
+              >
                 <StarView starImage={item.image} starName={item.name} />
               </li>
             ))
           ) : (
-            <li className={styles.searchStarNoItem}>
-              <p>결과 없음</p>
-            </li>
+            !isLoading &&
+            query.trim() !== "" && (
+              <li className={styles.searchStarNoItem}>
+                <p>결과 없음</p>
+              </li>
+            )
           )}
         </ul>
       )}

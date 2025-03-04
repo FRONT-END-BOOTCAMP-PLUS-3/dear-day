@@ -5,8 +5,6 @@ const prisma = new PrismaClient();
 
 export class PgStarRepository implements StarRepository {
   async createStar(star: Star): Promise<void> {
-    console.log(star);
-
     try {
       await prisma.star.create({
         data: {
@@ -17,6 +15,53 @@ export class PgStarRepository implements StarRepository {
           birthday: star.birthday,
         },
       });
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
+  async searchStarByKeyword(keyword: string): Promise<
+    {
+      id: number;
+      image: string;
+      stageName: string | null;
+      realName: string | null;
+      group: string | null;
+    }[]
+  > {
+    try {
+      const stars = await prisma.star.findMany({
+        where: {
+          OR: [
+            {
+              stageName: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+            {
+              realName: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+            {
+              group: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+          image: true,
+          stageName: true,
+          realName: true,
+          group: true,
+        },
+      });
+      return stars;
     } finally {
       await prisma.$disconnect();
     }
