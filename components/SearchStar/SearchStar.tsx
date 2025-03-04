@@ -5,7 +5,7 @@ import SearchInput from "../Input/SearchInput/SearchInput";
 import StarView from "../StarView/StarView";
 import { searchStarListDto } from "@/application/usecases/star/dto/SearchStarListDto";
 import { useEffect, useState } from "react";
-import { searchStarByKeyword } from "@/app/member/search_star/_api/searchStarByKeyword";
+import { searchStarByKeyword } from "@/components/SearchStar/_api/searchStarByKeyword";
 
 interface SearchStarProps {
   onSelectStar?: (id: number) => void;
