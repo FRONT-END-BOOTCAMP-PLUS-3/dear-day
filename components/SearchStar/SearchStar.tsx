@@ -8,14 +8,10 @@ import { useEffect, useState } from "react";
 import { searchStarByKeyword } from "@/components/SearchStar/_api/searchStarByKeyword";
 
 interface SearchStarProps {
-  onSelectStar?: (id: number) => void;
-  onSelectId?: (id: number) => void;
+  onSelectStarId: (id: number) => void;
 }
 
-const SearchStar: React.FC<SearchStarProps> = ({
-  onSelectStar,
-  onSelectId,
-}) => {
+const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<searchStarListDto[]>([]);
   const [debouncedQuery, setDebouncedQuery] = useState(query);
@@ -69,10 +65,7 @@ const SearchStar: React.FC<SearchStarProps> = ({
               <li
                 key={item.id}
                 className={styles.searchStarItem}
-                onClick={() => {
-                  onSelectStar?.(item.id);
-                  onSelectId?.(item.id);
-                }}
+                onClick={() => onSelectStarId(item.id)}
               >
                 <StarView starImage={item.image} starName={item.name} />
               </li>

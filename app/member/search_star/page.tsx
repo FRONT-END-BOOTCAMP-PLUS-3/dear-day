@@ -13,7 +13,7 @@ const SearhStarPage = () => {
 
   return (
     <div className={styles.homeContainer}>
-      <SearchStar onSelectStar={handleSelect} />
+      <SearchStar onSelectStarId={handleSelect} />
     </div>
   );
 };
