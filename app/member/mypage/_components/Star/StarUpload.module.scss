@@ -1,0 +1,18 @@
+.starPlusContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.starPlusButton {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  margin: var(--margin-xs);
+  font-size: var(--font-size-md);
+  background: var(--color-blue-bg);
+  cursor: pointer;
+}
+.plusText {
+  font-size: var(--font-size-xs);
+}

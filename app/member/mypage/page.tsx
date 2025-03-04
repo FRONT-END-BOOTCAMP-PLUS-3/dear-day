@@ -4,24 +4,28 @@ import Profile from "./_components/Profile/Profile";
 import Tab from "./_components/Tab/Tab";
 import styles from "./page.module.scss";
 import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
-import List from "@/components/List";
 import SmallCardView from "@/components/EventView/SmallCardView/SmallCardView";
+import StarView from "@/components/StarView/StarView";
+import SearchStar from "@/components/SearchStar/SearchStar";
+import useToggle from "@/hooks/useToggle";
+import StarUpload from "./_components/Star/StarUpload";
 
 const Page = () => {
   const starData = [
-    { id: 1, image: "/demo/main-poster.jpeg" },
-    { id: 2, image: "/demo/main-poster.jpeg" },
-    { id: 3, image: "/demo/main-poster.jpeg" },
-    { id: 4, image: "/demo/main-poster.jpeg" },
-    { id: 5, image: "/demo/main-poster.jpeg" },
-    { id: 6, image: "/demo/main-poster.jpeg" },
-    { id: 7, image: "/demo/main-poster.jpeg" },
-    { id: 8, image: "/demo/main-poster.jpeg" },
-    { id: 9, image: "/demo/main-poster.jpeg" },
-    { id: 10, image: "/demo/main-poster.jpeg" },
-    { id: 11, image: "/demo/main-poster.jpeg" },
-    { id: 12, image: "/demo/main-poster.jpeg" },
+    { id: 1, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 2, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 3, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 4, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 5, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 6, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 7, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 8, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 9, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 10, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 11, name: "민지", image: "/demo/main-poster.jpeg" },
+    { id: 12, name: "민지", image: "/demo/main-poster.jpeg" },
   ];
+  const [isModalOpen, toggleModal] = useToggle(false);
 
   const cardData = [
     {
@@ -114,8 +118,10 @@ const Page = () => {
     <div className={styles.tabContent}>
       <p className={styles.title}>찜한 스타</p>
       <ScrollCardContainer variant={"gridStar"}>
+        {/* ⭐ StarUploadButton 클릭 시 모달 열기 */}
+        <StarUpload onClick={toggleModal} />
         {starData.map((card) => (
-          <List key={card.id} image={card.image} />
+          <StarView key={card.id} starImage={card.image} starName={card.name} />
         ))}
       </ScrollCardContainer>
       <p className={styles.title}>찜한 생카</p>
@@ -187,6 +193,24 @@ const Page = () => {
           ]}
         />
       </div>
+      {/* ⭐ 모달 추가 */}
+      {isModalOpen && (
+        <div className={styles.modalOverlay} onClick={toggleModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className={styles.closeButton} onClick={toggleModal}>
+              X
+            </button>
+            <SearchStar
+              onSelectStar={function (star: Star): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
