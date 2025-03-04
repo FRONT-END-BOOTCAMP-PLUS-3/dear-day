@@ -1,0 +1,59 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  position: relative;
+  background: var(--color-white);
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  z-index: 1001;
+}
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+}
+.searchContainer {
+  position: relative;
+  width: 100%;
+}
+.searchInput {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  width: 100%;
+}
+
+.resultList {
+  position: absolute;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--color-white);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); // ✅ 더 뚜렷한 그림자 효과 추가
+  z-index: 1000;
+}
+.resultList li {
+  padding: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.resultList li:hover {
+  background: #f2f2f2;
+}
+

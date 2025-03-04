@@ -1,0 +1,49 @@
+.container {
+  width: 100%;
+  box-sizing: border-box;
+}
+.containerItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  gap: 7px;
+}
+.benefits {
+  width: 100%;
+  display: flex;
+  gap: 7px;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.waitingNotice {
+  background: var(--color-gray-bg);
+  font-size: var(--font-size-xs);
+  color: var(--color-black);
+  padding: 8px;
+  text-align: center;
+}.imageScrollContainer {
+  overflow-x: auto; /* 가로 스크롤 */
+  white-space: nowrap;
+  padding-bottom: 10px; /* 스크롤 바 영역 확보 */
+}
+
+.imagePreviewContainer {
+  display: flex;
+  flex-wrap: nowrap; /* 한 줄 유지 */
+  gap: 10px; /* 이미지 간격 */
+}
+
+.imageWrapper {
+  flex: 0 0 auto; /* 크기 고정 (줄어들지 않도록) */
+  position: relative;
+}
+
+.previewImage {
+  width: 150px; /* 이미지 크기 고정 */
+  object-fit: cover;
+}

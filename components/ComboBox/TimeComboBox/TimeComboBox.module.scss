@@ -1,20 +1,21 @@
 .timeSelectWrapper {
   display: inline-block;
   position: relative;
-  width: 100%;
   min-width: 160px;
+  width: 100%;
 }
 
 .timeSelectContainer {
   position: relative;
   display: flex;
   width: 100%;
-  padding: var(--padding-xs) var(--padding-sm);
+  padding: var(--padding-xs) var(--padding-md); /* ✅ DateComboBox와 동일하게 조정 */
   align-items: center;
   justify-content: space-between;
   border-radius: 100px;
   background: var(--color-blue-bg);
   font-size: var(--font-size-sm);
+  color: var(--color-gray-1);
   cursor: pointer;
 }
 
@@ -39,8 +40,10 @@
   top: calc(100% + var(--margin-xs));
   left: 0;
   width: 100%;
-  background: var(--color-blue-bg);
+  background: var(--color-white); /* ✅ 드롭다운 배경색 변경 */
+  border-radius: var(--border-radius-md); /* ✅ 둥근 모서리 추가 */
   border: 1px solid var(--color-gray-2);
+  box-shadow: var(--shadow-md); /* ✅ 그림자 효과 추가 */
   margin-top: var(--margin-xs);
   padding: 0;
   list-style: none;
@@ -66,7 +69,7 @@
   cursor: pointer;
   font-size: var(--font-size-sm);
   text-align: left;
-  border-bottom: 1px solid var(--color-white);
+  border-bottom: 1px solid var(--color-gray-3);
   transition: background 0.2s;
 
   &:last-child {
