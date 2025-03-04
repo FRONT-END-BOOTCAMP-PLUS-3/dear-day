@@ -1,0 +1,9 @@
+.homeContainer {
+  @include pageContainer;
+
+  padding: 0;
+}
+
+.buttonWrapper {
+  padding: 0 var(--padding-lg);
+}

@@ -1,0 +1,11 @@
+.homeContainer {
+  @include pageContainer;
+
+  padding: 0;
+}
+
+.buttonWrapper {
+  display: flex;
+  width: 100%;
+  padding: 0 var(--padding-xl);
+}

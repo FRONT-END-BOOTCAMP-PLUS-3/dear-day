@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editHeader {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.editText {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-gray-1);
+}
+
+.text {
+  cursor: pointer;
+}
