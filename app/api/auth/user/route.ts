@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     if (typeof decoded !== "string" && "id" in decoded) {
       return NextResponse.json({ id: decoded.id });
     } else {

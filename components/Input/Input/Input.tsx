@@ -5,7 +5,7 @@ import styles from "./input.module.scss";
 
 interface InputProps {
   name: string;
-  value: string;
+  value: string | number;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: "text" | "email" | "password" | "number" | "tel"; // 확장 가능

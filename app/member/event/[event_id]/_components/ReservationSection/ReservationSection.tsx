@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { EventData } from "../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import SelectDateTime from "./SelectDateTime/SelectDateTime";
 import Notice from "./Notice/Notice";
 import FixedButton from "@/components/Button/FixedButton/FixedButton";
@@ -9,7 +9,7 @@ import styles from "./ReservationSection.module.scss";
 import useReservationStore from "@/store/reservationStore";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function ReservationSection({ eventData }: Props) {
@@ -21,7 +21,9 @@ export default function ReservationSection({ eventData }: Props) {
   useEffect(() => {
     const updateStatus = () => {
       const now = new Date();
-      const openTime = new Date(eventData.openAt);
+      const openTime = eventData.openAt
+        ? new Date(eventData.openAt)
+        : new Date();
       const endTime = new Date(eventData.endDate);
 
       if (now >= endTime) {
@@ -62,10 +64,14 @@ export default function ReservationSection({ eventData }: Props) {
         <div className={styles.openInfo}>
           <p>종료된 생일카페입니다 :)</p>
         </div>
+      ) : eventData.hasReservation ? ( // ✅ 이미 예약한 경우 메시지 표시
+        <div className={styles.openInfo}>
+          <p>이미 예약을 완료한 생일카페입니다.</p>
+        </div>
       ) : isOpen ? (
         <div className={styles.reservationInfo}>
           <SelectDateTime eventData={eventData} />
-          <Notice breaktime={eventData.breaktime} />
+          <Notice breaktime={eventData.breaktime || 0} />
           <FixedButton
             onClick={() => alert("예약 완료!")}
             value={isSoldOut ? "매진" : "예약하기"}
@@ -76,7 +82,9 @@ export default function ReservationSection({ eventData }: Props) {
         <div className={styles.openInfo}>
           <p>
             <span className={styles.bold}>
-              {formatTo24Hour(new Date(eventData.openAt))}
+              {eventData.openAt
+                ? formatTo24Hour(new Date(eventData.openAt))
+                : "날짜 정보 없음"}
             </span>{" "}
             오픈 예정
           </p>

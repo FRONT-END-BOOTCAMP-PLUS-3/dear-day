@@ -18,7 +18,7 @@ const CourseListView: React.FC<CourseListViewProps> = ({
   count,
 }) => {
   return (
-    <Link href={`/course/${id}`}>
+    <Link href={`/member/course/${id}`}>
       <li className={styles.courseListView}>
         <Image
           className={styles.courseListImg}

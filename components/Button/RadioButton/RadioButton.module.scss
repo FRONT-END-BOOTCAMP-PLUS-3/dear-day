@@ -42,3 +42,11 @@
 .radioText {
   font-size: 14px;
 }
+.radioItem {
+  display: flex;
+  gap: 10px; /* 아이템 간의 간격 설정 */
+  width: 100%;
+}
+.radioOption {
+  flex: 1; /* 각 아이템이 동일한 너비를 차지하게 함 */
+}

@@ -1,0 +1,11 @@
+.homeContainer {
+  @include pageContainer;
+
+  padding: 0;
+}
+
+.mapSection {
+  width: 100%;
+  height: calc(100vh - 80px);
+  background: var(--divider);
+}

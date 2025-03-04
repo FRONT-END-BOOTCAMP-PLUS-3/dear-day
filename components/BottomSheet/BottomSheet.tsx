@@ -18,6 +18,11 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
   const [startHeight, setStartHeight] = useState<number>(0);
   const [dragHeight, setDragHeight] = useState<number | null>(null);
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (sheetState !== "closed") {
       const handleOutsideClick = (e: MouseEvent) => {
@@ -70,7 +75,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
     const delta = startY - clientY;
     const newHeight = Math.max(40, startHeight + delta);
 
-    const H = window.innerHeight;
+    const H = mounted ? window.innerHeight : 800;
     const closedHeight = 40;
     const middleHeight = H * 0.4;
     const openHeight = H * 0.92;
@@ -107,7 +112,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
       document.removeEventListener("touchmove", handleDragMove);
       document.removeEventListener("touchend", handleDragEnd);
     };
-  }, [dragging, startY, startHeight]);
+  }, [dragging, startY, startHeight, mounted]);
 
   const handleDragHandleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -120,20 +125,20 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
     }
   };
 
-  const windowHeight = typeof window !== "undefined" ? window.innerHeight : 0;
+  const windowHeight = mounted ? window.innerHeight : 800;
   let heightValue = "";
   switch (sheetState) {
     case "open":
-      heightValue = windowHeight ? `${windowHeight * 0.92}px` : "92%";
+      heightValue = `${windowHeight * 0.92}px`;
       break;
     case "middle":
-      heightValue = windowHeight ? `${windowHeight * 0.4}px` : "40%";
+      heightValue = `${windowHeight * 0.4}px`;
       break;
     case "closed":
       heightValue = "40px";
       break;
     default:
-      heightValue = windowHeight ? `${windowHeight * 0.4}px` : "40%";
+      heightValue = `${windowHeight * 0.4}px`;
   }
   const appliedHeight = dragHeight !== null ? `${dragHeight}px` : heightValue;
 
