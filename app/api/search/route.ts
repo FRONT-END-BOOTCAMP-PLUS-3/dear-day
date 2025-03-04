@@ -15,8 +15,8 @@ export async function POST(req: Request) {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "X-Naver-Client-Id": process.env.NAVER_CLIENT_ID!,
-        "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET!,
+        "X-Naver-Client-Id": process.env.NAVER_SEARCH_CLIENT_ID!,
+        "X-Naver-Client-Secret": process.env.NAVER_SEARCH_CLIENT_SECRET!,
         "Content-Type": "application/json",
       },
     });
