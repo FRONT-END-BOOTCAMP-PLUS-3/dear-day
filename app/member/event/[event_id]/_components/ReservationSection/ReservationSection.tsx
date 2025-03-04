@@ -56,14 +56,22 @@ export default function ReservationSection({ eventData }: Props) {
     }
 
     try {
-      const response = await fetch(`/api/event/make-reservation/${eventId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ date, time }),
-      });
+      const queryParams = new URLSearchParams({
+        eventId: eventId.toString(), // ✅ eventId를 쿼리 스트링으로 변환
+        date,
+        time,
+      }).toString();
+
+      const response = await fetch(
+        `/api/event/make-reservation?${queryParams}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // ✅ 쿠키 포함 요청
+        }
+      );
 
       if (!response.ok) {
         throw new Error("예약 요청 실패!");
