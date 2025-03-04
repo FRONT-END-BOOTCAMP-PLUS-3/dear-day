@@ -240,6 +240,7 @@ const RegisterEventStep1 = ({
           onClick={handleSubmit(onSubmit)}
           value="다음"
           disabled={!isValid}
+          type={"button"}
         />
       </div>
     </form>

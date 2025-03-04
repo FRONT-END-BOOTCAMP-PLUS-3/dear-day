@@ -45,7 +45,7 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
     }
 
     try {
-      const response = await fetch("/api/search", {
+      const response = await fetch("/api/search-location", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
