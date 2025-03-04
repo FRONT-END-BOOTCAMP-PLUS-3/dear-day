@@ -1,9 +1,9 @@
-import { EventData } from "../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import TitleContents from "./TitleContents/TitleContents";
 import styles from "./TitleHeader.module.scss";
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function TitleHeader({ eventData }: Props) {

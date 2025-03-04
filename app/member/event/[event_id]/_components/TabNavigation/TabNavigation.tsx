@@ -4,7 +4,7 @@ import FourTab from "@/components/Tab/FourTab/FourTab";
 import { useState } from "react";
 
 interface TabNavigationProps {
-  mode: "RESERVATION" | "WAITING";
+  mode: string;
   setActiveTab: (tab: string) => void;
 }
 

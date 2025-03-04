@@ -46,3 +46,6 @@ next-env.d.ts
 /public/worker-*.js
 
 /prisma
+
+# 데모 파일
+/public/demo

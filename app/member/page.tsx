@@ -18,8 +18,6 @@ export default function HomePage() {
     await logout();
     router.push("/login"); // ✅ 로그아웃 후 로그인 페이지로 이동
   }
-  console.log(process.env.NEXT_PUBLIC_JWT_SECRET!);
-
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value);
   };

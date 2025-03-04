@@ -3,19 +3,20 @@
 import styles from "./NextButton.module.scss";
 
 interface NextButtonProps {
-  onClick: () => void;
+  type: "button";
+  onClick?: () => void;
   value: string;
   disabled?: boolean;
 }
 
 const NextButton = ({ onClick, value, disabled = false }: NextButtonProps) => {
   return (
-    <div
+    <button
       className={`${styles.nextButtonContainer} ${disabled ? styles.disabled : ""}`}
       onClick={!disabled ? onClick : undefined}
     >
       <p>{value}</p>
-    </div>
+    </button>
   );
 };
 
