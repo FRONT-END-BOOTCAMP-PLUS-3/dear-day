@@ -1,11 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { PgReservationRepository } from "@/infrastructure/repositories/PgReservationRepository";
 import { CheckReservationAvailability } from "@/application/usecases/event/CheckReservationAvailability";
 
-export async function GET(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const eventId = Number(searchParams.get("[event_id]"));
+    const body = await req.json();
+    const { eventId } = body;
+
     if (!eventId) {
       return NextResponse.json(
         { error: "eventId가 필요합니다." },

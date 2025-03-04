@@ -21,7 +21,14 @@ const useReservations = (
       }
 
       try {
-        const response = await fetch(`/api/event/reservation/${eventId}`);
+        const response = await fetch(`/api/event/reservation`, {
+          method: "POST", // POST 요청으로 변경
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // 쿠키 포함 요청
+          body: JSON.stringify({ eventId }), // body에 eventId 포함
+        });
         if (!response.ok) {
           throw new Error(`API 요청 실패: ${response.status}`);
         }
