@@ -12,10 +12,12 @@ import styles from "./page.module.scss";
 import TabNavigation from "./_components/TabNavigation/TabNavigation";
 import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import { demoEventData } from "./demoData";
+import useReservationStore from "@/store/reservationStore";
 
 export default function EventDetail() {
   const params = useParams();
   const router = useRouter();
+  const { clearReservation } = useReservationStore();
 
   const eventId = params?.event_id as string; // eventId를 문자열로 변환
 
@@ -46,6 +48,10 @@ export default function EventDetail() {
         console.log(err.message);
         setEventData(demoEventData);
       });
+    // 페이지가 언마운트될 때 예약 초기화
+    return () => {
+      clearReservation();
+    };
   }, [eventId]);
 
   return (
