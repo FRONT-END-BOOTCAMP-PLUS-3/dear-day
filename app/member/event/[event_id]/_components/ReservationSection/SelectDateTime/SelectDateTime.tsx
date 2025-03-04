@@ -1,11 +1,11 @@
 "use client";
 
 import DateSelectButton from "@/components/Button/DateTimeSelectButton/DateTimeSelectButton";
-import { EventData } from "../../../eventData";
+import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import useReservationStore from "@/store/reservationStore"; // Zustand 스토어 가져오기
 
 interface Props {
-  eventData: EventData;
+  eventData: ShowEventDetailDto;
 }
 
 export default function SelectDateTime({ eventData }: Props) {
