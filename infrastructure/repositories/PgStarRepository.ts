@@ -1,7 +1,6 @@
 import { StarRepository } from "@/domain/repositories/StarRepository";
 import { Star, PrismaClient } from "@prisma/client";
 
-
 const prisma = new PrismaClient();
 
 export class PgStarRepository implements StarRepository {
@@ -19,7 +18,8 @@ export class PgStarRepository implements StarRepository {
       });
     } finally {
       await prisma.$disconnect();
-      
+    }
+  }
   // 스타 ID로 스타 정보 조회
   async findStarByStarId(starId: number): Promise<Star | null> {
     try {
