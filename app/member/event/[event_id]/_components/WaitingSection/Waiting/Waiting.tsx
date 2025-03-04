@@ -26,7 +26,6 @@ export default function Waiting({ eventId, headCount, setHeadCount }: Props) {
           headers: {
             "Content-Type": "application/json",
           },
-
           body: JSON.stringify({ eventId }),
         });
 
