@@ -10,7 +10,7 @@ import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmC
 
 export interface RegisterEventStep2Form {
   mode: string;
-  openAt: string;
+  openAt: Date;
   breaktime: number;
   limit: number;
 }
@@ -33,7 +33,7 @@ const RegisterEventStep2 = ({
     mode: "onChange", // 입력값 변경될 때마다 유효성 검사
     defaultValues: {
       mode: eventData.mode || "RESERVATION",
-      openAt: eventData.openAt || "",
+      openAt: eventData.openAt ?? undefined,
       breaktime: eventData.breaktime ?? 10,
       limit: eventData.limit || 0,
     },
@@ -44,7 +44,7 @@ const RegisterEventStep2 = ({
   useEffect(() => {
     reset({
       mode: eventData.mode || "RESERVATION",
-      openAt: eventData.openAt || "",
+      openAt: eventData.openAt ?? undefined,
       breaktime: eventData.breaktime || 0,
       limit: eventData.limit || 0,
     });
@@ -55,7 +55,7 @@ const RegisterEventStep2 = ({
 
     updateEventData({
       mode: data.mode,
-      openAt: data.mode === "WAITING" ? "" : data.openAt,
+      openAt: data.mode === "WAITING" ? null : data.openAt,
       breaktime: data.mode === "WAITING" ? 0 : data.breaktime,
       limit: data.mode === "WAITING" ? 0 : data.limit,
     });
@@ -89,7 +89,7 @@ const RegisterEventStep2 = ({
                 reset({
                   ...watch(),
                   mode: value,
-                  openAt: value === "WAITING" ? "" : watch("openAt"),
+                  openAt: value === "WAITING" ? undefined : watch("openAt"),
                   breaktime: value === "WAITING" ? 0 : watch("breaktime"),
                   limit: value === "WAITING" ? 0 : watch("limit"),
                 });
