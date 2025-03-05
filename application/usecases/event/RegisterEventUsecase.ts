@@ -17,9 +17,10 @@ export class RegisterEventUsecase {
 
   // `userId`를 포함한 데이터를 받도록 수정
   async execute(
-    eventData: (CreateEventRequestDto & CreateReservationSettingRequestDto) & {
-      userId: string;
-    }
+    eventData: CreateEventRequestDto &
+      Partial<CreateReservationSettingRequestDto> & {
+        userId: string;
+      }
   ): Promise<{ success: boolean; eventId: number }> {
     console.log("📌 [USECASE] 받은 eventData:", eventData);
 
@@ -61,7 +62,12 @@ export class RegisterEventUsecase {
     }
 
     // reservationsetting 테이블에 저장 (mode가 RESERVATION일 때만 실행)
-    if (eventData.mode === "RESERVATION") {
+    if (
+      eventData.mode === "RESERVATION" &&
+      eventData.openAt &&
+      eventData.breaktime &&
+      eventData.limit
+    ) {
       const reservationToSave: CreateReservationSettingRequestDto = {
         eventId, // FK로 eventId 추가
         openAt: new Date(eventData.openAt),

@@ -9,6 +9,9 @@ import Icon from "../Icon/Icon";
 import CheckboxTag from "../Tag/CheckboxTag/CheckboxTag";
 import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmCancelButton/ConfirmCancelBytton";
 import { BENEFITS } from "@/constants/benefits";
+import useToggle from "@/hooks/useToggle";
+import Modal from "../modal/Modal";
+import { useRouter } from "next/navigation";
 
 export interface RegisterEventStep3Form {
   mainImage: string;
@@ -17,13 +20,14 @@ export interface RegisterEventStep3Form {
 }
 
 const RegisterEventStep3 = ({
-  onNext,
   onPrev,
 }: {
   onNext: (data: RegisterEventStep3Form) => void;
   onPrev: () => void;
 }) => {
   const { eventData, updateEventData } = useRegisterEventStore();
+  const [isModalOpen, toggleModal] = useToggle(false);
+  const router = useRouter();
 
   const {
     control,
@@ -73,8 +77,13 @@ const RegisterEventStep3 = ({
         throw new Error("이벤트 등록 실패");
       }
 
-      console.log("이벤트 등록 성공");
-      onNext(data);
+      const result = await response.json();
+      const eventId = result.eventId;
+
+      console.log("이벤트 등록 성공, ID:", eventId);
+
+      // 이벤트 페이지로 이동
+      router.push(`/member/event/${eventId}`);
     } catch (error) {
       console.error("이벤트 등록 중 오류:", error);
     }
@@ -84,6 +93,10 @@ const RegisterEventStep3 = ({
   const mainImage = watch("mainImage");
   const detailImages = watch("detailImage");
   const benefits = watch("benefits");
+
+  const handleConfirmButton = () => {
+    toggleModal();
+  };
 
   return (
     <form
@@ -213,9 +226,23 @@ const RegisterEventStep3 = ({
       </div>
 
       <ConfirmCancelButton
-        onConfirm={handleSubmit(onSubmit)}
+        onConfirm={handleConfirmButton} // 함수 실행되도록 수정
         onCancel={onPrev}
         isConfirmDisabled={!isValid}
+      />
+
+      <Modal
+        contents={[
+          {
+            type: "textOnly",
+            title: "생일 카페 등록 완료 !",
+          },
+        ]}
+        onConfirm={() => handleSubmit(onSubmit)()}
+        onCancel={toggleModal}
+        isOpen={isModalOpen}
+        confirmText="완료"
+        cancelText="취소"
       />
     </form>
   );
