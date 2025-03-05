@@ -3,7 +3,6 @@
 import styles from "./HeartButton.module.scss";
 import React, { useEffect, useState } from "react";
 import Icon from "@/components/Icon/Icon";
-import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 
 interface HeartButtonProps {
@@ -13,7 +12,7 @@ interface HeartButtonProps {
 const HeartButton = ({ eventId }: HeartButtonProps) => {
   const { user } = useAuthStore();
   const [liked, setLiked] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const checkLikedStatus = async () => {
@@ -38,10 +37,10 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!user) {
-      router.push("/login");
-      return;
-    }
+    // if (!user) {
+    //   router.push("/login");
+    //   return;
+    // }
 
     const previousLiked = liked;
     setLiked(!previousLiked);
