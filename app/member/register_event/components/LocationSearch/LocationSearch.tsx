@@ -64,14 +64,23 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
       const data: { places: NaverPlace[] } = await response.json();
 
       if (data.places) {
-        setSearchResults(
-          data.places.map((place) => ({
+        // TM128 좌표계를 WGS84 위도/경도로 변환
+        const convertedPlaces = data.places.map((place) => {
+          const tm128 = new naver.maps.Point(
+            parseFloat(place.mapx),
+            parseFloat(place.mapy)
+          );
+          const latLng = naver.maps.TransCoord.fromTM128ToLatLng(tm128);
+
+          return {
             placeName: place.title.replace(/<[^>]+>/g, ""),
             address: place.roadAddress,
-            latitude: parseFloat(place.mapy),
-            longitude: parseFloat(place.mapx),
-          }))
-        );
+            latitude: parseFloat(latLng.y.toFixed(6)), // 변환된 위도
+            longitude: parseFloat(latLng.x.toFixed(6)), // 변환된 경도
+          };
+        });
+
+        setSearchResults(convertedPlaces);
       } else {
         console.warn("⚠️ 검색 결과 없음!");
       }
