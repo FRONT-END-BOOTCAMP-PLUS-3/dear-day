@@ -17,4 +17,20 @@ export class PgWaitingRepository implements WaitingRepository {
       await prisma.$disconnect(); // DB 연결 해제
     }
   }
+
+  // 대기 정보 전송하는 메서드
+  async createWaiting(waiting: Waiting): Promise<void> {
+    try {
+      await prisma.waiting.create({
+        data: {
+          eventId: waiting.eventId,
+          userId: waiting.userId,
+          waitingNumber: waiting.waitingNumber,
+          headCount: waiting.headCount,
+        },
+      });
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
