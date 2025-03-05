@@ -12,12 +12,11 @@ interface RegisterEventStep1 {
   endDate: Date;
   startTime: string;
   endTime: string;
-  countLike: number;
 }
 
 interface RegisterEventStep2 {
   mode: string;
-  openAt: string | null;
+  openAt: Date | null;
   breaktime: number | null;
   limit: number | null;
 }
@@ -65,7 +64,6 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
     endDate: new Date(),
     startTime: "",
     endTime: "",
-    countLike: 0,
 
     mode: "",
     openAt: null,
@@ -102,7 +100,6 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
         endDate: new Date(),
         startTime: "",
         endTime: "",
-        countLike: 0,
 
         mode: "",
         openAt: null,
