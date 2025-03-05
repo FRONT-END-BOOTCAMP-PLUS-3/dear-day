@@ -1,6 +1,6 @@
 import Tag from "@/components/Tag/Tag";
 import styles from "./BenefitList.module.scss";
-import { BENEFITS, OTHER_BENEFITS } from "./benefits";
+import { BENEFITS, OTHER_BENEFITS } from "@/constants/benefits";
 
 interface Props {
   benefitList: string[];
