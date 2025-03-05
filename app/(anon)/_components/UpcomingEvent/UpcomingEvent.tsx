@@ -28,9 +28,12 @@ const UpcomingEvent = () => {
   };
 
   useEffect(() => {
+    console.log("호출");
     const fetchEvents = async () => {
       try {
-        const response = await fetch("/api/main/upcoming-event");
+        const response = await fetch("/api/main/upcoming-event", {
+          method: "GET",
+        });
         if (!response.ok) {
           throw new Error("네트워크 응답 에러");
         }
