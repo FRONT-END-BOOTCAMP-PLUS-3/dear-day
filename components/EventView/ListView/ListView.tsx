@@ -5,7 +5,7 @@ import HeartButton from "@/components/Button/HeartButton/HeartButton";
 
 interface ListViewProps {
   id: number;
-  imgSrc: string;
+  mainImage: string;
   title: string;
   startDate: Date;
   endDate: Date;
@@ -15,7 +15,7 @@ interface ListViewProps {
 
 const ListView: React.FC<ListViewProps> = ({
   id,
-  imgSrc,
+  mainImage,
   title,
   startDate,
   endDate,
@@ -34,7 +34,7 @@ const ListView: React.FC<ListViewProps> = ({
     <Link className={styles.listView} href={`/event/${id}`} passHref>
       <li className={styles.listItemContainer}>
         <div className={styles.listContent}>
-          <Image src={imgSrc} alt={title} width={78} height={100} />
+          <Image src={mainImage} alt={title} width={78} height={100} />
           <div>
             <h3 className={styles.listTitle}>{title}</h3>
             <div className={styles.listText}>
