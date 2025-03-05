@@ -6,7 +6,6 @@ import StarView from "../StarView/StarView";
 import { searchStarListDto } from "@/application/usecases/star/dto/SearchStarListDto";
 import { useEffect, useState } from "react";
 import { searchStarByKeyword } from "@/components/SearchStar/_api/searchStarByKeyword";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 interface SearchStarProps {
