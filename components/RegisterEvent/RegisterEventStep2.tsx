@@ -11,7 +11,7 @@ import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmC
 export interface RegisterEventStep2Form {
   mode: string;
   openAt: string;
-  breakTime: number;
+  breaktime: number;
   limit: number;
 }
 
@@ -34,7 +34,7 @@ const RegisterEventStep2 = ({
     defaultValues: {
       mode: eventData.mode || "RESERVATION",
       openAt: eventData.openAt || "",
-      breakTime: eventData.breakTime ?? 10,
+      breaktime: eventData.breaktime ?? 10,
       limit: eventData.limit || 0,
     },
   });
@@ -45,7 +45,7 @@ const RegisterEventStep2 = ({
     reset({
       mode: eventData.mode || "RESERVATION",
       openAt: eventData.openAt || "",
-      breakTime: eventData.breakTime || 0,
+      breaktime: eventData.breaktime || 0,
       limit: eventData.limit || 0,
     });
   }, [eventData, reset]);
@@ -56,7 +56,7 @@ const RegisterEventStep2 = ({
     updateEventData({
       mode: data.mode,
       openAt: data.mode === "WAITING" ? "" : data.openAt,
-      breakTime: data.mode === "WAITING" ? 0 : data.breakTime,
+      breaktime: data.mode === "WAITING" ? 0 : data.breaktime,
       limit: data.mode === "WAITING" ? 0 : data.limit,
     });
 
@@ -90,7 +90,7 @@ const RegisterEventStep2 = ({
                   ...watch(),
                   mode: value,
                   openAt: value === "WAITING" ? "" : watch("openAt"),
-                  breakTime: value === "WAITING" ? 0 : watch("breakTime"),
+                  breaktime: value === "WAITING" ? 0 : watch("breaktime"),
                   limit: value === "WAITING" ? 0 : watch("limit"),
                 });
               }}
@@ -126,7 +126,7 @@ const RegisterEventStep2 = ({
               쉬는 시간이 포함됩니다.
             </p>
             <Controller
-              name="breakTime"
+              name="breaktime"
               control={control}
               rules={{ required: true }}
               render={({ field }) => (

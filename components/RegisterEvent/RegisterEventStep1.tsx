@@ -80,8 +80,8 @@ const RegisterEventStep1 = ({
       longitude: data.longitude,
       title: data.title,
       twitterId: data.twitterId,
-      startDate: data.startDate ? new Date(data.startDate) : null,
-      endDate: data.endDate ? new Date(data.endDate) : null,
+      startDate: new Date(data.startDate),
+      endDate: new Date(data.endDate),
       startTime: data.startTime,
       endTime: data.endTime,
     });
@@ -235,7 +235,6 @@ const RegisterEventStep1 = ({
             )}
           />
         </div>
-
         <NextButton
           onClick={handleSubmit(onSubmit)}
           value="다음"

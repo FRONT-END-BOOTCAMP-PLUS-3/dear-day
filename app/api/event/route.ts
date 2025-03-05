@@ -6,6 +6,7 @@ import { PgStarRepository } from "@/infrastructure/repositories/PgStarRepository
 import { PgReservationSettingRepository } from "@/infrastructure/repositories/PgReservationSettingRepository";
 import { PgReservationRepository } from "@/infrastructure/repositories/PgReservationRepository";
 import { PgWaitingRepository } from "@/infrastructure/repositories/PgWaitingRepository";
+import { RegisterEventUsecase } from "@/application/usecases/event/RegisterEventUsecase";
 
 export async function GET(req: Request) {
   try {
@@ -48,16 +49,54 @@ export async function GET(req: Request) {
       );
       return NextResponse.json(eventDetail);
     } catch (error) {
-      if (error.message === "이벤트를 찾을 수 없습니다.") {
+      if ((error as Error).message === "이벤트를 찾을 수 없습니다.") {
         return NextResponse.json(
           { error: "이벤트를 찾을 수 없습니다." },
           { status: 404 }
         );
       }
-      throw error; // 다른 예상치 못한 에러는 그대로 던짐
     }
   } catch (error) {
     console.error("서버 오류 발생:", error);
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    // userId 가져오기
+    const userId = await getUserIdFromToken();
+    console.log("📌 인증된 사용자 ID:", userId);
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    const body = await req.json();
+
+    // userId를 body에 추가해서 usecase로 넘김
+    const eventDataWithUser = { ...body, userId };
+
+    // Repository 인스턴스 생성
+    const eventRepository = new PgEventRepository();
+    const reservationSettingRepository = new PgReservationSettingRepository();
+    const createEventUsecase = new RegisterEventUsecase(
+      eventRepository,
+      reservationSettingRepository
+    );
+
+    // Usecase 호출
+    const result = await createEventUsecase.execute(eventDataWithUser);
+
+    return NextResponse.json(result, { status: 201 });
+  } catch (error) {
+    console.error("이벤트 등록 중 오류:", error);
+    return NextResponse.json(
+      { error: (error as Error).message || "서버 오류 발생" },
+      { status: 500 }
+    );
   }
 }

@@ -46,16 +46,36 @@ const RegisterEventStep3 = ({
     });
   }, [eventData, reset]);
 
-  const onSubmit = (data: RegisterEventStep3Form) => {
+  const onSubmit = async (data: RegisterEventStep3Form) => {
     console.log("Step3 제출 데이터:", data);
 
-    updateEventData({
+    // Store 업데이트
+    await updateEventData({
       mainImage: data.mainImage,
       detailImage: data.detailImage,
       benefits: data.benefits,
     });
 
-    onNext(data);
+    // 스토어에서 전체 데이터 가져오기
+    const eventData = useRegisterEventStore.getState().eventData;
+
+    try {
+      // API 호출
+      const response = await fetch("/api/event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventData),
+      });
+
+      if (!response.ok) {
+        throw new Error("이벤트 등록 실패");
+      }
+
+      console.log("이벤트 등록 성공");
+      onNext(data);
+    } catch (error) {
+      console.error("이벤트 등록 중 오류:", error);
+    }
   };
 
   // watch를 통해 모든 입력 값 확인
