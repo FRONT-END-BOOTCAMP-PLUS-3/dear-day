@@ -1,6 +1,6 @@
 .mapContainer {
   width: min(500px, 100vw);
-  height: calc(100svh - 112px - var(--margin-md));
+  height: calc(100svh - 150px);
   position: fixed;
   left: calc(-1 * (var(--margin-xl)));
   top: calc(-1 * (var(--margin-md)));
