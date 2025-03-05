@@ -9,10 +9,16 @@
   margin-bottom: 16px;
   gap: 7px;
 }
-.benefits {
-  width: 100%;
+.benefitListContainer {
   display: flex;
-  gap: 7px;
+  flex-direction: column;
+  gap: var(--padding-lg);
+  margin-bottom: 60px;
+  .benefitList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 }
 .item {
   display: flex;
@@ -31,7 +37,6 @@
   white-space: nowrap;
   padding-bottom: 10px; /* 스크롤 바 영역 확보 */
 }
-
 .imagePreviewContainer {
   display: flex;
   flex-wrap: nowrap; /* 한 줄 유지 */
@@ -42,7 +47,6 @@
   flex: 0 0 auto; /* 크기 고정 (줄어들지 않도록) */
   position: relative;
 }
-
 .previewImage {
   width: 150px; /* 이미지 크기 고정 */
   object-fit: cover;

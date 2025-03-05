@@ -8,6 +8,7 @@ import Image from "next/image";
 import Icon from "../Icon/Icon";
 import CheckboxTag from "../Tag/CheckboxTag/CheckboxTag";
 import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmCancelButton/ConfirmCancelBytton";
+import { BENEFITS } from "@/constants/benefits";
 
 export interface RegisterEventStep3Form {
   mainImage: string;
@@ -23,6 +24,7 @@ const RegisterEventStep3 = ({
   onPrev: () => void;
 }) => {
   const { eventData, updateEventData } = useRegisterEventStore();
+
   const {
     control,
     handleSubmit,
@@ -183,7 +185,7 @@ const RegisterEventStep3 = ({
       </div>
 
       {/* 특전 선택 */}
-      <div className={styles.containerItem}>
+      <div className={styles.benefitListContainer}>
         <p>특전</p>
         <Controller
           name="benefits"
@@ -191,22 +193,20 @@ const RegisterEventStep3 = ({
           rules={{ required: true }}
           render={({ field: { onChange } }) => (
             <div className={styles.benefits}>
-              {["컵홀더", "포토카드", "스티커", "포스터", "키링", "코스터"].map(
-                (benefit) => (
-                  <CheckboxTag
-                    key={benefit}
-                    label={benefit}
-                    checked={benefits.includes(benefit)}
-                    onChange={(checked) => {
-                      onChange(
-                        checked
-                          ? [...benefits, benefit]
-                          : benefits.filter((b) => b !== benefit)
-                      );
-                    }}
-                  />
-                )
-              )}
+              {BENEFITS.map((benefit) => (
+                <CheckboxTag
+                  key={benefit}
+                  label={benefit}
+                  checked={benefits.includes(benefit)} // 저장된 값과 비교할 때도 이모지 포함
+                  onChange={(checked) => {
+                    onChange(
+                      checked
+                        ? [...benefits, benefit]
+                        : benefits.filter((b) => b !== benefit)
+                    );
+                  }}
+                />
+              ))}
             </div>
           )}
         />
