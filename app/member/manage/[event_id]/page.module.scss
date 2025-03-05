@@ -1,0 +1,9 @@
+.homeContainer {
+  @include pageContainer;
+}
+
+.listTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
