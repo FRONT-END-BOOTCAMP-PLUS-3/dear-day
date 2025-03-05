@@ -33,19 +33,36 @@ export const transformReservations = (
 };
 
 export const generateDateList = (startDate: Date, endDate: Date): string[] => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
   const dates: string[] = [];
 
-  while (start <= end) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // 날짜 부분만 추출하기 위해 연, 월, 일을 가져옴
+  const startDateOnly = new Date(
+    start.getFullYear(),
+    start.getMonth(),
+    start.getDate()
+  );
+  const endDateOnly = new Date(
+    end.getFullYear(),
+    end.getMonth(),
+    end.getDate()
+  );
+
+  const current = new Date(startDateOnly); // 기존 날짜를 변경하지 않도록 복사
+
+  while (current <= endDateOnly) {
     dates.push(
-      new Intl.DateTimeFormat("en-US", {
+      current.toLocaleDateString("en-US", {
         month: "short",
         day: "2-digit",
-      }).format(new Date(start))
+      })
     );
-    start.setDate(start.getDate() + 1);
+
+    current.setDate(current.getDate() + 1);
   }
+
   return dates;
 };
 
