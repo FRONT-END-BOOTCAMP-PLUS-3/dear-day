@@ -6,6 +6,7 @@ import StarView from "../StarView/StarView";
 import { searchStarListDto } from "@/application/usecases/star/dto/SearchStarListDto";
 import { useEffect, useState } from "react";
 import { searchStarByKeyword } from "@/components/SearchStar/_api/searchStarByKeyword";
+import Link from "next/link";
 
 interface SearchStarProps {
   onSelectStarId: (id: number) => void;
@@ -80,6 +81,9 @@ const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
           )}
         </ul>
       )}
+      <Link className={styles.createStarBtn} href={"/member/register_star"}>
+        + 스타 추가하기
+      </Link>
     </>
   );
 };
