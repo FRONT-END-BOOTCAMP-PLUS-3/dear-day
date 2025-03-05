@@ -7,12 +7,15 @@ import { searchStarListDto } from "@/application/usecases/star/dto/SearchStarLis
 import { useEffect, useState } from "react";
 import { searchStarByKeyword } from "@/components/SearchStar/_api/searchStarByKeyword";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 interface SearchStarProps {
   onSelectStarId: (id: number) => void;
 }
 
 const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
+  const router = useRouter();
+  const currentPath = usePathname();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<searchStarListDto[]>([]);
   const [debouncedQuery, setDebouncedQuery] = useState(query);
@@ -46,6 +49,14 @@ const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
 
     fetchData();
   }, [debouncedQuery]);
+
+  const handleClick = () => {
+    if (currentPath.includes("/member")) {
+      router.push("/member/register_star");
+    } else {
+      router.push("/register_star");
+    }
+  };
 
   return (
     <>
@@ -81,9 +92,9 @@ const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
           )}
         </ul>
       )}
-      <Link className={styles.createStarBtn} href={"/member/register_star"}>
+      <button className={styles.createStarBtn} onClick={handleClick}>
         + 스타 추가하기
-      </Link>
+      </button>
     </>
   );
 };
