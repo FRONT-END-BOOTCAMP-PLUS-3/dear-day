@@ -18,13 +18,21 @@ export default function Waiting({ eventId }: Props) {
       try {
         setLoading(true);
         setError(null);
-        setWaitingCount(10); // ✅ 데모 데이터 (실제 API 사용 시 변경 가능)
 
         // 실제 API 사용 시:
-        // const response = await fetch(`/api/waiting?eventId=${eventId}`);
-        // if (!response.ok) throw new Error("대기 정보를 가져오는 데 실패했습니다.");
-        // const data = await response.json();
-        // setWaitingCount(data.waitingCount);
+        const response = await fetch(`/api/event/show-waiting-count`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ eventId }),
+        });
+
+        if (!response.ok)
+          throw new Error("대기 정보를 가져오는 데 실패했습니다.");
+
+        const data = await response.json();
+        setWaitingCount(data.waitingCount);
       } catch (err) {
         setError("대기 정보를 불러올 수 없습니다.");
       } finally {
