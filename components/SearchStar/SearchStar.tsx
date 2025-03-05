@@ -61,7 +61,7 @@ const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
               <p>검색 중...</p>
             </li>
           ) : results.length > 0 ? (
-            results.map((item: any) => (
+            results.map((item: searchStarListDto) => (
               <li
                 key={item.id}
                 className={styles.searchStarItem}
