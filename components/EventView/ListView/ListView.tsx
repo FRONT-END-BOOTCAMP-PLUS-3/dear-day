@@ -23,9 +23,12 @@ const ListView: React.FC<ListViewProps> = ({
   address,
 }) => {
   const formatShortDate = (date: Date): string => {
-    const year = date.getFullYear().toString(); // 두 자리 연도 (2024 → 24)
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 두 자리 월 (1 → 01, 10 → 10)
-    const day = String(date.getDate()).padStart(2, "0"); // 두 자리 일 (1 → 01, 10 → 10)
+    const fixedDate = new Date(date);
+    fixedDate.setTime(fixedDate.getTime() - 9 * 60 * 60 * 1000);
+
+    const year = fixedDate.getFullYear().toString();
+    const month = String(fixedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(fixedDate.getDate()).padStart(2, "0");
 
     return `${year}.${month}.${day}`;
   };
@@ -39,16 +42,16 @@ const ListView: React.FC<ListViewProps> = ({
             <h3 className={styles.listTitle}>{title}</h3>
             <div className={styles.listText}>
               <p>
-                <time dateTime={startDate.toISOString()}>
-                  {formatShortDate(startDate)}
+                <time dateTime={new Date(startDate).toDateString()}>
+                  {formatShortDate(new Date(startDate))}
                 </time>
                 &nbsp;~&nbsp;
-                <time dateTime={endDate.toISOString()}>
-                  {formatShortDate(endDate)}
+                <time dateTime={new Date(endDate).toDateString()}>
+                  {formatShortDate(new Date(endDate))}
                 </time>
               </p>
               <p>
-                {starName} / {address}
+                {starName} / {address.split(" ").slice(0, 2).join(" ")}
               </p>
             </div>
           </div>
