@@ -8,12 +8,16 @@ export const transformReservations = (
 
   data.reservationConfirmedAt.forEach((reservationConfirmedAt) => {
     const dateObj = new Date(reservationConfirmedAt);
+
+    // ✅ UTC 시간을 KST(한국 시간, UTC+9)로 변환
+    const kstDateObj = new Date(dateObj.getTime() + 9 * 60 * 60 * 1000);
+
     const date = new Intl.DateTimeFormat("en-US", {
       month: "short",
       day: "2-digit",
-    }).format(dateObj);
-    const time = `${String(dateObj.getHours()).padStart(2, "0")}:${String(
-      dateObj.getMinutes()
+    }).format(kstDateObj);
+    const time = `${String(kstDateObj.getHours()).padStart(2, "0")}:${String(
+      kstDateObj.getMinutes()
     ).padStart(2, "0")}`;
 
     if (!reservationMap.has(date)) {
