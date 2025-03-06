@@ -49,7 +49,6 @@ const RegisterEventStep3 = ({
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { isValid },
   } = useForm<RegisterEventStep3Form>({
     mode: "onChange",
@@ -68,7 +67,13 @@ const RegisterEventStep3 = ({
     });
   }, [eventData, reset]);
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: RegisterEventStep3Form) => {
+    // ✅ 최신 benefits 값 store에 반영
+    updateEventData({
+      ...eventData,
+      benefits: data.benefits,
+    });
+
     const formData = new FormData();
 
     if (selectedMainImage) formData.append("mainImage", selectedMainImage);
@@ -78,7 +83,10 @@ const RegisterEventStep3 = ({
 
     formData.append(
       "eventData",
-      JSON.stringify(useRegisterEventStore.getState().eventData)
+      JSON.stringify({
+        ...useRegisterEventStore.getState().eventData,
+        benefits: data.benefits,
+      })
     );
 
     try {
@@ -97,15 +105,12 @@ const RegisterEventStep3 = ({
         detailImage: result.detailImage,
       });
 
-      alert("생일 카페 등록 완료!"); // ✅ Alert 창 띄우기
-      router.push(`/member/event/${result.eventId}`); // ✅ 페이지 이동
+      alert("생일 카페 등록 완료!");
+      router.push(`/member/event/${result.eventId}`);
     } catch (error) {
       console.error("이벤트 등록 중 오류:", error);
     }
   };
-
-  // watch를 통해 모든 입력 값 확인
-  const benefits = watch("benefits");
 
   return (
     <form
@@ -125,6 +130,7 @@ const RegisterEventStep3 = ({
               width={300}
               height={400}
               className={styles.previewImage}
+              unoptimized
             />
             <button
               type="button"
@@ -148,9 +154,10 @@ const RegisterEventStep3 = ({
                 <Image
                   src={URL.createObjectURL(file)}
                   alt={`상세 이미지 ${index + 1}`}
-                  width={150}
-                  height={200}
+                  width={300}
+                  height={400}
                   className={styles.previewImage}
+                  unoptimized
                 />
                 <button
                   type="button"
@@ -177,19 +184,20 @@ const RegisterEventStep3 = ({
           name="benefits"
           control={control}
           rules={{ required: true }}
-          render={({ field: { onChange } }) => (
+          defaultValue={eventData.benefits || []} // ✅ defaultValue 추가
+          render={({ field: { onChange, value } }) => (
             <div className={styles.benefits}>
               {BENEFITS.map((benefit) => (
                 <CheckboxTag
                   key={benefit}
                   label={benefit}
-                  checked={benefits.includes(benefit)}
+                  checked={value.includes(benefit)}
                   onChange={(checked) => {
-                    onChange(
-                      checked
-                        ? [...benefits, benefit]
-                        : benefits.filter((b) => b !== benefit)
-                    );
+                    const updatedBenefits = checked
+                      ? [...value, benefit]
+                      : value.filter((b) => b !== benefit);
+
+                    onChange(updatedBenefits);
                   }}
                 />
               ))}
