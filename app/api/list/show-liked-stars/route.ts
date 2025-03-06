@@ -5,14 +5,14 @@ import { PgLikedStarsRepository } from "@/infrastructure/repositories/PgLikedSta
 import { ShowLikedStar } from "@/application/usecases/list/ShowLikedStar";
 import { ShowLikedStarDto } from "@/application/usecases/list/dto/ShowLikedStarDto";
 
-export async function POST() {
+export async function GET() {
   try {
     const userId = await getUserIdFromToken();
 
     if (!userId) {
       return NextResponse.json(
         { error: "인증이 필요합니다." },
-        { status: 401 }
+        { status: 403 } // 로그인 하지 않은 경우 403 에러코드 반환하도록
       );
     }
 
