@@ -7,7 +7,8 @@ export const ShowWaitingCount = async (
 ): Promise<ShowWaitingCountDto> => {
   const waitings = await waitingRepository.findAllWaitingsByEventId(eventId);
 
+  const pendingWaitings = waitings.filter((e) => e.status == "PENDING");
   return {
-    waitingCount: waitings.length,
+    waitingCount: pendingWaitings.length,
   };
 };

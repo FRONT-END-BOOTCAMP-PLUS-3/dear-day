@@ -22,23 +22,43 @@ export default function ReservationSection({ eventData }: Props) {
   const eventId = event_id as string;
 
   useEffect(() => {
+    if (!eventData) return;
+
     const updateStatus = () => {
       const now = new Date();
-      const openTime = eventData.openAt
-        ? new Date(eventData.openAt)
-        : new Date();
-      const endTime = new Date(eventData.endDate);
 
-      if (now >= endTime) {
-        setIsEnded(true);
-      } else if (now >= openTime) {
-        setIsOpen(true);
-      } else {
-        const diff = openTime.getTime() - now.getTime();
+      // ✅ UTC에서 KST 변환을 올바르게 적용 (추가 변환 X)
+      const openAt = eventData.openAt ? new Date(eventData.openAt) : new Date();
+
+      // ✅ UTC에서 KST 변환을 올바르게 적용
+      const closeAt = (() => {
+        const endDateKST = new Date(eventData.endDate);
+
+        // 날짜만 유지
+        endDateKST.setHours(0, 0, 0, 0);
+
+        // endTime 적용 (KST 기준)
+        const [hours, minutes] = eventData.endTime.split(":").map(Number);
+        endDateKST.setHours(hours, minutes, 0, 0);
+
+        return endDateKST;
+      })();
+
+      if (now < openAt) {
+        setIsOpen(false);
+        setIsEnded(false);
+
+        const diff = openAt.getTime() - now.getTime();
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
         setTimeLeft(`${hours}시간 ${minutes}분 ${seconds}초`);
+      } else if (now < closeAt) {
+        setIsOpen(true);
+        setIsEnded(false);
+      } else {
+        setIsOpen(false);
+        setIsEnded(true);
       }
     };
 
@@ -46,7 +66,11 @@ export default function ReservationSection({ eventData }: Props) {
     const interval = setInterval(updateStatus, 1000);
 
     return () => clearInterval(interval);
-  }, [eventData.openAt, eventData.endDate]);
+  }, [eventData]);
+
+  useEffect(() => {
+    console.log("🔄 isOpen 변경됨:", isOpen);
+  }, [isOpen]);
 
   // 예약 요청 함수
   const handleReservation = async () => {
@@ -95,7 +119,7 @@ export default function ReservationSection({ eventData }: Props) {
     <div className={styles.reservationSection}>
       <h3>예약</h3>
 
-      {isEnded ? (
+      {!isOpen && isEnded ? (
         <div className={styles.openInfo}>
           <p>종료된 생일카페입니다 :)</p>
         </div>
@@ -103,7 +127,7 @@ export default function ReservationSection({ eventData }: Props) {
         <div className={styles.openInfo}>
           <p>이미 예약을 완료한 생일카페입니다.</p>
         </div>
-      ) : isOpen ? (
+      ) : isOpen && !isEnded ? (
         <div className={styles.reservationInfo}>
           <SelectDateTime eventData={eventData} />
           <Notice breaktime={eventData.breaktime || 0} />

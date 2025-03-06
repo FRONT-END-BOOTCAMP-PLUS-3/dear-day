@@ -14,20 +14,26 @@ export default function BenefitList({ benefitList }: Props) {
     <div className={styles.benefitListContainer}>
       <div>
         <h3>특전</h3>
-        <div className={styles.benefitList}>
-          {benefits.map((e, idx) => (
-            <Tag key={idx} text={e} />
-          ))}
-        </div>
+        {benefits.length > 0 ? (
+          <div className={styles.benefitList}>
+            {benefits.map((e, idx) => (
+              <Tag key={idx} text={e} />
+            ))}
+          </div>
+        ) : (
+          <p>등록된 특전이 없습니다.</p>
+        )}
       </div>
-      <div>
-        <h3>그 외 특전</h3>
-        <div className={styles.benefitList}>
-          {otherBenefits.map((e, idx) => (
-            <Tag key={idx} text={e} />
-          ))}
+      {otherBenefits.length > 0 && (
+        <div>
+          <h3>그 외 특전</h3>
+          <div className={styles.benefitList}>
+            {otherBenefits.map((e, idx) => (
+              <Tag key={idx} text={e} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
