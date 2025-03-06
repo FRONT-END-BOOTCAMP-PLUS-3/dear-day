@@ -1,6 +1,7 @@
 import { ShowCourseList } from "@/application/usecases/course/ShowCourseList";
 import { PgCourseEventRepository } from "@/infrastructure/repositories/PgCourseEventRepository";
 import { PgCourseRepository } from "@/infrastructure/repositories/PgCourseRepository";
+import { PgEventRepository } from "@/infrastructure/repositories/PgEventRepository";
 import { getUserIdFromToken } from "@/utils/auth";
 import { NextResponse } from "next/server";
 
@@ -18,11 +19,13 @@ export async function GET() {
 
     const courseRepository = new PgCourseRepository();
     const courseEventRepository = new PgCourseEventRepository();
+    const eventRepository = new PgEventRepository();
 
     try {
       const course = await ShowCourseList(
         userId,
         courseRepository,
+        eventRepository,
         courseEventRepository
       );
       return NextResponse.json(course);

@@ -1,6 +1,5 @@
 import { CourseEventRepository } from "@/domain/repositories/CourseEventRepository";
-import { CourseEvent } from "@prisma/client";
-import { PrismaClient } from "@prisma/client/extension";
+import { CourseEvent, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 

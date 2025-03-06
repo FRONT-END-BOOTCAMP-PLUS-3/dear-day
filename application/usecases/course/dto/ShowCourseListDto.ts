@@ -4,4 +4,5 @@ export interface ShowCourseListDto {
   name: string;
   date: Date;
   createdAt: Date;
+  imgSrc: string;
 }
