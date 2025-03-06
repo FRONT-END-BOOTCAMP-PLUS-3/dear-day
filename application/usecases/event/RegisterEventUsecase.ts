@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs";
 import { EventRepository } from "@/domain/repositories/EventRepository";
 import { ReservationSettingRepository } from "@/domain/repositories/ReservationSettingRepository";
 import { CreateEventRequestDto } from "@/application/usecases/event/dto/CreateEventRequestDto";
@@ -15,18 +17,54 @@ export class RegisterEventUsecase {
     this.reservationSettingRepository = reservationRepo;
   }
 
-  // `userId`를 포함한 데이터를 받도록 수정
+  private async saveFile(file: File, folder: string): Promise<string> {
+    const uploadFolder = path.join(
+      process.cwd(),
+      `public/demo/event/${folder}`
+    );
+
+    if (!fs.existsSync(uploadFolder)) {
+      fs.mkdirSync(uploadFolder, { recursive: true });
+    }
+
+    const fileName = `${Date.now()}_${file.name}`;
+    const filePath = path.join(uploadFolder, fileName);
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    fs.writeFileSync(filePath, buffer);
+
+    return `/demo/event/${folder}/${fileName}`;
+  }
+
   async execute(
     eventData: CreateEventRequestDto &
       Partial<CreateReservationSettingRequestDto> & {
         userId: string;
+        mainImageFile?: File | null;
+        detailImageFiles?: File[];
       }
-  ): Promise<{ success: boolean; eventId: number }> {
-    console.log("📌 [USECASE] 받은 eventData:", eventData);
+  ): Promise<{
+    success: boolean;
+    eventId: number;
+    mainImage: string;
+    detailImage: string[];
+  }> {
+    let mainImageUrl = "";
+    if (eventData.mainImageFile) {
+      mainImageUrl = await this.saveFile(eventData.mainImageFile, "main");
+    }
 
-    // event 테이블에 저장할 데이터 추출
+    const detailImages: string[] = [];
+    if (eventData.detailImageFiles) {
+      for (const file of eventData.detailImageFiles) {
+        const imageUrl = await this.saveFile(file, "detail");
+        detailImages.push(imageUrl);
+      }
+    }
+
     const eventToSave: CreateEventRequestDto = {
-      userId: eventData.userId, // 여기서 userId를 저장
+      userId: eventData.userId,
       starId: eventData.starId,
       placeName: eventData.placeName,
       address: eventData.address,
@@ -39,55 +77,32 @@ export class RegisterEventUsecase {
       startTime: eventData.startTime,
       endTime: eventData.endTime,
       mode: eventData.mode,
-      mainImage: eventData.mainImage,
-      detailImage: eventData.detailImage,
+      mainImage: mainImageUrl,
+      detailImage: detailImages,
       benefits: eventData.benefits,
     };
 
-    console.log("📌 [USECASE] 저장할 이벤트 데이터:", eventToSave);
+    const eventId = await this.eventRepository.createEvent(eventToSave);
 
-    // event 테이블 저장 후 id 반환
-    let eventId: number;
-    try {
-      eventId = await this.eventRepository.createEvent(eventToSave);
-      console.log("✅ [USECASE] 이벤트 저장 성공! eventId:", eventId);
-    } catch (error) {
-      console.error("🚨 [USECASE] 이벤트 저장 중 오류:", error);
-      throw new Error("이벤트 저장 실패");
-    }
-
-    if (!eventId) {
-      console.error("🚨 [USECASE] eventId가 생성되지 않음!");
-      throw new Error("이벤트 저장 실패");
-    }
-
-    // reservationsetting 테이블에 저장 (mode가 RESERVATION일 때만 실행)
     if (
       eventData.mode === "RESERVATION" &&
       eventData.openAt &&
       eventData.breaktime &&
       eventData.limit
     ) {
-      const reservationToSave: CreateReservationSettingRequestDto = {
-        eventId, // FK로 eventId 추가
+      await this.reservationSettingRepository.createReservationSetting({
+        eventId,
         openAt: new Date(eventData.openAt),
         breaktime: eventData.breaktime,
         limit: eventData.limit,
-      };
-
-      console.log("📌 [USECASE] 저장할 예약 데이터:", reservationToSave);
-
-      try {
-        await this.reservationSettingRepository.createReservationSetting(
-          reservationToSave
-        );
-        console.log("✅ [USECASE] 예약 설정 저장 성공!");
-      } catch (error) {
-        console.error("🚨 [USECASE] 예약 설정 저장 중 오류:", error);
-        throw new Error("예약 설정 저장 실패");
-      }
+      });
     }
 
-    return { success: true, eventId };
+    return {
+      success: true,
+      eventId,
+      mainImage: mainImageUrl,
+      detailImage: detailImages,
+    };
   }
 }

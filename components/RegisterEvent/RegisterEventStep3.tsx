@@ -3,7 +3,7 @@ import { useRegisterEventStore } from "@/store/registerEventStore";
 import PosterUploadButton from "../Button/PosterUploadButton/PosterUploadButton";
 import styles from "./RegisterEvent.module.scss";
 import { Controller, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Icon from "../Icon/Icon";
 import CheckboxTag from "../Tag/CheckboxTag/CheckboxTag";
@@ -28,6 +28,25 @@ const RegisterEventStep3 = ({
   const { eventData, updateEventData } = useRegisterEventStore();
   const [isModalOpen, toggleModal] = useToggle(false);
   const router = useRouter();
+  const [selectedMainImage, setSelectedMainImage] = useState<File | null>(null);
+  const [selectedDetailImages, setSelectedDetailImages] = useState<File[]>([]);
+
+  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedMainImage(file);
+    }
+  };
+
+  const handleDetailImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files).slice(
+        0,
+        4 - selectedDetailImages.length
+      );
+      setSelectedDetailImages((prev) => [...prev, ...files]);
+    }
+  };
 
   const {
     control,
@@ -52,46 +71,42 @@ const RegisterEventStep3 = ({
     });
   }, [eventData, reset]);
 
-  const onSubmit = async (data: RegisterEventStep3Form) => {
-    console.log("Step3 제출 데이터:", data);
+  const onSubmit = async () => {
+    const formData = new FormData();
 
-    // Store 업데이트
-    await updateEventData({
-      mainImage: data.mainImage,
-      detailImage: data.detailImage,
-      benefits: data.benefits,
-    });
+    if (selectedMainImage) formData.append("mainImage", selectedMainImage);
+    selectedDetailImages.forEach((file: string | Blob) =>
+      formData.append("detailImage", file)
+    );
 
-    // 스토어에서 전체 데이터 가져오기
-    const eventData = useRegisterEventStore.getState().eventData;
+    formData.append(
+      "eventData",
+      JSON.stringify(useRegisterEventStore.getState().eventData)
+    );
 
     try {
-      // API 호출
       const response = await fetch("/api/event", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(eventData),
+        body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error("이벤트 등록 실패");
-      }
+      if (!response.ok) throw new Error("이벤트 등록 실패");
 
       const result = await response.json();
-      const eventId = result.eventId;
+      console.log("이벤트 등록 성공:", result);
 
-      console.log("이벤트 등록 성공, ID:", eventId);
+      updateEventData({
+        mainImage: result.mainImage,
+        detailImage: result.detailImage,
+      });
 
-      // 이벤트 페이지로 이동
-      router.push(`/member/event/${eventId}`);
+      router.push(`/member/event/${result.eventId}`);
     } catch (error) {
       console.error("이벤트 등록 중 오류:", error);
     }
   };
 
   // watch를 통해 모든 입력 값 확인
-  const mainImage = watch("mainImage");
-  const detailImages = watch("detailImage");
   const benefits = watch("benefits");
 
   const handleConfirmButton = () => {
@@ -107,94 +122,58 @@ const RegisterEventStep3 = ({
       {/* 메인 이미지 업로드 */}
       <div className={styles.containerItem}>
         <p>메인 이미지</p>
-        <Controller
-          name="mainImage"
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange } }) => (
-            <>
-              <PosterUploadButton
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const imageUrl = URL.createObjectURL(file);
-                    onChange(imageUrl);
-                  }
-                }}
-              />
-              {mainImage && (
-                <div className={styles.imageWrapper}>
-                  <Image
-                    src={mainImage}
-                    alt="메인 이미지 미리보기"
-                    width={300}
-                    height={400}
-                    objectFit="cover"
-                    className={styles.previewImage}
-                  />
-                  <button
-                    type="button"
-                    className={styles.deleteButton}
-                    onClick={() => onChange("")}
-                  >
-                    <Icon id={"close"} />
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-        />
+        <PosterUploadButton onChange={handleMainImageChange} />
+        {selectedMainImage && (
+          <div className={styles.imageWrapper}>
+            <Image
+              src={URL.createObjectURL(selectedMainImage)}
+              alt="메인 이미지 미리보기"
+              width={300}
+              height={400}
+              className={styles.previewImage}
+            />
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={() => setSelectedMainImage(null)}
+            >
+              <Icon id={"close"} />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 상세 이미지 업로드 (최대 4개) */}
       <div className={styles.containerItem}>
         <p>상세 이미지 (최대 4개)</p>
-        <Controller
-          name="detailImage"
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange } }) => (
-            <>
-              <PosterUploadButton
-                onChange={(e) => {
-                  const files = e.target.files;
-                  if (files) {
-                    const newImages = Array.from(files)
-                      .slice(0, 4 - value.length)
-                      .map((file) => URL.createObjectURL(file));
-
-                    onChange([...value, ...newImages]);
-                  }
-                }}
-              />
-              <div className={styles.imageScrollContainer}>
-                <div className={styles.imagePreviewContainer}>
-                  {detailImages.map((img, index) => (
-                    <div key={index} className={styles.imageWrapper}>
-                      <Image
-                        src={img}
-                        alt={`상세 이미지 ${index + 1}`}
-                        width={150}
-                        height={200}
-                        objectFit="cover"
-                        className={styles.previewImage}
-                      />
-                      <button
-                        type="button"
-                        className={styles.deleteButton}
-                        onClick={() =>
-                          onChange(detailImages.filter((_, i) => i !== index))
-                        }
-                      >
-                        <Icon id={"close"} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+        <PosterUploadButton onChange={handleDetailImagesChange} />
+        <div className={styles.imageScrollContainer}>
+          <div className={styles.imagePreviewContainer}>
+            {selectedDetailImages.map((file, index) => (
+              <div key={index} className={styles.imageWrapper}>
+                <Image
+                  src={URL.createObjectURL(file)}
+                  alt={`상세 이미지 ${index + 1}`}
+                  width={150}
+                  height={200}
+                  className={styles.previewImage}
+                />
+                <button
+                  type="button"
+                  className={styles.deleteButton}
+                  onClick={() => {
+                    const updatedImages = selectedDetailImages.filter(
+                      (_, i) => i !== index
+                    );
+                    setSelectedDetailImages(updatedImages);
+                  }}
+                >
+                  <Icon id={"close"} />
+                </button>
               </div>
-            </>
-          )}
-        />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* 특전 선택 */}
@@ -210,7 +189,7 @@ const RegisterEventStep3 = ({
                 <CheckboxTag
                   key={benefit}
                   label={benefit}
-                  checked={benefits.includes(benefit)} // 저장된 값과 비교할 때도 이모지 포함
+                  checked={benefits.includes(benefit)}
                   onChange={(checked) => {
                     onChange(
                       checked
@@ -226,7 +205,7 @@ const RegisterEventStep3 = ({
       </div>
 
       <ConfirmCancelButton
-        onConfirm={handleConfirmButton} // 함수 실행되도록 수정
+        onConfirm={handleConfirmButton}
         onCancel={onPrev}
         isConfirmDisabled={!isValid}
       />
