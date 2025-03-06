@@ -5,7 +5,6 @@ import { PgLikedEventRepository } from "@/infrastructure/repositories/PgLikedEve
 import { getUserIdFromToken } from "@/utils/auth";
 import { NextResponse } from "next/server";
 
-// 좋아요한 이벤트 전체 불러오기 (GET)
 export async function GET(req: Request) {
   const userId = await getUserIdFromToken();
 
@@ -29,7 +28,10 @@ export async function GET(req: Request) {
     const repository = new PgLikedEventRepository();
     const result = await LikedEventUsecase(eventId, userId, repository);
 
-    return NextResponse.json(result || {}, { status: 200 });
+    if (result === false) {
+      return NextResponse.json(false, { status: 200 });
+    }
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("서버 오류 발생:", error);
     return NextResponse.json(

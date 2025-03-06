@@ -7,7 +7,7 @@ export class PgLikedEventRepository implements LikedEventRepository {
   async findLikedEventByEventId(
     eventId: number,
     userId: string
-  ): Promise<LikedEvent> {
+  ): Promise<LikedEvent | false> {
     try {
       const likedEvent = await prisma.likedEvent.findUnique({
         where: {
@@ -18,11 +18,14 @@ export class PgLikedEventRepository implements LikedEventRepository {
         },
       });
       if (!likedEvent) {
-        throw new Error("좋아요한 이벤트를 찾을 수 없습니다.");
+        return false;
       }
       return likedEvent;
     } catch (error) {
-      console.error("좋아요한 이벤트 조회 중 오류 발생:", error);
+      console.error(
+        "좋아요한 이벤트 조회 중 오류 발생:",
+        error instanceof Error ? error.stack : error
+      );
       throw new Error(
         `좋아요한 이벤트를 불러오는 중 오류가 발생했습니다. Details: ${
           error instanceof Error ? error.message : error
