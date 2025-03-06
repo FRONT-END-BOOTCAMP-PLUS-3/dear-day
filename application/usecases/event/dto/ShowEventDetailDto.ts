@@ -15,6 +15,7 @@ export interface ShowEventDetailDto {
   detailImage: string[];
 
   benefits: string[];
+  placeName: string;
   address: string;
   latitude: number;
   longitude: number;

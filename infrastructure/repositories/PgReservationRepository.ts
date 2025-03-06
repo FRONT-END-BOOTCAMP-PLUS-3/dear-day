@@ -17,4 +17,18 @@ export class PgReservationRepository implements ReservationRepository {
       await prisma.$disconnect();
     }
   }
+  // 예약 정보 전송하는 메서드
+  async createReservation(reservation: Reservation): Promise<void> {
+    try {
+      await prisma.reservation.create({
+        data: {
+          eventId: reservation.eventId,
+          userId: reservation.userId,
+          reservationConfirmedAt: reservation.reservationConfirmedAt,
+        },
+      });
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }

@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export class PgStarRepository implements StarRepository {
   async createStar(star: Star): Promise<void> {
-    console.log(star);
     try {
       await prisma.star.create({
         data: {
@@ -31,6 +30,53 @@ export class PgStarRepository implements StarRepository {
       throw new Error("스타 정보를 불러오는 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect(); // DB 연결 해제
+    }
+  }
+
+  async searchStarByKeyword(keyword: string): Promise<
+    {
+      id: number;
+      image: string;
+      stageName: string | null;
+      realName: string | null;
+      group: string | null;
+    }[]
+  > {
+    try {
+      const stars = await prisma.star.findMany({
+        where: {
+          OR: [
+            {
+              stageName: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+            {
+              realName: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+            {
+              group: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+          image: true,
+          stageName: true,
+          realName: true,
+          group: true,
+        },
+      });
+      return stars;
+    } finally {
+      await prisma.$disconnect();
     }
   }
 }

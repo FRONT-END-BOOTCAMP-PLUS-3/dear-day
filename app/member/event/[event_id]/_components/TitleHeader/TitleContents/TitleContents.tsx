@@ -41,7 +41,7 @@ export default function TitleContents({ eventData }: Props) {
       </div>
       <div>
         <Icon id="map" />
-        <p>{eventData.address}</p>
+        <p>{eventData.placeName}</p>
       </div>
       <div>
         <Icon id="profile" />
