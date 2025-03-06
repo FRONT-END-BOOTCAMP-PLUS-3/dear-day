@@ -40,4 +40,12 @@ export class PgEventRepository implements EventRepository {
       await prisma.$disconnect();
     }
   }
+  async findAll(): Promise<Event[]> {
+    try {
+      const events = await prisma.event.findMany();
+      return events;
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
