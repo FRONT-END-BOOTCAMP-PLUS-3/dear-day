@@ -9,8 +9,6 @@ import Icon from "../Icon/Icon";
 import CheckboxTag from "../Tag/CheckboxTag/CheckboxTag";
 import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmCancelButton/ConfirmCancelBytton";
 import { BENEFITS } from "@/constants/benefits";
-import useToggle from "@/hooks/useToggle";
-import Modal from "../modal/Modal";
 import { useRouter } from "next/navigation";
 
 export interface RegisterEventStep3Form {
@@ -26,7 +24,6 @@ const RegisterEventStep3 = ({
   onPrev: () => void;
 }) => {
   const { eventData, updateEventData } = useRegisterEventStore();
-  const [isModalOpen, toggleModal] = useToggle(false);
   const router = useRouter();
   const [selectedMainImage, setSelectedMainImage] = useState<File | null>(null);
   const [selectedDetailImages, setSelectedDetailImages] = useState<File[]>([]);
@@ -100,7 +97,8 @@ const RegisterEventStep3 = ({
         detailImage: result.detailImage,
       });
 
-      router.push(`/member/event/${result.eventId}`);
+      alert("생일 카페 등록 완료!"); // ✅ Alert 창 띄우기
+      router.push(`/member/event/${result.eventId}`); // ✅ 페이지 이동
     } catch (error) {
       console.error("이벤트 등록 중 오류:", error);
     }
@@ -108,10 +106,6 @@ const RegisterEventStep3 = ({
 
   // watch를 통해 모든 입력 값 확인
   const benefits = watch("benefits");
-
-  const handleConfirmButton = () => {
-    toggleModal();
-  };
 
   return (
     <form
@@ -205,23 +199,9 @@ const RegisterEventStep3 = ({
       </div>
 
       <ConfirmCancelButton
-        onConfirm={handleConfirmButton}
+        onConfirm={handleSubmit(onSubmit)}
         onCancel={onPrev}
         isConfirmDisabled={!isValid}
-      />
-
-      <Modal
-        contents={[
-          {
-            type: "textOnly",
-            title: "생일 카페 등록 완료 !",
-          },
-        ]}
-        onConfirm={() => handleSubmit(onSubmit)()}
-        onCancel={toggleModal}
-        isOpen={isModalOpen}
-        confirmText="완료"
-        cancelText="취소"
       />
     </form>
   );
