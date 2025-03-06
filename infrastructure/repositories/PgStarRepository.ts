@@ -64,4 +64,13 @@ export class PgStarRepository implements StarRepository {
       await prisma.$disconnect();
     }
   }
+
+  async findAll(): Promise<Star[]> {
+    try {
+      const stars = await prisma.star.findMany();
+      return stars;
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
