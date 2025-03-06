@@ -25,10 +25,7 @@ export async function GET() {
       userId
     );
 
-    return NextResponse.json(
-      { message: "좋아요한 스타 목록", likedStarsInfo },
-      { status: 200 }
-    );
+    return NextResponse.json(likedStarsInfo);
   } catch (error) {
     console.error("API 요청 처리 중 오류 발생:", error);
     return NextResponse.json({ message: "서버 오류 발생" }, { status: 500 });

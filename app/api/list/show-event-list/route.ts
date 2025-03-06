@@ -9,10 +9,7 @@ export async function GET() {
 
     const eventList: ShowEventListDto[] = await ShowEventList(eventRepository);
 
-    return NextResponse.json(
-      { message: "모든 이벤트 목록", eventList },
-      { status: 200 }
-    );
+    return NextResponse.json(eventList);
   } catch (error) {
     console.error("API 요청 처리 중 오류 발생:", error);
     return NextResponse.json({ message: "서버 오류 발생" }, { status: 500 });
