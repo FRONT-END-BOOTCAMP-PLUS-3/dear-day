@@ -6,14 +6,6 @@ import SearchInput from "@/components/Input/SearchInput/SearchInput";
 import { useRegisterEventStore } from "@/store/registerEventStore";
 import Icon from "@/components/Icon/Icon";
 
-// 네이버 API 응답 타입 정의
-interface NaverPlace {
-  title: string;
-  roadAddress: string;
-  mapx: string;
-  mapy: string;
-}
-
 // 변환된 장소 데이터 타입
 interface LocationData {
   placeName: string;
@@ -61,17 +53,11 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
         );
       }
 
-      const data: { places: NaverPlace[] } = await response.json();
+      const data: { places: LocationData[] } = await response.json();
 
       if (data.places) {
-        setSearchResults(
-          data.places.map((place) => ({
-            placeName: place.title.replace(/<[^>]+>/g, ""),
-            address: place.roadAddress,
-            latitude: parseFloat(place.mapy),
-            longitude: parseFloat(place.mapx),
-          }))
-        );
+        console.log("🔹 검색된 장소 데이터:", data.places);
+        setSearchResults(data.places);
       } else {
         console.warn("⚠️ 검색 결과 없음!");
       }
@@ -81,6 +67,8 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
   };
 
   const handleSelectLocation = (place: LocationData) => {
+    console.log("✅ 선택한 장소 데이터:", place);
+
     onChange({
       placeName: place.placeName,
       address: place.address,
@@ -94,6 +82,11 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
       latitude: place.latitude,
       longitude: place.longitude,
     });
+
+    console.log(
+      "🔵 업데이트된 store 데이터:",
+      useRegisterEventStore.getState().eventData
+    );
 
     setInputText(place.placeName);
     setIsModalOpen(false);

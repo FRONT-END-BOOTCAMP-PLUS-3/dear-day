@@ -1,11 +1,24 @@
 import { PrismaClient, ReservationSetting } from "@prisma/client";
 import { ReservationSettingRepository } from "@/domain/repositories/ReservationSettingRepository";
+import { CreateReservationSettingRequestDto } from "@/application/usecases/event/dto/CreateReservationSettingRequestDto";
 
 const prisma = new PrismaClient();
 
 export class PgReservationSettingRepository
   implements ReservationSettingRepository
 {
+  async createReservationSetting(
+    reservationData: CreateReservationSettingRequestDto
+  ): Promise<void> {
+    await prisma.reservationSetting.create({
+      data: {
+        eventId: reservationData.eventId, // event 테이블과의 FK
+        openAt: reservationData.openAt,
+        breaktime: reservationData.breaktime,
+        limit: reservationData.limit,
+      },
+    });
+  }
   // 예약 ID로 예약 설정 조회
   async findReservationSettingByEventId(
     eventId: number
