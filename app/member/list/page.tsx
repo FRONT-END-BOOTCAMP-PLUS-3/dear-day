@@ -19,12 +19,17 @@ export default function ListPage() {
     const fetchData = async () => {
       try {
         const [likedStarsRes, eventListRes] = await Promise.all([
-          fetch("/api/liked-stars"),
-          fetch("/api/events"),
+          fetch("/api/list/show-liked-stars", {
+            credentials: "include",
+          }),
+          fetch("/api/list/show-event-list"),
         ]);
 
-        const likedStarsData = await likedStarsRes.json();
-        const eventListData = await eventListRes.json();
+        const likedStarsData: ShowLikedStarDto[] = await likedStarsRes.json();
+        const eventListData: ShowEventListDto[] = await eventListRes.json();
+
+        console.log("likedStarsData", likedStarsData);
+        console.log("eventListData", eventListData);
 
         setLikedStars(likedStarsData);
         setEventList(eventListData);
