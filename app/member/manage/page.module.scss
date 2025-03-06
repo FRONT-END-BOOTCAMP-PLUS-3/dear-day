@@ -2,8 +2,27 @@
   @include pageContainer;
 }
 
-.listTitle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.pageContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 60px;
+}
+
+.tabContainer {
+  position: relative;
+  z-index: 10;
+  background-color: var(--color-white);
+  border-radius: 20px 20px 0 0;
+}
+
+.title {
+  margin: 15px 0;
+  font-size: var(--font-size-md);
+}
+
+.tabContent {
+  height: 100vh;
+  background-color: var(--color-gray-bg);
+  margin: calc(-1 * var(--padding-xl));
+  padding: var(--padding-xl);
 }

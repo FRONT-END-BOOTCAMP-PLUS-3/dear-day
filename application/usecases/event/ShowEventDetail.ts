@@ -63,6 +63,7 @@ export const ShowEventDetail = async (
     mainImage: event.mainImage,
     detailImage: event.detailImage,
     benefits: event.benefits,
+    placeName: event.placeName,
     address: event.address,
     latitude: event.latitude,
     longitude: event.longitude,
