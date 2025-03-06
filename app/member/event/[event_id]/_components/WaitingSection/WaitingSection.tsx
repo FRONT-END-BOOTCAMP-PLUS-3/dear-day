@@ -14,6 +14,7 @@ interface Props {
 export default function WaitingSection({ eventData }: Props) {
   const [openWaiting, setOpenWaiting] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
+  const [headCount, setHeadCount] = useState<number>(1);
 
   useEffect(() => {
     const now = new Date();
@@ -39,21 +40,30 @@ export default function WaitingSection({ eventData }: Props) {
       return;
     }
 
+    // ⏰ 현재 시간에서 시간과 분만 가져오기
+    const nowHours = now.getHours();
+    const nowMinutes = now.getMinutes();
+
+    // 🕒 현재 시간이 startTime과 endTime 사이인지 확인
+    const isWithinTimeRange =
+      nowHours > startHours ||
+      (nowHours === startHours && nowMinutes >= startMinutes)
+        ? nowHours < endHours ||
+          (nowHours === endHours && nowMinutes <= endMinutes)
+        : false;
     const isWithinDateRange = now >= startDate && now <= endDate;
-    const isWithinTimeRange = now >= startDateTime && now <= endDateTime;
 
     setOpenWaiting(isWithinDateRange && isWithinTimeRange);
 
-    let nextUpdate: number | null = null;
+    const nextUpdate: number | null = null;
 
-    if (!isWithinDateRange) {
-      return;
-    } else if (!isWithinTimeRange && now < startDateTime) {
-      nextUpdate = startDateTime.getTime() - now.getTime();
-    } else if (isWithinTimeRange && now < endDateTime) {
-      nextUpdate = endDateTime.getTime() - now.getTime();
-    } else if (now < endDate) {
-      nextUpdate = endDate.getTime() - now.getTime();
+    if (nextUpdate !== null) {
+      const timeout = setTimeout(() => {
+        setOpenWaiting(isWithinTimeRange);
+        if (now >= endDateTime || now >= endDate) setIsEnded(true);
+      }, nextUpdate);
+
+      return () => clearTimeout(timeout);
     }
 
     if (nextUpdate !== null) {
@@ -66,6 +76,37 @@ export default function WaitingSection({ eventData }: Props) {
     }
   }, [eventData]);
 
+  // 대기 요청 함수
+  const handleWaiting = async () => {
+    if (!eventData.id || headCount < 1) {
+      alert("유효하지 않은 이벤트입니다.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/event/make-waiting`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 쿠키 포함 요청
+        body: JSON.stringify({
+          eventId: eventData.id,
+          headCount,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("대기 요청 실패!");
+      }
+
+      alert("대기가 완료되었습니다!"); // TODO: 추후에 성공하면 TicketModal 띄우는거 해야함
+    } catch (error) {
+      alert("대기 중 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("대기 오류:", error);
+    }
+  };
+
   return (
     <div className={styles.waitingSection}>
       <h3>대기</h3>
@@ -77,13 +118,14 @@ export default function WaitingSection({ eventData }: Props) {
         </div>
       ) : openWaiting ? (
         <div>
-          <Waiting eventId={eventData.id} />
+          <Waiting
+            eventId={eventData.id}
+            headCount={headCount}
+            setHeadCount={setHeadCount}
+          />
           <Notice />
           <div className={styles.button}>
-            <FixedButton
-              onClick={() => alert("대기 신청 완료!")}
-              value={"대기하기"}
-            />
+            <FixedButton onClick={handleWaiting} value={"대기하기"} />
           </div>
         </div>
       ) : (

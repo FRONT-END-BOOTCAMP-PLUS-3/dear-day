@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const reservationData: MakeReservationDto = {
       userId,
-      eventId,
+      eventId: Number(eventId),
       selectedDate: date,
       selectedTime: time,
     };

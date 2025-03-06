@@ -8,7 +8,7 @@ import { generateDateList, generateHourlyList } from "./_hooks/utils";
 import { DateTimeSelectButtonProps } from "./_hooks/types";
 import useReservationStore from "@/store/reservationStore";
 
-const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
+const DateTimeSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   startDate,
   endDate,
   startTime,
@@ -33,15 +33,27 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   const times = selectedDate ? generateHourlyList(startTime, endTime) : [];
 
   const convertToISODate = (formattedDate: string): string => {
-    const today = new Date(); // 현재 날짜
-    const parsedDate = new Date(`${formattedDate}, ${today.getFullYear()}`); // 기본적으로 현재 연도 사용
+    const today = new Date();
+    const [monthStr, dayStr] = formattedDate.split(" ");
 
-    // 선택한 날짜가 오늘보다 과거라면 다음 해로 설정
-    if (parsedDate < today) {
-      parsedDate.setFullYear(today.getFullYear() + 1);
+    // 월을 숫자로 변환 (Mar -> 2)
+    const month = new Date(`${monthStr} 1, 2000`).getMonth();
+
+    const day = Number(dayStr);
+    const year = today.getFullYear();
+
+    // 🎯 UTC 기준으로 날짜 설정 (로컬 타임존 영향을 받지 않도록)
+    const parsedDate = new Date(Date.UTC(year, month, day));
+
+    // 날짜만 비교하여 과거라면 다음 해로 설정
+    const todayDate = new Date(
+      Date.UTC(year, today.getMonth(), today.getDate())
+    );
+    if (parsedDate < todayDate) {
+      parsedDate.setUTCFullYear(year + 1);
     }
 
-    return parsedDate.toISOString().split("T")[0];
+    return parsedDate.toISOString().split("T")[0]; // "YYYY-MM-DD" 반환
   };
 
   const handleDateSelect = (date: string) => {
@@ -49,6 +61,9 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
     setSelectedDate(date);
     setSelectedTime(null);
     const isoDate = convertToISODate(date);
+    console.log("선택한 날짜", date);
+    console.log("선택한 날짜", isoDate);
+
     onSelectDate(isoDate);
   };
 
@@ -101,4 +116,4 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   );
 };
 
-export default DateSelectButton;
+export default DateTimeSelectButton;
