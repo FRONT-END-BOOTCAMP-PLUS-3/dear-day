@@ -8,7 +8,7 @@ const SearhStarPage = () => {
   const router = useRouter();
 
   const handleSelect = (id: number) => {
-    router.push(`/search_star/${id}`);
+    router.push(`/member/search_star/${id}`);
   };
 
   return (

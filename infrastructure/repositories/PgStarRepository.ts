@@ -33,15 +33,7 @@ export class PgStarRepository implements StarRepository {
     }
   }
 
-  async searchStarByKeyword(keyword: string): Promise<
-    {
-      id: number;
-      image: string;
-      stageName: string | null;
-      realName: string | null;
-      group: string | null;
-    }[]
-  > {
+  async findAllStarsByKeyword(keyword: string): Promise<Star[]> {
     try {
       const stars = await prisma.star.findMany({
         where: {
@@ -65,13 +57,6 @@ export class PgStarRepository implements StarRepository {
               },
             },
           ],
-        },
-        select: {
-          id: true,
-          image: true,
-          stageName: true,
-          realName: true,
-          group: true,
         },
       });
       return stars;
