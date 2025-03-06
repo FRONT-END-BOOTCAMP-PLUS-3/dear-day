@@ -5,13 +5,14 @@ import styles from "./Waiting.module.scss";
 
 interface Props {
   eventId: number;
+  headCount: number;
+  setHeadCount: (count: number) => void; // 부모에서 전달된 setter 함수
 }
 
-export default function Waiting({ eventId }: Props) {
+export default function Waiting({ eventId, headCount, setHeadCount }: Props) {
   const [waitingCount, setWaitingCount] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [reservationCount, setReservationCount] = useState<number>(1); // ✅ 최소 1명부터 시작
 
   useEffect(() => {
     const fetchWaitingCount = async () => {
@@ -44,14 +45,14 @@ export default function Waiting({ eventId }: Props) {
   }, [eventId]);
 
   const handleIncrease = () => {
-    if (reservationCount < 4) {
-      setReservationCount((prev) => prev + 1);
+    if (headCount < 4) {
+      setHeadCount(headCount + 1);
     }
   };
 
   const handleDecrease = () => {
-    if (reservationCount > 1) {
-      setReservationCount((prev) => prev - 1);
+    if (headCount > 1) {
+      setHeadCount(headCount + 1);
     }
   };
 
@@ -73,15 +74,15 @@ export default function Waiting({ eventId }: Props) {
         <button
           className={styles.decreaseButton}
           onClick={handleDecrease}
-          disabled={reservationCount === 1}
+          disabled={headCount === 1}
         >
           −
         </button>
-        <span className={styles.reservationCount}>{reservationCount}</span>
+        <span className={styles.reservationCount}>{headCount}</span>
         <button
           className={styles.increaseButton}
           onClick={handleIncrease}
-          disabled={reservationCount === 4}
+          disabled={headCount === 4}
         >
           +
         </button>

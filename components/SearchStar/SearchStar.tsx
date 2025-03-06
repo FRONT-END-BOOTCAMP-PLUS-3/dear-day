@@ -1,58 +1,61 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import styles from "./SearchStar.module.scss";
 import SearchInput from "../Input/SearchInput/SearchInput";
 import StarView from "../StarView/StarView";
-
-interface Star {
-  id: number;
-  name: string;
-  image: string;
-}
+import { searchStarListDto } from "@/application/usecases/star/dto/SearchStarListDto";
+import { useEffect, useState } from "react";
+import { searchStarByKeyword } from "@/components/SearchStar/_api/searchStarByKeyword";
+import { usePathname, useRouter } from "next/navigation";
 
 interface SearchStarProps {
-  onSelectStar: (star: Star) => void;
+  onSelectStarId: (id: number) => void;
 }
 
-const SearchStar = ({ onSelectStar }: SearchStarProps) => {
-  const [query, setQuery] = useState(""); // 검색어 상태
-  // const [results, setResults] = useState<string[]>([]); // 검색 결과 상태
-  // const [debouncedQuery, setDebouncedQuery] = useState(query);
+const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
+  const router = useRouter();
+  const currentPath = usePathname();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<searchStarListDto[]>([]);
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 데베 연결 전 임시 데이터
-  const data: Star[] = [
-    { id: 1, name: "원빈", image: "/images/wonbin.jpg" },
-    { id: 2, name: "윈터", image: "/images/winter.jpg" },
-    { id: 3, name: "윈디", image: "/images/windy.jpg" },
-    { id: 4, name: "보이넥스트도어", image: "/images/boynextdoor.jpg" },
-    { id: 5, name: "워너원", image: "/images/wannaone.jpg" },
-    { id: 6, name: "위너", image: "/images/winner.jpg" },
-  ];
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setDebouncedQuery(query);
-  //   }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
 
-  //   return () => clearTimeout(timer);
-  // }, [query]);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!debouncedQuery.trim()) {
+        setResults([]);
+        return;
+      }
 
-  // useEffect(() => {
-  //   if (debouncedQuery) {
-  //     fetch(`/api/search?query=${debouncedQuery}`)
-  //       .then((res) => res.json())
-  //       .then((data) => setResults(data))
-  //       .catch((error) => console.error("검색 오류:", error));
-  //   } else {
-  //     setResults([]);
-  //   }
-  // }, [debouncedQuery]);
+      setIsLoading(true);
+      try {
+        const data = await searchStarByKeyword(debouncedQuery);
+        setResults(data);
+      } catch (error) {
+        console.error("검색 중 오류 발생:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  // 데베 연결 전 임시 필터링
-  const filteredResults = data.filter((item) =>
-    item.name.toLowerCase().includes(query.toLowerCase())
-  );
+    fetchData();
+  }, [debouncedQuery]);
+
+  const handleClick = () => {
+    if (currentPath.includes("/member")) {
+      router.push("/member/register_star");
+    } else {
+      router.push("/register_star");
+    }
+  };
 
   return (
     <>
@@ -62,25 +65,35 @@ const SearchStar = ({ onSelectStar }: SearchStarProps) => {
         placeholder={"스타의 이름을 검색하세요"}
       />
 
-      {query && (
+      {query.trim() !== "" && (
         <ul className={styles.searchStarContainer}>
-          {filteredResults.length > 0 ? (
-            filteredResults.map((item) => (
+          {isLoading ? (
+            <li className={styles.searchStarNoItem}>
+              <p>검색 중...</p>
+            </li>
+          ) : results.length > 0 ? (
+            results.map((item: searchStarListDto) => (
               <li
                 key={item.id}
                 className={styles.searchStarItem}
-                onClick={() => onSelectStar(item)} // 선택된 스타 전달
+                onClick={() => onSelectStarId(item.id)}
               >
                 <StarView starImage={item.image} starName={item.name} />
               </li>
             ))
           ) : (
-            <li className={styles.searchStarNoItem}>
-              <p>결과 없음</p>
-            </li>
+            !isLoading &&
+            query.trim() !== "" && (
+              <li className={styles.searchStarNoItem}>
+                <p>결과 없음</p>
+              </li>
+            )
           )}
         </ul>
       )}
+      <button className={styles.createStarBtn} onClick={handleClick}>
+        + 스타 추가하기
+      </button>
     </>
   );
 };
