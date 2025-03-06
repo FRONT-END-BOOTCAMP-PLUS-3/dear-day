@@ -27,16 +27,12 @@ export default function ReservationSection({ eventData }: Props) {
     const updateStatus = () => {
       const now = new Date();
 
-      // openAt을 UTC에서 KST로 변환
-      const openAt = eventData.openAt
-        ? new Date(new Date(eventData.openAt).getTime() + 9 * 60 * 60 * 1000)
-        : new Date();
+      // ✅ UTC에서 KST 변환을 올바르게 적용 (추가 변환 X)
+      const openAt = eventData.openAt ? new Date(eventData.openAt) : new Date();
 
-      // closeAt을 UTC에서 KST로 변환하여 날짜 + endTime 조합
+      // ✅ UTC에서 KST 변환을 올바르게 적용
       const closeAt = (() => {
-        // endDate를 KST 기준으로 변환
-        const endDateUTC = new Date(eventData.endDate);
-        const endDateKST = new Date(endDateUTC.getTime() + 9 * 60 * 60 * 1000);
+        const endDateKST = new Date(eventData.endDate);
 
         // 날짜만 유지
         endDateKST.setHours(0, 0, 0, 0);
@@ -60,7 +56,7 @@ export default function ReservationSection({ eventData }: Props) {
       } else if (now < closeAt) {
         setIsOpen(true);
         setIsEnded(false);
-      } else if (now >= closeAt) {
+      } else {
         setIsOpen(false);
         setIsEnded(true);
       }
