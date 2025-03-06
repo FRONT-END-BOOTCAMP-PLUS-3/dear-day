@@ -1,9 +1,10 @@
 "use client";
 import { Controller, useForm } from "react-hook-form";
 import { useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import styles from "./RegisterEvent.module.scss";
 import { useRegisterEventStore } from "@/store/registerEventStore";
-import TimeSelectButton from "../ComboBox/TimeComboBox/TimeComboBox";
 import Input from "../Input/Input/Input";
 import RadioButtonGroup from "../Button/RadioButton/RadioButtonGroup";
 import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmCancelButton/ConfirmCancelBytton";
@@ -63,6 +64,18 @@ const RegisterEventStep2 = ({
     onNext(data);
   };
 
+  const CustomInput = ({
+    value,
+    onClick,
+  }: {
+    value?: string;
+    onClick?: () => void;
+  }) => (
+    <button type="button" className={styles.datepicker} onClick={onClick}>
+      {value && value.trim() !== "" ? value : "날짜/시간 선택"}
+    </button>
+  );
+
   return (
     <form
       id="step2-form"
@@ -112,13 +125,19 @@ const RegisterEventStep2 = ({
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
-                <TimeSelectButton
-                  value={field.value ? new Date(field.value) : undefined}
-                  onChange={(date) => field.onChange(date.toISOString())}
+                <DatePicker
+                  selected={field.value ? new Date(field.value) : undefined}
+                  onChange={(date) => field.onChange(date?.toISOString())}
+                  showTimeSelect
+                  timeIntervals={30}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  popperPlacement="bottom-start"
+                  customInput={<CustomInput />} // ✅ 커스텀 Input 적용
                 />
               )}
             />
           </div>
+
           <div className={styles.containerItem}>
             <p>쉬는 시간</p>
             <p>
