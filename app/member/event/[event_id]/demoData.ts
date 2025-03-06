@@ -12,6 +12,7 @@ export const demoEventData: ShowEventDetailDto = {
   mainImage: "/event-detail-error/main.png",
   detailImage: [],
   benefits: [],
+  placeName: "@@",
   address: "@@@@@",
   latitude: 37.4979,
   longitude: 127.0276,
