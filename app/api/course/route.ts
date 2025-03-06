@@ -30,13 +30,11 @@ export async function GET() {
       );
       return NextResponse.json(course);
     } catch (error) {
-      if (error.message === "코스 목록을 찾을 수 없습니다.") {
-        return NextResponse.json(
-          { error: "코스 목록을 찾을 수 없습니다." },
-          { status: 404 }
-        );
-      }
-      throw error; // 다른 예상치 못한 에러는 그대로 던짐
+      console.error("코스 목록 오류 발생", error);
+      return NextResponse.json(
+        { error: "코스 목록을 찾을 수 없습니다." },
+        { status: 404 }
+      );
     }
   } catch (error) {
     console.error("서버 오류 발생:", error);
