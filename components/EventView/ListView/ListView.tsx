@@ -11,6 +11,7 @@ interface ListViewProps {
   endDate: Date;
   starName: string;
   address: string;
+  currentPath: string; // 현재 경로를 부모에서 전달받음
 }
 
 const ListView: React.FC<ListViewProps> = ({
@@ -21,6 +22,7 @@ const ListView: React.FC<ListViewProps> = ({
   endDate,
   starName,
   address,
+  currentPath,
 }) => {
   const formatShortDate = (date: Date): string => {
     const fixedDate = new Date(date);
@@ -32,9 +34,13 @@ const ListView: React.FC<ListViewProps> = ({
 
     return `${year}.${month}.${day}`;
   };
+  // 🔹 현재 경로에서 마지막 부분 제거하고 `/event/${id}` 붙이기
+  const pathSegments = currentPath.split("/").filter(Boolean); // 빈 문자열 제거
+  pathSegments.pop(); // 마지막 경로 제거
+  const newPath = `/${pathSegments.join("/")}/event/${id}`;
 
   return (
-    <Link className={styles.listView} href={`/event/${id}`} passHref>
+    <Link className={styles.listView} href={newPath} passHref>
       <li className={styles.listItemContainer}>
         <div className={styles.listContent}>
           <Image src={mainImage} alt={title} width={78} height={100} />
