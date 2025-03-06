@@ -9,6 +9,7 @@ interface SmallCardViewProps {
   title: string;
   starName: string;
   address: string;
+  noLikeBtn?: boolean;
 }
 
 const SmallCardView: React.FC<SmallCardViewProps> = ({
@@ -17,6 +18,7 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
   title,
   starName,
   address,
+  noLikeBtn,
 }) => {
   return (
     <Link href={`/event/${id}`}>
@@ -30,7 +32,7 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
         />
         <div className={styles.smallCardContent}>
           <h3 className={styles.smallCardTitle}>{title}</h3>
-          <HeartButton eventId={id} />
+          {!noLikeBtn && <HeartButton eventId={id} />}
         </div>
         <p className={styles.smallCardText}>
           {starName} · {address}

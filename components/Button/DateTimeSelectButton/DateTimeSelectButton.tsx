@@ -8,7 +8,7 @@ import { generateDateList, generateHourlyList } from "./_hooks/utils";
 import { DateTimeSelectButtonProps } from "./_hooks/types";
 import useReservationStore from "@/store/reservationStore";
 
-const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
+const DateTimeSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   startDate,
   endDate,
   startTime,
@@ -101,4 +101,4 @@ const DateSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   );
 };
 
-export default DateSelectButton;
+export default DateTimeSelectButton;

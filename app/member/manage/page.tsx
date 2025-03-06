@@ -1,86 +1,132 @@
 "use client";
 
-import DateSelectButton from "@/components/Button/SelectButton/DateTimeSelectButton";
-import EventInfo from "./_components/EventInfo/EventInfo";
+import SwipeCardContainer from "@/components/CardContainer/SwipeCardContainer";
 import styles from "./page.module.scss";
-import { useState } from "react";
-import ReservationWaitList from "./_components/ReservationWaitList/ReservationWaitList";
+import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
+import SmallCardView from "@/components/EventView/SmallCardView/SmallCardView";
 
-const managePage = () => {
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedTime, setSelectedTime] = useState<string>("");
-
-  const handleDateSelect = (date: string) => {
-    setSelectedDate(date);
-    console.log("선택한 날짜:", date);
-  };
-
-  const handleTimeSelect = (time: string) => {
-    setSelectedTime(time);
-    console.log("선택한 시간:", time);
-  };
-
-  const handleConfirm = (id: string) => {
-    const confirmTime = new Date().toISOString();
-    console.log("입장완료:", id, confirmTime);
-  };
+const ManagePage = () => {
+  const cardData = [
+    {
+      id: 1,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 1",
+      starName: "카리나",
+      address: "서울 강남구",
+    },
+    {
+      id: 2,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 2",
+      starName: "윈터",
+      address: "서울 강동구",
+    },
+    {
+      id: 3,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 3",
+      starName: "지젤",
+      address: "서울 서초구",
+    },
+    {
+      id: 4,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 4",
+      starName: "닝닝",
+      address: "서울 송파구",
+    },
+    {
+      id: 5,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 5",
+      starName: "아이유",
+      address: "서울 마포구",
+    },
+    {
+      id: 6,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 6",
+      starName: "태연",
+      address: "서울 종로구",
+    },
+    {
+      id: 7,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 7",
+      starName: "제니",
+      address: "서울 강서구",
+    },
+    {
+      id: 8,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 8",
+      starName: "지수",
+      address: "서울 중구",
+    },
+    {
+      id: 9,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 9",
+      starName: "로제",
+      address: "서울 용산구",
+    },
+    {
+      id: 10,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 10",
+      starName: "리사",
+      address: "서울 동작구",
+    },
+    {
+      id: 11,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 11",
+      starName: "수지",
+      address: "서울 관악구",
+    },
+    {
+      id: 12,
+      imgSrc: "/demo/main-poster.jpeg",
+      title: "스타 12",
+      starName: "선미",
+      address: "서울 성동구",
+    },
+  ];
 
   return (
     <div className={styles.homeContainer}>
-      <EventInfo
-        title="스타 팬미팅"
-        imgSrc="/poster.png"
-        address="서울 강남구 스타카페"
-        startDate={new Date("2024-04-15")}
-        endDate={new Date("2024-04-16")}
-        mode="RESERVATION"
-      />
-
-      <h3 className={styles.listTitle}>예약자 명단</h3>
-      <div>
-        <DateSelectButton
-          startDate={new Date("2024-06-01")}
-          endDate={new Date("2024-06-02")}
-          startTime="14:40"
-          endTime="18:40"
-          onSelectDate={handleDateSelect}
-          onSelectTime={handleTimeSelect}
-        />
-        <ul className={styles.reservationListContianer}>
-          {reservations.map((reservation, index) => (
-            <ReservationWaitList
-              key={reservation.id}
-              id={reservation.id}
-              index={index + 1}
-              name={reservation.name}
-              email={reservation.email}
-              createdAt={reservation.reservationConfirmedAt}
-              status={reservation.status}
-              onConfirm={handleConfirm}
+      <div className={styles.tabContent}>
+        <p className={styles.title}>진행중인 생카</p>
+        <SwipeCardContainer>
+          {cardData.map((card) => (
+            <SmallCardView
+              key={card.id}
+              id={card.id}
+              imgSrc={card.imgSrc}
+              title={card.title}
+              starName={card.starName}
+              address={card.address}
+              noLikeBtn={true}
             />
           ))}
-        </ul>
-      </div>
-
-      <div>
-        <ul className={styles.reservationListContianer}>
-          {waittingList.map((waitting, index) => (
-            <ReservationWaitList
-              key={waitting.id}
-              id={waitting.id}
-              index={index}
-              name={waitting.name}
-              headCount={waitting.headCount}
-              email={waitting.email}
-              createdAt={waitting.waitingcreatedAt}
-              status={waitting.status}
-              onConfirm={handleConfirm}
+        </SwipeCardContainer>
+        <p className={styles.title}>종료된 생카</p>
+        <ScrollCardContainer variant={"grid"}>
+          {cardData.map((card) => (
+            <SmallCardView
+              key={card.id}
+              id={card.id}
+              imgSrc={card.imgSrc}
+              title={card.title}
+              starName={card.starName}
+              address={card.address}
+              noLikeBtn={true}
             />
           ))}
-        </ul>
+        </ScrollCardContainer>
       </div>
     </div>
   );
 };
 
-export default managePage;
+export default ManagePage;
