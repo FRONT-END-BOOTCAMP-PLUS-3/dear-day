@@ -1,12 +1,13 @@
 import Link from "next/link";
 import styles from "./LargeCardView.module.scss";
 import Image from "next/image";
+
 interface LargeCardViewProps {
   id: number;
   imgSrc: string;
   title: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
   starName: string;
   address: string;
   readOnly?: boolean;
@@ -22,6 +23,10 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
   address,
   readOnly = false,
 }) => {
+  const startDateObj =
+    typeof startDate === "string" ? new Date(startDate) : startDate;
+  const endDateObj = typeof endDate === "string" ? new Date(endDate) : endDate;
+
   const formatShortDate = (date: Date): string => {
     const year = date.getFullYear().toString().slice(2);
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -43,15 +48,12 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
         <h3 className={styles.LargeCardTitle}>{title}</h3>
         <div className={styles.LargeCardText}>
           <p className={styles.LargeCardTime}>
-            <time dateTime={startDate.toISOString()}>
-              {formatShortDate(startDate)}
+            <time dateTime={startDateObj.toISOString()}>
+              {formatShortDate(startDateObj)}
             </time>
             <span>&nbsp;~&nbsp;</span>
-            <time
-              className={styles.LargeCardEndTime}
-              dateTime={endDate.toISOString()}
-            >
-              {formatShortDate(endDate)}
+            <time dateTime={endDateObj.toISOString()}>
+              {formatShortDate(endDateObj)}
             </time>
           </p>
           <p className={styles.LargeCardNameLocation}>
