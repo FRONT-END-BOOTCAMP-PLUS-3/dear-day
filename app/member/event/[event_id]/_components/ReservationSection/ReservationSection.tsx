@@ -49,7 +49,6 @@ export default function ReservationSection({ eventData }: Props) {
       })();
 
       if (now < openAt) {
-        console.log("✅ 1");
         setIsOpen(false);
         setIsEnded(false);
 
@@ -59,11 +58,9 @@ export default function ReservationSection({ eventData }: Props) {
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
         setTimeLeft(`${hours}시간 ${minutes}분 ${seconds}초`);
       } else if (now < closeAt) {
-        console.log("✅ 2");
         setIsOpen(true);
         setIsEnded(false);
       } else if (now >= closeAt) {
-        console.log("✅ 3");
         setIsOpen(false);
         setIsEnded(true);
       }
