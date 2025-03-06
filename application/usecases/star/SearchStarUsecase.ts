@@ -6,7 +6,7 @@ export const searchStarUsecase = async (
   keyword: string
 ): Promise<searchStarListDto[]> => {
   const stars = keyword.trim()
-    ? await starRepository.searchStarByKeyword(keyword)
+    ? await starRepository.findAllStarsByKeyword(keyword)
     : [];
 
   const starList: searchStarListDto[] = stars.map((star) => ({
