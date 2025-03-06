@@ -1,0 +1,8 @@
+.homeContainer {
+  @include pageContainer;
+}
+
+.noResult {
+  display: flex;
+  justify-content: center;
+}
