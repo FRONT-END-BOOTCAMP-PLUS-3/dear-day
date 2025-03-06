@@ -3,7 +3,6 @@
 import styles from "./HeartButton.module.scss";
 import React, { useEffect, useState } from "react";
 import Icon from "@/components/Icon/Icon";
-import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 
 interface HeartButtonProps {
@@ -13,17 +12,20 @@ interface HeartButtonProps {
 const HeartButton = ({ eventId }: HeartButtonProps) => {
   const { user } = useAuthStore();
   const [liked, setLiked] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const checkLikedStatus = async () => {
-      if (!user) return;
       try {
-        const response = await fetch(
-          `/api/like?userId=${user.id}&eventId=${eventId}`
-        );
+        const response = await fetch(`/api/like?eventId=${eventId}`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error("좋아요 상태를 불러오는데 실패했습니다.");
+        }
         const data = await response.json();
-        setLiked(data.liked);
+        setLiked(!!data.eventId);
       } catch (error) {
         console.error("좋아요 상태 확인 실패:", error);
       }
@@ -31,40 +33,35 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
     checkLikedStatus();
   }, [eventId, user]);
 
-  const toggleLike = async () => {
-    if (!user) {
-      router.push("/login");
-      return;
-    }
+  const toggleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // if (!user) {
+    //   router.push("/login");
+    //   return;
+    // }
 
     const previousLiked = liked;
-    setLiked((prev) => !prev);
+    setLiked(!previousLiked);
 
     try {
       if (!previousLiked) {
-        const response = await fetch("/api/like", {
+        const response = await fetch(`/api/like`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            eventId: eventId,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ eventId }),
+          credentials: "include",
         });
         if (!response.ok) {
           throw new Error("좋아요 추가 실패");
         }
       } else {
-        const response = await fetch("/api/like", {
+        const response = await fetch(`/api/like`, {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            eventId: eventId,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ eventId }),
+          credentials: "include",
         });
         if (!response.ok) {
           throw new Error("좋아요 삭제 실패");
