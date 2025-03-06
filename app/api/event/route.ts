@@ -71,10 +71,8 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const eventData = JSON.parse(formData.get("eventData") as string);
 
-    const mainImageFile = formData.get("mainImage") as File | null;
-    const detailImageFiles = formData
-      .getAll("detailImage")
-      .filter((file): file is File => file instanceof File);
+    const mainImageFile = formData.get("mainImage");
+    const detailImageFiles = formData.getAll("detailImage");
 
     const eventRepository = new PgEventRepository();
     const reservationSettingRepository = new PgReservationSettingRepository();
