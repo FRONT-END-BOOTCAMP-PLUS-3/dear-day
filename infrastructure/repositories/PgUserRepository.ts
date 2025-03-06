@@ -1,9 +1,30 @@
+import { UserInfoDto } from "@/application/usecases/mypage/dto/UserInfoDto";
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { User, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export class PgUserRepository implements UserRepository {
+  // 마이페이지 사용자 정보 보여주는 메서드
+  async findUserInfo(userId: string): Promise<UserInfoDto> {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+      },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
+  }
+
   // 이메일로 사용자 찾는 메서드
   async findUserByEmail(email: string): Promise<User | null> {
     try {
