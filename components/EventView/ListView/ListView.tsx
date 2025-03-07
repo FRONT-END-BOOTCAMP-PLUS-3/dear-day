@@ -9,7 +9,9 @@ interface ListViewProps {
   title: string;
   startDate: Date;
   endDate: Date;
-  starName: string;
+  starId: number;
+  stageName: string;
+  group?: string | null;
   address: string;
   currentPath: string; // 현재 경로를 부모에서 전달받음
 }
@@ -20,7 +22,9 @@ const ListView: React.FC<ListViewProps> = ({
   title,
   startDate,
   endDate,
-  starName,
+  starId,
+  stageName,
+  group,
   address,
   currentPath,
 }) => {
@@ -57,7 +61,8 @@ const ListView: React.FC<ListViewProps> = ({
                 </time>
               </p>
               <p>
-                {starName} / {address.split(" ").slice(0, 2).join(" ")}
+                {group ? `${stageName} (${group})` : `${stageName}`} /{" "}
+                {address.split(" ").slice(0, 2).join(" ")}
               </p>
             </div>
           </div>

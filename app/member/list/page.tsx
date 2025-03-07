@@ -28,9 +28,6 @@ export default function ListPage() {
         const likedStarsData: ShowLikedStarDto[] = await likedStarsRes.json();
         const eventListData: ShowEventListDto[] = await eventListRes.json();
 
-        console.log("likedStarsData", likedStarsData);
-        console.log("eventListData", eventListData);
-
         setLikedStars(likedStarsData);
         setEventList(eventListData);
       } catch (error) {
