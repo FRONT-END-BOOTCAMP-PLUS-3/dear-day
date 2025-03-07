@@ -52,7 +52,7 @@ export default function Waiting({ eventId, headCount, setHeadCount }: Props) {
 
   const handleDecrease = () => {
     if (headCount > 1) {
-      setHeadCount(headCount + 1);
+      setHeadCount(headCount - 1); // headCount - 1로 수정
     }
   };
 
@@ -73,16 +73,16 @@ export default function Waiting({ eventId, headCount, setHeadCount }: Props) {
       <div className={styles.counterContainer}>
         <button
           className={styles.decreaseButton}
-          onClick={handleDecrease}
-          disabled={headCount === 1}
+          onClick={handleDecrease} // 불필요한 조건 제거
+          disabled={headCount === 1} // disabled인 경우 버튼 비활성화
         >
           −
         </button>
         <span className={styles.reservationCount}>{headCount}</span>
         <button
           className={styles.increaseButton}
-          onClick={handleIncrease}
-          disabled={headCount === 4}
+          onClick={handleIncrease} // 불필요한 조건 제거
+          disabled={headCount === 4} // disabled인 경우 버튼 비활성화
         >
           +
         </button>

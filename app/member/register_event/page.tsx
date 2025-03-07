@@ -51,10 +51,10 @@ export default function RegisterEventPage() {
     }
   };
 
-  // 스타 선택 시 store에 저장 & step 이동
-  const handleSelectStar = async (selectedStar: { id: number }) => {
-    await updateEventData({ starId: selectedStar.id });
-    console.log("✅ 선택된 스타 ID:", selectedStar.id);
+  // 스타 선택 시 store에 저장 후 step 이동
+  const handleSelectStar = async (id: number) => {
+    await updateEventData({ starId: id });
+    console.log("✅ 선택된 스타 ID:", id);
     console.log(
       "🚀 최신 Store 데이터:",
       useRegisterEventStore.getState().eventData
@@ -70,7 +70,7 @@ export default function RegisterEventPage() {
 
   return (
     <div className={styles.homeContainer}>
-      {step === 0 && <SearchStar onSelectStar={handleSelectStar} />}
+      {step === 0 && <SearchStar onSelectStarId={handleSelectStar} />}
       {step === 1 && <RegisterEventStep1 onNext={handleNext} />}
       {step === 2 && (
         <RegisterEventStep2 onNext={handleNext} onPrev={handlePrev} />
