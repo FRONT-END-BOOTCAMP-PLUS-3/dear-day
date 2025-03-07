@@ -2,30 +2,29 @@ import { create } from "zustand";
 
 // Step 1, 2, 3의 데이터를 각각 인터페이스로 정의
 interface RegisterEventStep1 {
-  userId: string;
   placeName: string;
   address: string;
   latitude: number;
   longitude: number;
   title: string;
   twitterId: string;
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate: Date;
+  endDate: Date;
   startTime: string;
   endTime: string;
 }
 
 interface RegisterEventStep2 {
   mode: string;
-  openAt: string | null;
-  breakTime: number | null;
+  openAt: Date | null;
+  breaktime: number | null;
   limit: number | null;
 }
 
 interface RegisterEventStep3 {
   mainImage: string;
-  detailImage: string[];
-  benefits: string[];
+  detailImage: string[] | null;
+  benefits: string[] | null;
 }
 
 // SearchStar에서 가져올 데이터
@@ -54,7 +53,6 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
   step: 0, // 초기값 0으로 변경 (SearchStar부터 시작)
   setStep: (step) => set({ step }),
   eventData: {
-    userId: "",
     starId: 0,
     placeName: "",
     address: "",
@@ -62,15 +60,15 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
     longitude: 0,
     title: "",
     twitterId: "",
-    startDate: null,
-    endDate: null,
+    startDate: new Date(),
+    endDate: new Date(),
     startTime: "",
     endTime: "",
 
     mode: "",
-    openAt: "",
-    breakTime: 0,
-    limit: 0,
+    openAt: null,
+    breaktime: null,
+    limit: null,
 
     mainImage: "",
     detailImage: [],
@@ -91,7 +89,6 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
     set({
       step: 0, // 초기 상태도 0으로 초기화
       eventData: {
-        userId: "",
         starId: 0,
         placeName: "",
         address: "",
@@ -99,15 +96,15 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
         longitude: 0,
         title: "",
         twitterId: "",
-        startDate: null,
-        endDate: null,
+        startDate: new Date(),
+        endDate: new Date(),
         startTime: "",
         endTime: "",
 
         mode: "",
-        openAt: "",
-        breakTime: 0,
-        limit: 0,
+        openAt: null,
+        breaktime: null,
+        limit: null,
 
         mainImage: "",
         detailImage: [],
