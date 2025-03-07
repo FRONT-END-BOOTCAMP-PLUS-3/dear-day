@@ -31,47 +31,13 @@ export default function EventDetail() {
       ? ["상세", "특전", "위치", "예약"]
       : ["상세", "특전", "위치", "대기"];
 
-  // 📌 스크롤 시 activeTab 변경
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const scrollPosition = window.scrollY + 100; // 약간의 여유값 추가
-      let newActiveTab = activeTab;
-
-      tabList.forEach((tab, index) => {
-        const section = document.getElementById((index + 1).toString());
-        if (section) {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-
-          if (
-            scrollPosition >= sectionTop &&
-            scrollPosition < sectionTop + sectionHeight
-          ) {
-            newActiveTab = tab;
-          }
-        }
-      });
-
-      if (newActiveTab !== activeTab) {
-        setActiveTab(newActiveTab);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [activeTab, tabList]);
-
-  // 📌 activeTab 변경 시 해당 섹션으로 스크롤 이동
+  // activeTab 변경 시 해당 섹션으로 스크롤 이동
   useEffect(() => {
     const divId = tabList.indexOf(activeTab) + 1;
-    const section = document.getElementById(divId.toString());
+    const section = document.getElementById("div" + divId);
 
     if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      section.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, [activeTab]);
 
@@ -111,22 +77,22 @@ export default function EventDetail() {
       </div>
       <TabNavigation
         mode={eventData.mode ?? "RESERVATION"}
-        setActiveTab={setActiveTab}
-        activeTab={activeTab} // 현재 활성화된 탭을 전달
+        activeTab={activeTab} // ✅ 부모에서 직접 상태 관리
+        setActiveTab={setActiveTab} // ✅ 상태 변경 함수 전달
       />
-      <div id="1">
+      <div id="div1" className={styles.sectionDiv}>
         <DetailSection eventData={eventData} />
       </div>
       <div className={styles.divider}></div>
-      <div id="2">
+      <div id="div2">
         <BenefitList benefitList={eventData.benefits ?? []} />
       </div>
       <div className={styles.divider}></div>
-      <div id="3">
+      <div id="div3">
         <LocationSection eventData={eventData} />
       </div>
       <div className={styles.divider}></div>
-      <div id="4">
+      <div id="div4">
         {eventData.mode === "RESERVATION" ? (
           <ReservationSection eventData={eventData} />
         ) : (
