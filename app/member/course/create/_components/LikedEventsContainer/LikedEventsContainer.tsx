@@ -5,6 +5,7 @@ import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer"
 import LargeCardView from "@/components/EventView/LargeCardView/LargeCardView";
 import styles from "./LikedEventsContainer.module.scss";
 import EmptyText from "../EmptyText/EmptyText";
+import { useAuthStore } from "@/store/authStore";
 
 export interface CourseEventProps {
   id: number;
@@ -27,6 +28,7 @@ const LikedEventsContainer: React.FC<LikedEventsContainerProps> = ({
   selectedEvents,
   onSelectionChange,
 }) => {
+  const { user } = useAuthStore();
   const handleToggleEvent = (e: React.MouseEvent, event: CourseEventProps) => {
     e.stopPropagation();
     let updated: number[];
@@ -46,7 +48,7 @@ const LikedEventsContainer: React.FC<LikedEventsContainerProps> = ({
     <ScrollCardContainer variant="grid">
       {likedEvents.map((event) => (
         <div
-          key={event.id}
+          key={`${user?.id}-${event.id}`}
           onClick={(e) => handleToggleEvent(e, event)}
           className={
             selectedEvents.includes(event.id)
