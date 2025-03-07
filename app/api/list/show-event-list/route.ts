@@ -2,12 +2,17 @@ import { NextResponse } from "next/server";
 import { PgEventRepository } from "@/infrastructure/repositories/PgEventRepository";
 import { ShowEventListDto } from "@/application/usecases/list/dto/ShowEventListDto";
 import { ShowEventList } from "@/application/usecases/list/ShowEventList";
+import { PgStarRepository } from "@/infrastructure/repositories/PgStarRepository";
 
 export async function GET() {
   try {
     const eventRepository = new PgEventRepository();
+    const starRepository = new PgStarRepository();
 
-    const eventList: ShowEventListDto[] = await ShowEventList(eventRepository);
+    const eventList: ShowEventListDto[] = await ShowEventList(
+      eventRepository,
+      starRepository
+    );
 
     return NextResponse.json(eventList);
   } catch (error) {
