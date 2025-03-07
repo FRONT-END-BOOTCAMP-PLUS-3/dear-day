@@ -5,6 +5,8 @@ export interface ShowEventListDto {
   startDate: Date;
   endDate: Date;
   starId: number;
+  stageName: string;
+  group?: string | null;
   address: string;
   latitude: number;
   longitude: number;
