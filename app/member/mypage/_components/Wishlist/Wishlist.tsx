@@ -6,17 +6,32 @@ import useToggle from "@/hooks/useToggle";
 import StarUpload from "../Star/StarUpload";
 import SearchStar from "@/components/SearchStar/SearchStar";
 import Icon from "@/components/Icon/Icon";
+import { useEffect, useState } from "react";
+import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
 
 const Wishlist = () => {
   const [isModalOpen, toggleModal] = useToggle(false);
+  const [starData, setStarData] = useState<UserLikedStarDto[]>([]);
 
-  const starData = [
-    { id: 1, name: "민지", image: "/demo/main-poster.jpeg" },
-    { id: 2, name: "민지", image: "/demo/main-poster.jpeg" },
-    { id: 3, name: "민지", image: "/demo/main-poster.jpeg" },
-    { id: 4, name: "민지", image: "/demo/main-poster.jpeg" },
-    { id: 5, name: "민지", image: "/demo/main-poster.jpeg" },
-  ];
+  useEffect(() => {
+    const fetchLikedStars = async () => {
+      try {
+        const response = await fetch("/api/mypage/liked-star", {
+          method: "GET",
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch liked stars");
+
+        const data = await response.json();
+
+        setStarData(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchLikedStars();
+  }, []);
 
   const cardData = [
     {
@@ -41,7 +56,11 @@ const Wishlist = () => {
       <ScrollCardContainer variant="gridStar">
         <StarUpload onClick={toggleModal} />
         {starData.map((card) => (
-          <StarView key={card.id} starImage={card.image} starName={card.name} />
+          <StarView
+            key={card.starId}
+            starImage={card.image}
+            starName={card.name}
+          />
         ))}
       </ScrollCardContainer>
       <p className={styles.title}>찜한 생카</p>
@@ -57,7 +76,7 @@ const Wishlist = () => {
           />
         ))}
       </ScrollCardContainer>
-      {/* ⭐ 모달 추가 */}
+
       {isModalOpen && (
         <div className={styles.modalOverlay} onClick={toggleModal}>
           <div

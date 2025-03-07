@@ -13,7 +13,9 @@ const Page = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch("/api/mypage", { method: "GET" });
+        const response = await fetch("/api/mypage/user-info", {
+          method: "GET",
+        });
         if (!response.ok) throw new Error("Failed to fetch user info");
         const data: UserInfoDto = await response.json();
         setUserInfo(data);
