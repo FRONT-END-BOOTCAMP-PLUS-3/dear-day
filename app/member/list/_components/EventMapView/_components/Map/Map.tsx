@@ -6,36 +6,32 @@ import styles from "./Map.module.scss";
 import { ShowEventListDto } from "@/application/usecases/list/dto/ShowEventListDto";
 
 interface MapProps {
-  eventList: ShowEventListDto[];
-  setMapBounds: (bounds: MapBounds) => void;
+  filteredEvents?: ShowEventListDto[]; // ✅ filteredEvents를 선택적(`?`)으로 설정
 }
 
-interface MapBounds {
-  minLat: number;
-  maxLat: number;
-  minLng: number;
-  maxLng: number;
-}
-
-export default function Map({ eventList, setMapBounds }: MapProps) {
+export default function Map({ filteredEvents = [] }: MapProps) {
   const [markers, setMarkers] = useState<
     { latitude: number; longitude: number; mainImage: string }[]
   >([]);
 
   useEffect(() => {
+    if (!filteredEvents || filteredEvents.length === 0) {
+      setMarkers([]); // ✅ filteredEvents가 빈 배열이면 markers도 빈 배열로 설정
+      return;
+    }
     // 이벤트 데이터를 markers 배열로 변환
-    const newMarkers = eventList.map((event) => ({
+    const newMarkers = filteredEvents.map((event) => ({
       latitude: event.latitude,
       longitude: event.longitude,
       mainImage: event.mainImage,
     }));
 
     setMarkers(newMarkers);
-  }, [eventList]);
+  }, [filteredEvents]);
 
   return (
     <div className={styles.mapContainer}>
-      <MapLoader markers={markers} setMapBounds={setMapBounds} />
+      <MapLoader markers={markers} />
     </div>
   );
 }

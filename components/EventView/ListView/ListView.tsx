@@ -9,7 +9,6 @@ interface ListViewProps {
   title: string;
   startDate: Date;
   endDate: Date;
-  starId: number;
   stageName: string;
   group?: string | null;
   address: string;
@@ -22,7 +21,6 @@ const ListView: React.FC<ListViewProps> = ({
   title,
   startDate,
   endDate,
-  starId,
   stageName,
   group,
   address,
@@ -38,10 +36,20 @@ const ListView: React.FC<ListViewProps> = ({
 
     return `${year}.${month}.${day}`;
   };
-  // 🔹 현재 경로에서 마지막 부분 제거하고 `/event/${id}` 붙이기
+
   const pathSegments = currentPath.split("/").filter(Boolean); // 빈 문자열 제거
-  pathSegments.pop(); // 마지막 경로 제거
-  const newPath = `/${pathSegments.join("/")}/event/${id}`;
+
+  // 마지막 요소(id) 제거
+  pathSegments.pop();
+
+  // `member`가 포함된 경우, `/member`까지만 유지
+  let newBasePath = "/";
+  if (pathSegments.includes("member")) {
+    newBasePath = `/${pathSegments.slice(0, pathSegments.indexOf("member") + 1).join("/")}`;
+  }
+
+  // 최종 경로 설정 (루트 또는 `/member`까지만 유지하고 `event/id` 추가)
+  const newPath = `${newBasePath}/event/${id}`;
 
   return (
     <Link className={styles.listView} href={newPath} passHref>
