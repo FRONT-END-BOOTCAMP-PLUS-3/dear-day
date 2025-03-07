@@ -23,7 +23,7 @@ export default function CourseModal({
       setCourseEvent(selectedEvents);
     }
     try {
-      const response = await fetch("/api/course/create", {
+      fetch("/api/course/create", {
         method: "POST",
         body: JSON.stringify({
           name,
@@ -32,9 +32,7 @@ export default function CourseModal({
         }),
         credentials: "include",
       });
-      const data = await response.json();
-      const courseId = data.id;
-      router.push(`/member/course/${courseId}`);
+      router.push(`/member/course`);
     } catch (error) {
       console.error("코스 생성 실패:", error);
       alert("코스 생성에 실패했습니다.");
