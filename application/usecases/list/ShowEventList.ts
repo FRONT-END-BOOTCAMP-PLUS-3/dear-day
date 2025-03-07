@@ -21,7 +21,7 @@ export const ShowEventList = async (
         endDate: event.endDate,
         starId: event.starId,
         stageName: star?.stageName || "알 수 없음",
-        group: star?.group || "없음",
+        group: star?.group,
         address: event.address,
         latitude: event.latitude,
         longitude: event.longitude,
