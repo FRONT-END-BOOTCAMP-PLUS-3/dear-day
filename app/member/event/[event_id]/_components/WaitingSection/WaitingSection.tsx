@@ -6,6 +6,8 @@ import Waiting from "./Waiting/Waiting";
 import styles from "./WaitingSection.module.scss";
 import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import { useState, useEffect } from "react";
+import TicketModal from "@/components/modal/TicketModal";
+import useToggle from "@/hooks/useToggle";
 
 interface Props {
   eventData: ShowEventDetailDto;
@@ -15,6 +17,7 @@ export default function WaitingSection({ eventData }: Props) {
   const [openWaiting, setOpenWaiting] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
   const [headCount, setHeadCount] = useState<number>(1);
+  const [isModalOpen, toggleModal] = useToggle(false);
 
   useEffect(() => {
     const now = new Date();
@@ -60,16 +63,9 @@ export default function WaitingSection({ eventData }: Props) {
     if (nextUpdate !== null) {
       const timeout = setTimeout(() => {
         setOpenWaiting(isWithinTimeRange);
-        if (now >= endDateTime || now >= endDate) setIsEnded(true);
-      }, nextUpdate);
-
-      return () => clearTimeout(timeout);
-    }
-
-    if (nextUpdate !== null) {
-      const timeout = setTimeout(() => {
-        setOpenWaiting(!isWithinTimeRange);
-        if (now >= endDateTime || now >= endDate) setIsEnded(true);
+        if (now >= endDateTime || now >= endDate) {
+          setIsEnded(true);
+        }
       }, nextUpdate);
 
       return () => clearTimeout(timeout);
@@ -100,7 +96,8 @@ export default function WaitingSection({ eventData }: Props) {
         throw new Error("대기 요청 실패!");
       }
 
-      alert("대기가 완료되었습니다!"); // TODO: 추후에 성공하면 TicketModal 띄우는거 해야함
+      alert("대기가 완료되었습니다!");
+      toggleModal();
     } catch (error) {
       alert("대기 중 오류가 발생했습니다. 다시 시도해주세요.");
       console.error("대기 오류:", error);
@@ -130,6 +127,13 @@ export default function WaitingSection({ eventData }: Props) {
         </div>
       ) : (
         <div className={styles.closeWaiting}>대기 가능 시간이 아닙니다.</div>
+      )}
+      {isModalOpen && (
+        <TicketModal
+          eventId={eventData.id}
+          isOpen={isModalOpen}
+          onClose={toggleModal}
+        />
       )}
     </div>
   );
