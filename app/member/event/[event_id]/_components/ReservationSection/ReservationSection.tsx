@@ -8,6 +8,8 @@ import Notice from "./Notice/Notice";
 import FixedButton from "@/components/Button/FixedButton/FixedButton";
 import styles from "./ReservationSection.module.scss";
 import useReservationStore from "@/store/reservationStore";
+import useToggle from "@/hooks/useToggle";
+import TicketModal from "@/components/modal/TicketModal";
 
 interface Props {
   eventData: ShowEventDetailDto;
@@ -20,6 +22,7 @@ export default function ReservationSection({ eventData }: Props) {
   const [timeLeft, setTimeLeft] = useState<string>("");
   const { event_id } = useParams();
   const eventId = event_id as string;
+  const [isModalOpen, toggleModal] = useToggle(false);
 
   useEffect(() => {
     if (!eventData) return;
@@ -98,6 +101,7 @@ export default function ReservationSection({ eventData }: Props) {
       }
 
       alert("예약이 완료되었습니다!"); // TODO: 추후에 성공하면 TicketModal 띄우는거 해야함
+      toggleModal();
     } catch (error) {
       alert("예약 중 오류가 발생했습니다. 다시 시도해주세요.");
       console.error("예약 오류:", error);
@@ -151,6 +155,13 @@ export default function ReservationSection({ eventData }: Props) {
             <span className={styles.bold}>{timeLeft}</span> 남았어요!
           </p>
         </div>
+      )}
+      {isModalOpen && (
+        <TicketModal
+          eventId={parseInt(eventId, 10)}
+          isOpen={isModalOpen}
+          onClose={toggleModal}
+        />
       )}
     </div>
   );
