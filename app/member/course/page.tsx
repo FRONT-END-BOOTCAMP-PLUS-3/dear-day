@@ -59,7 +59,7 @@ export default function CoursePage() {
   const handleCourseClick = async (course: CourseListViewProps) => {
     setCourseId(course.id);
     try {
-      const response = await fetch(`/api/course/${course.id}/events`);
+      const response = await fetch(`/api/course/${course.id}`);
       if (!response.ok) {
         console.error("Course Event 테이블 호출 실패");
         return;
