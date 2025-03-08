@@ -4,16 +4,19 @@ import React from "react";
 import Icon from "@/components/Icon/Icon";
 import styles from "./EditHeader.module.scss";
 import { useRouter } from "next/navigation";
-import { useCourseStore } from "@/store/courseStore";
 
 interface EditHeaderProps {
+  courseId: number;
   isEditMode: boolean;
   onToggleEditMode: () => void;
 }
 
-const EditHeader = ({ isEditMode, onToggleEditMode }: EditHeaderProps) => {
+const EditHeader = ({
+  courseId,
+  isEditMode,
+  onToggleEditMode,
+}: EditHeaderProps) => {
   const router = useRouter();
-  const { courseId } = useCourseStore();
 
   return (
     <header className={styles.header}>
