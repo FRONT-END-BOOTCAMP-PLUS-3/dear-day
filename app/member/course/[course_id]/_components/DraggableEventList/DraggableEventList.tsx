@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import CourseDetailListView from "@/components/EventView/CourseDetailListView/CourseDetailListView";
-import { Event } from "@prisma/client";
+import { ShowCourseEventsDto } from "@/application/usecases/course/dto/ShowCourseEventsDto";
 
 interface DraggableEventListProps {
   isEditMode: boolean;
-  initialEventDetails: Event[];
+  initialEventDetails: ShowCourseEventsDto[];
   onFinalizeOrder: (finalOrder: number[]) => void;
 }
 
@@ -16,7 +16,7 @@ const DraggableEventList = ({
   onFinalizeOrder,
 }: DraggableEventListProps) => {
   const [localEventDetails, setLocalEventDetails] =
-    useState<Event[]>(initialEventDetails);
+    useState<ShowCourseEventsDto[]>(initialEventDetails);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const prevEditModeRef = useRef(isEditMode);
 
@@ -89,9 +89,9 @@ const DraggableEventList = ({
         >
           <CourseDetailListView
             id={item.id}
-            starName="임시"
+            starName={item.starName}
             title={item.title}
-            eventImage={item.mainImage}
+            eventImage={item.imgSrc}
             startDate={item.startDate}
             endDate={item.endDate}
             index={index + 1}

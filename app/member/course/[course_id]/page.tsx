@@ -1,13 +1,14 @@
 "use client";
 
-// import MapLoader from "@/components/MapLoader/MapLoader";
+import MapLoader from "@/components/MapLoader/MapLoader";
 import styles from "./page.module.scss";
 import BottomSheet from "@/components/BottomSheet/BottomSheet";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useCourseStore } from "@/store/courseStore";
 import EditHeader from "./_components/EditHeader/EditHeader";
-import { Event } from "@prisma/client";
 import DraggableEventList from "./_components/DraggableEventList/DraggableEventList";
+import { useParams } from "next/navigation";
+import { ShowCourseEventsDto } from "@/application/usecases/course/dto/ShowCourseEventsDto";
 
 export interface MarkerData {
   latitude: number;
@@ -16,43 +17,44 @@ export interface MarkerData {
 }
 
 export default function CoursePage() {
-  const { setCourseEvent } = useCourseStore();
+  const { course_id } = useParams();
+  const courseId = Number(course_id);
+  const { courseEvent, setCourseEvent } = useCourseStore();
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [eventDetails, setEventDetails] = useState<Event[]>([]);
-  // const [markers, setMarkers] = useState<MarkerData[]>([]);
+  const [eventDetails, setEventDetails] = useState<ShowCourseEventsDto[]>([]);
+  const [markers, setMarkers] = useState<MarkerData[]>([]);
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const response = await fetch("/api/course/detail");
-  //       if (!response.ok) {
-  //         console.error("Failed to fetch event data");
-  //         return;
-  //       }
-  //       const data: Event[] = await response.json();
-  //       setEventDetails(data);
-  //       const newMarkers = data.map((item) => ({
-  //         latitude:
-  //           typeof item.latitude.toNumber === "function"
-  //             ? item.latitude.toNumber()
-  //             : Number(item.latitude),
-  //         longitude:
-  //           typeof item.longitude.toNumber === "function"
-  //             ? item.longitude.toNumber()
-  //             : Number(item.longitude),
-  //         mainImage: item.mainImage,
-  //       }));
-  //       setMarkers(newMarkers);
-  //       if (courseEvent.length === 0 && data.length > 0) {
-  //         const initialIds = data.map((event) => event.id);
-  //         setCourseEvent(initialIds);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching event data:", error);
-  //     }
-  //   }
-  //   fetchData();
-  // }, [setCourseEvent, courseEvent.length]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `/api/course/detail?courseId=${courseId}`,
+          {
+            method: "GET",
+          }
+        );
+        if (!response.ok) {
+          console.error("Failed to fetch event data");
+          return;
+        }
+        const data: ShowCourseEventsDto[] = await response.json();
+        setEventDetails(data);
+        const newMarkers = data.map((item) => ({
+          latitude: item.latitude,
+          longitude: item.longitude,
+          mainImage: item.imgSrc,
+        }));
+        setMarkers(newMarkers);
+        if (courseEvent.length === 0 && data.length > 0) {
+          const initialIds = data.map((event) => event.id);
+          setCourseEvent(initialIds);
+        }
+      } catch (error) {
+        console.error("Error fetching event data:", error);
+      }
+    }
+    fetchData();
+  }, [courseId, setCourseEvent, courseEvent.length]);
 
   const handleFinalizeOrder = useCallback(
     (finalOrder: number[]) => {
@@ -64,10 +66,11 @@ export default function CoursePage() {
   return (
     <div className={styles.homeContainer}>
       <div className={styles.mapSection}>
-        {/* <MapLoader markers={markers} /> */}
+        <MapLoader markers={markers} />
       </div>
       <BottomSheet>
         <EditHeader
+          courseId={courseId}
           isEditMode={isEditMode}
           onToggleEditMode={() => setIsEditMode((prev) => !prev)}
         />
