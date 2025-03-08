@@ -1,4 +1,5 @@
 export interface HeadCountDto {
-  id: number;
+  waitingNumber: number;
   headCount: number;
+  waitingAhead: number;
 }

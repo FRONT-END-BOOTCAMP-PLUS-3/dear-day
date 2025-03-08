@@ -5,6 +5,16 @@ import { HeadCountDto } from "@/application/usecases/ticket/dto/HeadCountDto";
 const prisma = new PrismaClient();
 
 export class PgWaitingRepository implements WaitingRepository {
+  async deleteWaiting(eventId: number, userId: string): Promise<void> {
+    const deleted = await prisma.waiting.deleteMany({
+      where: { eventId, userId },
+    });
+
+    if (deleted.count === 0) {
+      throw new Error("해당 대기가 존재하지 않습니다.");
+    }
+  }
+
   async findWaitingTicket(
     eventId: number,
     userId: string
@@ -12,12 +22,25 @@ export class PgWaitingRepository implements WaitingRepository {
     try {
       const waiting = await prisma.waiting.findFirst({
         where: { eventId, userId },
-        select: { id: true, headCount: true },
+        select: { waitingNumber: true, headCount: true },
+      });
+
+      if (!waiting) {
+        return { waitingNumber: 0, headCount: 0, waitingAhead: 0 };
+      }
+
+      const waitingAhead = await prisma.waiting.count({
+        where: {
+          eventId,
+          status: "PENDING",
+          waitingNumber: { lt: waiting.waitingNumber }, // 앞에 있는 사람들만 카운트
+        },
       });
 
       return {
-        id: waiting?.id || 0,
-        headCount: waiting?.headCount || 0,
+        waitingNumber: waiting.waitingNumber,
+        headCount: waiting.headCount,
+        waitingAhead,
       };
     } catch (error) {
       console.error("대기 정보 불러오기 오류 발생", error);

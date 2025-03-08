@@ -8,4 +8,5 @@ export interface ReservationRepository {
     eventId: number,
     userId: string
   ): Promise<ReservationConfirmedAtDto>;
+  deleteReservation(eventId: number, userId: string): Promise<void>; // 예약 취소하는 메서드
 }

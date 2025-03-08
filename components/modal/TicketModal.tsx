@@ -1,177 +1,213 @@
 "use client";
 
-import { ReservationTicketDto } from "@/application/usecases/ticket/dto/ReservationTicketDto";
-import { WaitingTicketDto } from "@/application/usecases/ticket/dto/WaitingTicketDto";
 import { useEffect, useState } from "react";
+import styles from "./TicketModal.module.scss";
+import Icon from "../Icon/Icon";
+import Notice from "./_components/Notice";
+import Image from "next/image";
+import useToggle from "@/hooks/useToggle";
+import Modal from "./Modal";
 
-interface TicketProps {
+type TicketModalProps = {
   eventId: number;
   isOpen: boolean;
   onClose: () => void;
-}
+};
 
-const Ticket = ({ eventId, isOpen, onClose }: TicketProps) => {
-  const [date, setData] = useState<ReservationTicketDto | WaitingTicketDto>();
+type TicketData = {
+  mode: "RESERVATION" | "WAITING";
+  eventId: number;
+  userId: string;
+  title: string;
+  address: string;
+  email: string;
+  mainImage: string;
+  reservationConfirmedAt?: string;
+  breaktime?: number;
+  waitingNumber?: number;
+  headCount?: number;
+  waitingAhead?: number;
+};
+
+const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
+  const [data, setData] = useState<TicketData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isReservationModalOpen, toggleReservationModal] = useToggle(false);
+  const [isWaitingModalOpen, toggleWaitingModal] = useToggle(false);
 
   useEffect(() => {
+    if (!isOpen || !eventId) return;
+
     const fetchTicketData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`/api/ticket?eventId=${eventId}`);
         if (!response.ok) throw new Error("Failed to fetch ticket data");
 
-        const result = await response.json();
+        const result: TicketData = await response.json();
         setData(result);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTicketData();
-  }, [eventId]);
-  return <div></div>;
+  }, [eventId, isOpen]);
+
+  const handleConfirm = (mode: "RESERVATION" | "WAITING") => async () => {
+    if (!eventId) return alert("이벤트 정보가 없습니다.");
+
+    try {
+      const response = await fetch(
+        `/api/ticket?eventId=${eventId}&mode=${mode}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to cancel the ticket");
+      }
+      onClose();
+    } catch (error) {
+      console.error(error);
+      alert("취소에 실패했습니다.");
+    }
+  };
+
+  if (!isOpen) return null;
+  if (loading) return null;
+  if (!data) return <p>티켓 정보를 찾을 수 없습니다.</p>;
+
+  return (
+    <div className={styles.modalContainer}>
+      <div className={styles.ticketModal}>
+        <div className={styles.modalContent}>
+          <div className={styles.ticketHeader}>
+            <div className={styles.imageContainer}>
+              <Image
+                src={data.mainImage}
+                alt="Ticket Thumbnail"
+                width={200}
+                height={0}
+                objectFit="cover"
+                className={styles.thumbnail}
+              />
+            </div>
+            <div className={styles.text}>
+              <h2 className={styles.title}>{data.title}</h2>
+              <p className={styles.location}>
+                <Icon id="map" size={16} /> {data.address}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className={styles.closeButton}
+            >
+              <Icon id="close" />
+            </button>
+          </div>
+
+          {data.mode === "RESERVATION" && (
+            <>
+              <div className={styles.info}>
+                <p>예약자 아이디: {data.email}</p>
+                <p>
+                  예약 날짜:{" "}
+                  {new Date(
+                    data.reservationConfirmedAt || ""
+                  ).toLocaleDateString()}
+                </p>
+                <p>
+                  예약 시간:{" "}
+                  {new Date(
+                    data.reservationConfirmedAt || ""
+                  ).toLocaleTimeString()}
+                </p>
+              </div>
+              <div className={styles.ticketNotice}>
+                {data.breaktime !== undefined && (
+                  <Notice breaktime={data.breaktime} />
+                )}
+              </div>
+              <div className={styles.ticketFooter}>
+                <div className={styles.circleIcon}>✔️</div>
+                <h2>
+                  <strong>예약</strong>이 <strong>확정</strong>되었습니다
+                </h2>
+              </div>
+            </>
+          )}
+
+          {data.mode === "WAITING" && (
+            <>
+              <div className={styles.waitingInfo}>
+                <p>예약자 아이디 : {data.email}</p>
+                <p>예약 인원 : {data.headCount}명</p>
+              </div>
+              <div className={styles.waitingNotice}>
+                <ul>
+                  <li>
+                    예상 소요 시간은 알 수 없으며 앞에 5팀이 남으면 푸쉬 알림을
+                    보내드립니다
+                  </li>
+                  <li>
+                    호출 시 현장에 안계실 경우 웨이팅이 취소될 수 있습니다
+                  </li>
+                </ul>
+              </div>
+              <div className={styles.waitingFooter}>
+                <p>
+                  내 앞에{" "}
+                  <span className={styles.waitingNumber}>
+                    <strong>{data.waitingAhead}</strong>
+                  </span>{" "}
+                  팀
+                </p>
+                <h2>
+                  대기 번호{" "}
+                  <span className={styles.waitingNumber}>
+                    <strong>{data.waitingNumber}</strong>
+                  </span>{" "}
+                  번
+                </h2>
+              </div>
+            </>
+          )}
+        </div>
+        {data.mode === "RESERVATION" && (
+          <button className={styles.cancel} onClick={toggleReservationModal}>
+            예약 취소
+          </button>
+        )}
+        {data.mode === "WAITING" && (
+          <button className={styles.cancel} onClick={toggleWaitingModal}>
+            대기 취소
+          </button>
+        )}
+      </div>
+      <Modal
+        contents={[{ type: "textOnly", title: "예약을 취소하시겠습니까?" }]}
+        confirmText={"완료"}
+        cancelText={"취소"}
+        onConfirm={handleConfirm("RESERVATION")}
+        onCancel={toggleReservationModal}
+        isOpen={isReservationModalOpen}
+      />
+
+      <Modal
+        contents={[{ type: "textOnly", title: "대기를 취소하시겠습니까?" }]}
+        confirmText={"완료"}
+        cancelText={"취소"}
+        onConfirm={handleConfirm("WAITING")}
+        onCancel={toggleWaitingModal}
+        isOpen={isWaitingModalOpen}
+      />
+    </div>
+  );
 };
 
-export default Ticket;
-
-// import React from "react";
-// import styles from "./TicketModal.module.scss";
-// import Icon from "../Icon/Icon";
-
-// type TicketModalProps =
-//   | {
-//       variant: "isReservation"; // 예약 티켓
-//       title: string;
-//       imageUrl: string;
-//       userId: string;
-//       date: string;
-//       time: Date;
-//       breakTime: number;
-//       onClick: () => void;
-//       isOpen: boolean;
-//     }
-//   | {
-//       variant: "isWaiting"; // 대기 티켓
-//       title: string;
-//       imageUrl: string;
-//       userId: string;
-//       headcount: number;
-//       waitingNumber: number;
-//       waitingTotal: number;
-//       waitingAhead: number;
-//       onClick: () => void;
-//       isOpen: boolean;
-//     };
-
-// const TicketModal = (props: TicketModalProps) => {
-//   if (!props.isOpen) return null;
-//   // 시간 포맷 변환 함수
-//   const formatTime = (date: Date) => {
-//     const h = date.getHours().toString().padStart(2, "0");
-//     const m = date.getMinutes().toString().padStart(2, "0");
-//     return `${h}:${m}`;
-//   };
-
-//   // 종료 시간 계산 (예약 티켓인 경우)
-//   let startTimeStr = "";
-//   let endTimeStr = "";
-//   if (props.variant === "isReservation") {
-//     const startTime = new Date(props.time);
-//     const endTime = new Date(startTime);
-//     endTime.setMinutes(startTime.getMinutes() + 60 - props.breakTime);
-
-//     startTimeStr = formatTime(startTime);
-//     endTimeStr = formatTime(endTime);
-//   }
-//   return (
-//     <div className={styles.modalContainer}>
-//       <div className={styles.ticketModal}>
-//         <div className={styles.modalContent}>
-//           <div className={styles.ticketHeader}>
-//             <img
-//               src={props.imageUrl}
-//               alt="Ticket Thumbnail"
-//               className={styles.thumbnail}
-//             />
-//             <div className={styles.text}>
-//               <h2>{props.title}</h2>
-//               <p className={styles.location}>
-//                 <Icon id="map" /> 자세한 장소
-//               </p>
-//             </div>
-//             <button
-//               type="button"
-//               onClick={props.onClick}
-//               className={styles.closeButton}
-//             >
-//               <Icon id="close" />
-//             </button>
-//           </div>
-
-//           {/* 예약 티켓 */}
-//           {props.variant === "isReservation" && (
-//             <>
-//               <div className={styles.ticketBody}>
-//                 <p>
-//                   <strong>예약자 아이디:</strong> {props.userId}
-//                 </p>
-//                 <p>
-//                   <strong>예약 날짜:</strong> {props.date}
-//                 </p>
-//                 <p>
-//                   <strong>예약 시간:</strong> {props.time.toDateString()}
-//                 </p>
-//               </div>
-
-//               <div className={styles.ticketNotice}>
-//                 예약한 시간대 (
-//                 <strong>
-//                   {startTimeStr} ~ {endTimeStr}
-//                 </strong>
-//                 ) 내에 자유롭게 입장 및 퇴장이 가능합니다
-//               </div>
-
-//               <div className={styles.ticketFooter}>
-//                 <div className={styles.circleIcon}>✔️</div>
-//                 <p>예약이 확정되었습니다</p>
-//               </div>
-//             </>
-//           )}
-
-//           {/* 대기 티켓 */}
-//           {props.variant === "isWaiting" && (
-//             <>
-//               <div className={styles.ticketBody}>
-//                 <p>
-//                   <strong>예약자 아이디:</strong> {props.userId}
-//                 </p>
-//                 <p>
-//                   <strong>예약 인원:</strong> {props.headcount}명
-//                 </p>
-//               </div>
-
-//               <div className={styles.ticketNotice}>
-//                 대기는 본인명의 아이디로 최대 4인까지 가능하며,
-//                 <br /> 예상 소요시간을 알 수 없으며, 입장 전에 알림을 보낼
-//                 예정입니다.
-//               </div>
-
-//               <div className={styles.ticketWaitingInfo}>
-//                 <p>
-//                   현재 대기 <strong>{props.waitingTotal}팀</strong>
-//                 </p>
-//                 <p>
-//                   내 앞에 <strong>{props.waitingAhead}팀</strong>
-//                 </p>
-//                 <p className={styles.waitingNumber}>
-//                   대기 번호 <strong>{props.waitingNumber} 번</strong>
-//                 </p>
-//               </div>
-//             </>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TicketModal;
+export default TicketModal;

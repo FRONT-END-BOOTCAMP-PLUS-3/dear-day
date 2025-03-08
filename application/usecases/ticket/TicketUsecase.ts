@@ -30,6 +30,7 @@ export const ticketUsecase = async (
       await reservationSettingRepo.findReservationSettingByEventId(eventId);
 
     return {
+      mode: "RESERVATION",
       eventId,
       userId,
       title: event.title,
@@ -45,14 +46,16 @@ export const ticketUsecase = async (
     if (!waiting) return null;
 
     return {
+      mode: "WAITING",
       eventId,
       userId,
-      waitingId: waiting.id,
+      waitingNumber: waiting.waitingNumber,
       mainImage: event.mainImage,
       title: event.title,
       address: event.address,
       email: user.email,
       headCount: waiting.headCount,
+      waitingAhead: waiting.waitingAhead,
     };
   }
   return null;

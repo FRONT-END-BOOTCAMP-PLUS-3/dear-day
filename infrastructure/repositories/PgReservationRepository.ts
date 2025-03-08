@@ -5,6 +5,16 @@ import { ReservationConfirmedAtDto } from "@/application/usecases/ticket/dto/Res
 const prisma = new PrismaClient();
 
 export class PgReservationRepository implements ReservationRepository {
+  async deleteReservation(eventId: number, userId: string): Promise<void> {
+    const deleted = await prisma.reservation.deleteMany({
+      where: { eventId, userId },
+    });
+
+    if (deleted.count === 0) {
+      throw new Error("해당 예약이 존재하지 않습니다.");
+    }
+  }
+
   async findReservationTime(
     eventId: number,
     userId: string

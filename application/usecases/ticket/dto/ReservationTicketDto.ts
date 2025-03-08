@@ -1,4 +1,5 @@
 export interface ReservationTicketDto {
+  mode: "RESERVATION";
   eventId: number;
   userId: string;
   title: string;
