@@ -4,6 +4,7 @@ import { LikedStar, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class PgLikedStarsRepository implements LikedStarsRepository {
+
   async findLikedStarsByUserId(userId: string): Promise<LikedStar[]> {
     try {
       const likedStars = await prisma.likedStar.findMany({
@@ -21,6 +22,18 @@ export class PgLikedStarsRepository implements LikedStarsRepository {
           error instanceof Error ? error.message : error
         }`
       );
+
+  async createLikedStar(likedStar: LikedStar): Promise<void> {
+    try {
+      await prisma.likedStar.create({
+        data: {
+          userId: likedStar.userId,
+          starId: likedStar.starId,
+        },
+      });
+    } finally {
+      await prisma.$disconnect();
+
     }
   }
 }
