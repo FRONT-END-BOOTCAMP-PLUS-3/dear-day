@@ -23,6 +23,11 @@
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><path d="M4 4h16v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4ZM4 8h16M16 3v2M8 3v2"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
   </symbol>
 
+  <symbol id="check" viewBox="0 0 57 57">
+  <svg width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="29" cy="29" rx="26" ry="25" stroke="#8696BB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 24L26 35L20 29.5" stroke="#8696BB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </symbol>
+
+
   <symbol id="clock" viewBox="0 0 24 24">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#292929" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#a)"><circle cx="12" cy="12" r="9"/><path d="M11 8v5h5"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
   </symbol>
