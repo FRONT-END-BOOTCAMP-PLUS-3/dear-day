@@ -31,7 +31,7 @@ export const LikedEventListUsecase = async (
         startDate: eventData.startDate,
         endDate: eventData.endDate,
         mainImage: eventData.mainImage,
-        starName: starName.realName,
+        starName: starName.stageName,
       };
     })
   );
