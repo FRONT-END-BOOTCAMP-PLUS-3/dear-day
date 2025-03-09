@@ -78,6 +78,12 @@ export class PgEventRepository implements EventRepository {
     }
   }
 
+  async findAll(): Promise<Event[]> {
+    try {
+      const events = await prisma.event.findMany();
+      return events;
+
+
   async findAllEventListByStarId(starId: number): Promise<Event[]> {
     try {
       const events = await prisma.event.findMany({
@@ -89,6 +95,7 @@ export class PgEventRepository implements EventRepository {
     } catch (error) {
       console.error("이벤트 조회 중 오류 발생:", error);
       throw new Error("이벤트를 불러오는 중 오류가 발생했습니다.");
+
     } finally {
       await prisma.$disconnect();
     }
