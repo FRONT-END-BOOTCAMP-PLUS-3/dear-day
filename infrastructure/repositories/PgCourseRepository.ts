@@ -16,4 +16,26 @@ export class PgCourseRepository implements CourseRepository {
       await prisma.$disconnect();
     }
   }
+
+  async createCourse(
+    userId: string,
+    name: string,
+    date: Date
+  ): Promise<Course> {
+    try {
+      const course = await prisma.course.create({
+        data: {
+          userId,
+          name,
+          date,
+        },
+      });
+      return course;
+    } catch (error) {
+      console.error("Course 생성 중 오류 발생:", error);
+      throw error;
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
