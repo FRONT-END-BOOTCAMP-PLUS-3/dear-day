@@ -72,6 +72,12 @@ export default function WaitingSection({ eventData }: Props) {
     }
   }, [eventData]);
 
+  // 모달 닫힐 때 페이지 새로고침
+  const handleCloseModal = () => {
+    toggleModal(); // 모달 닫기
+    window.location.reload();
+  };
+
   // 대기 요청 함수
   const handleWaiting = async () => {
     if (!eventData.id || headCount < 1) {
@@ -95,8 +101,6 @@ export default function WaitingSection({ eventData }: Props) {
       if (!response.ok) {
         throw new Error("대기 요청 실패!");
       }
-
-      alert("대기가 완료되었습니다!");
       toggleModal();
     } catch (error) {
       alert("대기 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -132,7 +136,7 @@ export default function WaitingSection({ eventData }: Props) {
         <TicketModal
           eventId={eventData.id}
           isOpen={isModalOpen}
-          onClose={toggleModal}
+          onClose={handleCloseModal}
         />
       )}
     </div>
