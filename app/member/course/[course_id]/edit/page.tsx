@@ -14,6 +14,9 @@ const CourseEditPage = () => {
   const { course_id } = useParams();
   const courseId = Number(course_id);
   const [selectedEvents, setSelectedEvents] = useState<number[]>([]);
+  const [originalCourseEvents, setOriginalCourseEvents] = useState<number[]>(
+    []
+  );
   const [likedEvents, setLikedEvents] = useState<CourseEventProps[]>([]);
 
   useEffect(() => {
@@ -52,12 +55,47 @@ const CourseEditPage = () => {
         const data = await response.json();
         const ids = data.map((event: ShowCourseEventsDto) => event.eventId);
         setSelectedEvents(ids);
+        setOriginalCourseEvents(ids);
       } catch (error) {
         console.error("Error fetching course events:", error);
       }
     }
     fetchCourseEvents();
   }, [courseId]);
+
+  const handleCourseUpdate = async () => {
+    try {
+      const eventsToAdd = selectedEvents.filter(
+        (id) => !originalCourseEvents.includes(id)
+      );
+      const eventsToRemove = originalCourseEvents.filter(
+        (id) => !selectedEvents.includes(id)
+      );
+
+      if (eventsToAdd.length > 0) {
+        await fetch("/api/course/detail", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ courseId, events: eventsToAdd }),
+          credentials: "include",
+        });
+      }
+
+      if (eventsToRemove.length > 0) {
+        await fetch("/api/course/detail", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ courseId, events: eventsToRemove }),
+          credentials: "include",
+        });
+      }
+
+      router.back();
+    } catch (error) {
+      console.error("코스 수정 실패:", error);
+      alert("코스 수정에 실패했습니다.");
+    }
+  };
 
   return (
     <div className={styles.homeContainer}>
@@ -69,9 +107,9 @@ const CourseEditPage = () => {
       <div className={styles.buttonWrapper}>
         <NextButton
           type="button"
-          onClick={() => router.back()}
+          onClick={handleCourseUpdate}
           value="코스 수정하기"
-          disabled={!likedEvents || !selectedEvents}
+          disabled={likedEvents.length === 0 || selectedEvents.length === 0}
         />
       </div>
     </div>
