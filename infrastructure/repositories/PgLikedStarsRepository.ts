@@ -22,6 +22,8 @@ export class PgLikedStarsRepository implements LikedStarsRepository {
           error instanceof Error ? error.message : error
         }`
       );
+    }
+  }
 
   async createLikedStar(likedStar: LikedStar): Promise<void> {
     try {
