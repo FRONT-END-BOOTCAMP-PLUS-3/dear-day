@@ -4,7 +4,7 @@ import Image from "next/image";
 
 interface LargeCardViewProps {
   id: number;
-  imgSrc: string;
+  mainImage: string;
   title: string;
   startDate: Date | string;
   endDate: Date | string;
@@ -15,7 +15,7 @@ interface LargeCardViewProps {
 
 const LargeCardView: React.FC<LargeCardViewProps> = ({
   id,
-  imgSrc,
+  mainImage,
   title,
   startDate,
   endDate,
@@ -39,7 +39,7 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
     <li className={styles.LargeCardView}>
       <Image
         className={styles.LargeCardImg}
-        src={imgSrc}
+        src={mainImage}
         alt={title}
         width={106}
         height={128}

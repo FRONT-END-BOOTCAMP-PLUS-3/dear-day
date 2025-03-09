@@ -8,7 +8,7 @@ import EmptyText from "../EmptyText/EmptyText";
 
 export interface CourseEventProps {
   id: number;
-  imgSrc: string;
+  mainImage: string;
   title: string;
   startDate: Date;
   endDate: Date;

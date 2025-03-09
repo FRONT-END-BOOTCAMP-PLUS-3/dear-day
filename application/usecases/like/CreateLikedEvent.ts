@@ -11,5 +11,5 @@ export const createLikedEventUsecase = async (
     userId
   );
 
-  return { eventId: likedEvent.eventId };
+  return { id: likedEvent.eventId };
 };

@@ -2,7 +2,7 @@
   width: min(500px, 100vw);
   height: calc(100svh - 158px);
   position: fixed;
-  left: calc(-1 * (var(--margin-xl)));
-  top: calc(-1 * (var(--margin-md)));
+  left: 50%;
+  transform: translate(-50%, calc(-1 * var(--margin-md)));
   z-index: 100;
 }

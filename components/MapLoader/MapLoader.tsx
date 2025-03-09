@@ -20,31 +20,22 @@ export default function MapLoader({ markers }: MapLoaderProps) {
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.naver && mapRef.current) {
+      // 마커가 없을 경우 기본 위치 (서울)
+      const defaultCenter = new window.naver.maps.LatLng(37.5665, 126.978);
+
       const map = new window.naver.maps.Map(mapRef.current, {
-        center: new window.naver.maps.LatLng(
-          markers[0].latitude,
-          markers[0].longitude
-        ), // 첫 번째 마커를 기준으로 지도 중심 설정
+        center: defaultCenter,
         zoom: 15,
       });
 
-      const bounds =
-        markers.length > 1
-          ? new window.naver.maps.LatLngBounds(
-              new window.naver.maps.LatLng(
-                markers[0].latitude,
-                markers[0].longitude
-              ),
-              new window.naver.maps.LatLng(
-                markers[0].latitude,
-                markers[0].longitude
-              )
-            )
-          : null; // 모든 마커를 포함하는 영역 설정
+      if (markers.length === 0) {
+        return;
+      }
+
+      // 모든 마커 포함하는 `bounds`
 
       markers.forEach(({ latitude, longitude, mainImage }) => {
         const position = new window.naver.maps.LatLng(latitude, longitude);
-        bounds?.extend(position); // 모든 마커를 포함하는 경계를 확장
 
         // HTML 요소 생성 후 React 마운트
         const markerElement = document.createElement("div");
@@ -55,16 +46,12 @@ export default function MapLoader({ markers }: MapLoaderProps) {
           position,
           map,
           icon: {
-            content: markerElement, // `MapMarker` 컴포넌트로 커스텀 마커 적용
+            content: markerElement,
             size: new window.naver.maps.Size(30, 30),
-            anchor: new window.naver.maps.Point(15, 15), // 마커 중앙 정렬
+            anchor: new window.naver.maps.Point(15, 15),
           },
         });
       });
-
-      if (bounds && markers.length > 1) {
-        map.fitBounds(bounds);
-      }
     }
   }, [markers]);
 

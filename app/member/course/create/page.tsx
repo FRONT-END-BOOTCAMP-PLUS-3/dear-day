@@ -1,7 +1,7 @@
 "use client";
 
 import NextButton from "@/components/Button/NextButton/NextButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 import useToggle from "@/hooks/useToggle";
 import LikedEventsContainer, {
@@ -14,18 +14,18 @@ const CourseCreatePage = () => {
   const [selectedEvents, setSelectedEvents] = useState<number[]>([]);
   const [likedEvents, setLikedEvents] = useState<CourseEventProps[]>([]);
 
-  // useEffect(() => {
-  //   const fetchLikedEvents = async () => {
-  //     try {
-  //       const response = await fetch("/api/course/liked");
-  //       const data = await response.json();
-  //       setLikedEvents(data);
-  //     } catch (error) {
-  //       console.error("Liked Events Fetch Error:", error);
-  //     }
-  //   };
-  //   fetchLikedEvents();
-  // }, []);
+  useEffect(() => {
+    const fetchLikedEvents = async () => {
+      try {
+        const response = await fetch("/api/like/list");
+        const data = await response.json();
+        setLikedEvents(data);
+      } catch (error) {
+        console.error("Liked Events Fetch Error:", error);
+      }
+    };
+    fetchLikedEvents();
+  }, []);
 
   const handleMakeCourse = () => {
     toggleModal();
@@ -40,6 +40,7 @@ const CourseCreatePage = () => {
       />
       <div className={styles.buttonWrapper}>
         <NextButton
+          type="button"
           onClick={handleMakeCourse}
           value="코스 만들기"
           disabled={likedEvents.length === 0 || selectedEvents.length === 0}

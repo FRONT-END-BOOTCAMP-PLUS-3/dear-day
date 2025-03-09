@@ -4,8 +4,7 @@ import StarView from "@/components/StarView/StarView";
 import styles from "@/app/member/mypage/page.module.scss";
 import useToggle from "@/hooks/useToggle";
 import StarUpload from "../Star/StarUpload";
-import SearchStar from "@/components/SearchStar/SearchStar";
-import Icon from "@/components/Icon/Icon";
+import SearchModal from "../SearchModal/SearchModal";
 import { useEffect, useState } from "react";
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
 
@@ -13,23 +12,22 @@ const Wishlist = () => {
   const [isModalOpen, toggleModal] = useToggle(false);
   const [starData, setStarData] = useState<UserLikedStarDto[]>([]);
 
+  const fetchLikedStars = async () => {
+    try {
+      const response = await fetch("/api/mypage/liked-star", {
+        method: "GET",
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch liked stars");
+
+      const data = await response.json();
+      setStarData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchLikedStars = async () => {
-      try {
-        const response = await fetch("/api/mypage/liked-star", {
-          method: "GET",
-        });
-
-        if (!response.ok) throw new Error("Failed to fetch liked stars");
-
-        const data = await response.json();
-
-        setStarData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchLikedStars();
   }, []);
 
@@ -77,23 +75,11 @@ const Wishlist = () => {
         ))}
       </ScrollCardContainer>
 
-      {isModalOpen && (
-        <div className={styles.modalOverlay} onClick={toggleModal}>
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button className={styles.closeButton} onClick={toggleModal}>
-              <Icon id="close" />
-            </button>
-            <SearchStar
-              onSelectStarId={function (star: Star): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
-          </div>
-        </div>
-      )}
+      <SearchModal
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+        refreshStars={fetchLikedStars}
+      />
     </div>
   );
 };
