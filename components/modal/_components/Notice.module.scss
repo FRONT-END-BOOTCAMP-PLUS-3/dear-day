@@ -1,0 +1,28 @@
+.noticeContainer {
+  h4 {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    margin-bottom: var(--margin-sm);
+  }
+  ul {
+    background-color: var(--color-blue-bg);
+    padding: var(--padding-sm);
+    border-radius: 10px;
+    font-size: var(--font-size-xs);
+
+    list-style-type: disc !important;
+    list-style-position: outside;
+  }
+  li {
+    display: list-item !important;
+    margin-bottom: var(--padding-xs);
+  }
+  li::marker {
+    content: "• ";
+    color: var(--color-gray-3);
+    font-size: var(--font-size-sm);
+  }
+  .bold {
+    font-weight: 600;
+  }
+}
