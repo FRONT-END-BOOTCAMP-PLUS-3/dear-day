@@ -44,3 +44,74 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {
+  try {
+    const userId = await getUserIdFromToken();
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    const body = await req.json();
+    const { courseId, events } = body;
+    if (!courseId || !events || !Array.isArray(events)) {
+      return NextResponse.json(
+        { error: "잘못된 입력입니다." },
+        { status: 400 }
+      );
+    }
+
+    const courseEventRepository = new PgCourseEventRepository();
+    const results = await Promise.all(
+      events.map((eventId: number, index: number) =>
+        courseEventRepository.createCourseEvent(courseId, eventId, index + 1)
+      )
+    );
+    return NextResponse.json({ success: true, results });
+  } catch (error) {
+    console.error("코스 이벤트 생성 중 오류 발생:", error);
+    return NextResponse.json(
+      { error: "코스 이벤트 생성 중 오류가 발생했습니다." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const userId = await getUserIdFromToken();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    const body = await req.json();
+    const { courseId, events } = body;
+    if (!courseId || !events || !Array.isArray(events)) {
+      return NextResponse.json(
+        { error: "잘못된 입력입니다." },
+        { status: 400 }
+      );
+    }
+
+    const courseEventRepository = new PgCourseEventRepository();
+    await Promise.all(
+      events.map((eventId: number) =>
+        courseEventRepository.deleteCourseEvent(courseId, eventId)
+      )
+    );
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("코스 이벤트 삭제 중 오류 발생:", error);
+    return NextResponse.json(
+      { error: "코스 이벤트 삭제 중 오류가 발생했습니다." },
+      { status: 500 }
+    );
+  }
+}
