@@ -78,6 +78,15 @@ export class PgEventRepository implements EventRepository {
     }
   }
 
+  async findAll(): Promise<Event[]> {
+    try {
+      const events = await prisma.event.findMany();
+      return events;
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
   async findAllEventListByStarId(starId: number): Promise<Event[]> {
     try {
       const events = await prisma.event.findMany({
