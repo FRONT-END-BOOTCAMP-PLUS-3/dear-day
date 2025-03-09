@@ -77,4 +77,24 @@ export class PgEventRepository implements EventRepository {
       await prisma.$disconnect();
     }
   }
+
+  async findAllEventsByUserId(userId: string): Promise<Event[]> {
+    try {
+      const events = await prisma.event.findMany({
+        where: {
+          userId: userId,
+        },
+        orderBy: {
+          startDate: "asc", // 시작 날짜 기준 오름차순 정렬 (과거 → 미래)
+        },
+      });
+      console.log(events);
+      return events;
+    } catch (error) {
+      console.error("사용자의 이벤트 조회 중 오류 발생:", error);
+      throw new Error("사용자의 이벤트를 불러오는 중 오류가 발생했습니다.");
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
