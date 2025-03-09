@@ -13,13 +13,6 @@ export async function GET(req: Request) {
     // 인증 처리 (공통 함수 사용)
     const userId = await getUserIdFromToken();
 
-    if (!userId) {
-      return NextResponse.json(
-        { error: "인증이 필요합니다." },
-        { status: 401 }
-      );
-    }
-
     // 3. 유즈케이스에 `userId` 전달
     const { searchParams } = new URL(req.url);
     const eventId = Number(searchParams.get("eventId"));
@@ -40,12 +33,12 @@ export async function GET(req: Request) {
     try {
       const eventDetail = await ShowEventDetail(
         eventId,
-        userId,
         eventRepository,
         starRepository,
         reservationSettingRepository,
         reservationRepository,
-        waitingRepository
+        waitingRepository,
+        userId || undefined // userId가 있으면 전달, 없으면 undefined
       );
       return NextResponse.json(eventDetail);
     } catch (error) {
