@@ -8,6 +8,7 @@ import SearchModal from "../SearchModal/SearchModal";
 import { useEffect, useState } from "react";
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
 import { UserLikedEventDto } from "@/application/usecases/mypage/dto/UserLikedEventDto";
+import EmptyText from "../EmptyText/EmptyText";
 
 const Wishlist = () => {
   const [isModalOpen, toggleModal] = useToggle(false);
@@ -58,18 +59,22 @@ const Wishlist = () => {
         ))}
       </ScrollCardContainer>
       <p className={styles.title}>찜한 생카</p>
-      <ScrollCardContainer variant="grid">
-        {likedEvents.map((card) => (
-          <SmallCardView
-            key={card.id}
-            id={card.id}
-            imgSrc={card.mainImage}
-            title={card.title}
-            starName={card.starName}
-            address={card.address}
-          />
-        ))}
-      </ScrollCardContainer>
+      {likedEvents.length > 0 ? (
+        <ScrollCardContainer variant="grid">
+          {likedEvents.map((card) => (
+            <SmallCardView
+              key={card.id}
+              id={card.id}
+              imgSrc={card.mainImage}
+              title={card.title}
+              starName={card.starName}
+              address={card.address}
+            />
+          ))}
+        </ScrollCardContainer>
+      ) : (
+        <EmptyText />
+      )}
 
       <SearchModal
         isOpen={isModalOpen}
