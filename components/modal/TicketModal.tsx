@@ -113,20 +113,28 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
 
           {data.mode === "RESERVATION" && (
             <>
-              <div className={styles.info}>
-                <p>예약자 아이디: {data.email}</p>
-                <p>
-                  예약 날짜:{" "}
-                  {new Date(
-                    data.reservationConfirmedAt || ""
-                  ).toLocaleDateString()}
-                </p>
-                <p>
-                  예약 시간:{" "}
-                  {new Date(
-                    data.reservationConfirmedAt || ""
-                  ).toLocaleTimeString()}
-                </p>
+              <div className={styles.infoContainer}>
+                <div className={styles.info}>
+                  <p>예약자 아이디 : </p>
+                  <p>예약 날짜 :</p>
+                  <p>예약 시간 :</p>
+                </div>
+                <div className={styles.info}>
+                  <p>{data.email}</p>
+                  <p>
+                    {new Date(
+                      data.reservationConfirmedAt || ""
+                    ).toLocaleDateString()}
+                  </p>
+                  <p>
+                    {new Date(
+                      data.reservationConfirmedAt || ""
+                    ).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
               </div>
               <div className={styles.ticketNotice}>
                 {data.breaktime !== undefined && (
@@ -134,7 +142,9 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
                 )}
               </div>
               <div className={styles.ticketFooter}>
-                <div className={styles.circleIcon}>✔️</div>
+                <div className={styles.circleIcon}>
+                  <Icon id="check" size={57} />
+                </div>
                 <h2>
                   <strong>예약</strong>이 <strong>확정</strong>되었습니다
                 </h2>
@@ -144,9 +154,15 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
 
           {data.mode === "WAITING" && (
             <>
-              <div className={styles.waitingInfo}>
-                <p>예약자 아이디 : {data.email}</p>
-                <p>예약 인원 : {data.headCount}명</p>
+              <div className={styles.waitingInfoContainer}>
+                <div className={styles.waitingInfo}>
+                  <p>대기자 아이디 :</p>
+                  <p>대기 인원 :</p>
+                </div>
+                <div className={styles.waitingInfo}>
+                  <p>{data.email}</p>
+                  <p>{data.headCount}명</p>
+                </div>
               </div>
               <div className={styles.waitingNotice}>
                 <ul>
