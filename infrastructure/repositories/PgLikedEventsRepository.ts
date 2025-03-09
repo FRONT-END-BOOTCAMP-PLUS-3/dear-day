@@ -75,4 +75,25 @@ export class PgLikedEventRepository implements LikedEventRepository {
       );
     }
   }
+
+  async findAll(userId: string): Promise<LikedEvent[]> {
+    try {
+      const likedEvents = await prisma.likedEvent.findMany({
+        where: {
+          userId,
+        },
+      });
+      return likedEvents;
+    } catch (error) {
+      console.error(
+        "좋아요 목록 조회 중 오류 발생:",
+        error instanceof Error ? error.stack : error
+      );
+      throw new Error(
+        `좋아요 목록을 불러오는 중 오류가 발생했습니다. Details: ${
+          error instanceof Error ? error.message : error
+        }`
+      );
+    }
+  }
 }

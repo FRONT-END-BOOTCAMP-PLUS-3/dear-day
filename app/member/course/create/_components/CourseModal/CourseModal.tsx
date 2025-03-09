@@ -1,7 +1,6 @@
 "use client";
 
 import Modal from "@/components/modal/Modal";
-import { useAuthStore } from "@/store/authStore";
 import { useCourseStore } from "@/store/courseStore";
 import { useRouter } from "next/navigation";
 
@@ -17,7 +16,6 @@ export default function CourseModal({
   selectedEvents,
 }: CourseModalProps) {
   const router = useRouter();
-  const { user } = useAuthStore();
   const { name, date, setCourseEvent } = useCourseStore();
 
   const handleConfirm = async () => {
@@ -25,17 +23,16 @@ export default function CourseModal({
       setCourseEvent(selectedEvents);
     }
     try {
-      const response = await fetch("/api/course/create", {
+      fetch("/api/course/create", {
         method: "POST",
         body: JSON.stringify({
-          user_id: user?.id,
           name,
           date,
+          courseEvent: selectedEvents,
         }),
+        credentials: "include",
       });
-      const data = await response.json();
-      const courseId = data.id;
-      router.push(`/member/course/${courseId}`);
+      router.push(`/member/course`);
     } catch (error) {
       console.error("코스 생성 실패:", error);
       alert("코스 생성에 실패했습니다.");
