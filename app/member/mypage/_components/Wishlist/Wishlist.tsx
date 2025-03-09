@@ -7,10 +7,12 @@ import StarUpload from "../Star/StarUpload";
 import SearchModal from "../SearchModal/SearchModal";
 import { useEffect, useState } from "react";
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
+import { UserLikedEventDto } from "@/application/usecases/mypage/dto/UserLikedEventDto";
 
 const Wishlist = () => {
   const [isModalOpen, toggleModal] = useToggle(false);
   const [starData, setStarData] = useState<UserLikedStarDto[]>([]);
+  const [likedEvents, setLikedEvents] = useState<UserLikedEventDto[]>([]);
 
   const fetchLikedStars = async () => {
     try {
@@ -27,26 +29,20 @@ const Wishlist = () => {
     }
   };
 
+  const fetchLikedEvents = async () => {
+    try {
+      const response = await fetch("/api/like/list");
+      const data = await response.json();
+      setLikedEvents(data);
+    } catch (error) {
+      console.error("Liked Events Fetch Error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchLikedStars();
+    fetchLikedEvents();
   }, []);
-
-  const cardData = [
-    {
-      id: 1,
-      imgSrc: "/demo/main-poster.jpeg",
-      title: "스타 1",
-      starName: "카리나",
-      address: "서울 강남구",
-    },
-    {
-      id: 2,
-      imgSrc: "/demo/main-poster.jpeg",
-      title: "스타 2",
-      starName: "윈터",
-      address: "서울 강동구",
-    },
-  ];
 
   return (
     <div className={styles.tabContent}>
@@ -63,11 +59,11 @@ const Wishlist = () => {
       </ScrollCardContainer>
       <p className={styles.title}>찜한 생카</p>
       <ScrollCardContainer variant="grid">
-        {cardData.map((card) => (
+        {likedEvents.map((card) => (
           <SmallCardView
             key={card.id}
             id={card.id}
-            imgSrc={card.imgSrc}
+            imgSrc={card.mainImage}
             title={card.title}
             starName={card.starName}
             address={card.address}
