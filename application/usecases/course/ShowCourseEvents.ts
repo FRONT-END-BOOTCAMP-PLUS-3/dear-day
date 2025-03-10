@@ -25,11 +25,12 @@ export const ShowCourseEvents = async (
       }
 
       const star = await starRepository.findStarByStarId(eventDetail.starId);
-      const starName = star?.realName || "Unknown";
+      const starName = star
+        ? `${star.stageName}${star.group ? ` (${star.group})` : ""}`
+        : "Unknown Star";
 
       return {
         id,
-
         eventId: eventDetail.id,
         imgSrc: eventDetail.mainImage,
         title: eventDetail.title,
@@ -37,7 +38,6 @@ export const ShowCourseEvents = async (
         endDate: eventDetail.endDate,
         latitude: eventDetail.latitude,
         longitude: eventDetail.longitude,
-
         order,
         starName,
       } as ShowCourseEventsDto;
@@ -48,7 +48,7 @@ export const ShowCourseEvents = async (
     return [];
   }
 
-  return showCourseEvents.filter(
-    (dto): dto is ShowCourseEventsDto => dto !== null
-  );
+  return showCourseEvents
+    .filter((dto): dto is ShowCourseEventsDto => dto !== null)
+    .sort((a, b) => a.order - b.order);
 };
