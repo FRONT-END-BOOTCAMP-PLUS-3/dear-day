@@ -23,8 +23,6 @@ export async function GET() {
       starRepository
     );
 
-    console.log("🔍 [API] 사용자 이벤트 조회 결과:", results);
-
     return NextResponse.json(
       { message: "이벤트 검색 완료", results },
       { status: 201 }

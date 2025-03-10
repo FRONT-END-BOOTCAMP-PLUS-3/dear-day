@@ -110,10 +110,9 @@ export class PgEventRepository implements EventRepository {
           userId: userId,
         },
         orderBy: {
-          startDate: "asc", // 시작 날짜 기준 오름차순 정렬 (과거 → 미래)
+          startDate: "asc",
         },
       });
-      console.log(events);
       return events;
     } catch (error) {
       console.error("사용자의 이벤트 조회 중 오류 발생:", error);
