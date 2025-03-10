@@ -1,12 +1,12 @@
 import TitleHeader from "../../../member/event/[event_id]/_components/TitleHeader/TitleHeader";
 import DetailSection from "../../../member/event/[event_id]/_components/DetailSection/DetailSection";
 import BenefitList from "../../../member/event/[event_id]/_components/BenefitList/BenefitList";
-import LocationSection from "../../../member/event/[event_id]/_components/LocationSection/LocationSection";
 import styles from "../../../member/event/[event_id]/page.module.scss";
 import { ShowEventDetailDto } from "@/application/usecases/event/dto/ShowEventDetailDto";
 import { demoEventData } from "../../../member/event/[event_id]/demoData";
 import ClientButton from "./_components/ClientButton";
 import ClientTabNavigation from "./_components/ClientTabNavigation";
+import ClientLocationSection from "./_components/ClientLocationSection";
 
 // 서버에서 데이터를 가져오는 함수
 async function getEventData(
@@ -63,7 +63,7 @@ export default async function EventDetail({
       </div>
       <div className={styles.divider}></div>
       <div id="div3">
-        <LocationSection eventData={eventData} />
+        <ClientLocationSection eventData={eventData} />
       </div>
       <div className={styles.divider}></div>
       <div id="div4" className={styles.reservation}>
