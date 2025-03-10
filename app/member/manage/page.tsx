@@ -9,11 +9,6 @@ import { showMyEventListDto } from "@/application/usecases/event/dto/ShowMyEvent
 
 const ManagePage = () => {
   const [events, setEvents] = useState<showMyEventListDto[]>([]);
-  // const [upComingEvents, setUpComingEvents] = useState<showMyEventListDto[]>(
-  //   []
-  // );
-  // const [onGoingEvents, setOnGoingEvents] = useState<showMyEventListDto[]>([]);
-  // const [endEvents, setEndEvents] = useState<showMyEventListDto[]>([]);
 
   useEffect(() => {
     const fetchMyEvent = async () => {
@@ -49,9 +44,6 @@ const ManagePage = () => {
     [events]
   );
 
-  console.log("onGoingEvents :", onGoingEvents);
-  console.log("endEvents :", endEvents);
-
   return (
     <div className={styles.homeContainer}>
       <div className={styles.tabContent}>
@@ -66,6 +58,9 @@ const ManagePage = () => {
               starName={event.starName}
               address={event.address}
               noLikeBtn={true}
+              overlay={event.status === "예정"}
+              openDate={event.startDate}
+              endDate={event.endDate}
             />
           ))}
         </SwipeCardContainer>
