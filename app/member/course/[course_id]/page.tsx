@@ -18,9 +18,8 @@ export interface MarkerData {
 
 export default function CoursePage() {
   const { course_id } = useParams();
-  const courseId = Number(course_id);
-  const { courseEvent, setCourseEvent } = useCourseStore();
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const { courseEvent, setCourseEvent, isEditMode, setIsEditMode } =
+    useCourseStore();
   const [eventDetails, setEventDetails] = useState<ShowCourseEventsDto[]>([]);
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
@@ -28,10 +27,8 @@ export default function CoursePage() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `/api/course/detail?courseId=${courseId}`,
-          {
-            method: "GET",
-          }
+          `/api/course/detail?courseId=${course_id}`,
+          { method: "GET" }
         );
         if (!response.ok) {
           console.error("Failed to fetch event data");
@@ -39,12 +36,6 @@ export default function CoursePage() {
         }
         const data: ShowCourseEventsDto[] = await response.json();
         setEventDetails(data);
-        const newMarkers = data.map((item) => ({
-          latitude: item.latitude,
-          longitude: item.longitude,
-          mainImage: item.imgSrc,
-        }));
-        setMarkers(newMarkers);
         if (courseEvent.length === 0 && data.length > 0) {
           const initialIds = data.map((event) => event.id);
           setCourseEvent(initialIds);
@@ -54,14 +45,49 @@ export default function CoursePage() {
       }
     }
     fetchData();
-  }, [courseId, setCourseEvent, courseEvent.length]);
+  }, [course_id, setCourseEvent, courseEvent.length]);
 
-  const handleFinalizeOrder = useCallback(
-    (finalOrder: number[]) => {
-      setCourseEvent(finalOrder);
+  useEffect(() => {
+    const newMarkers = eventDetails.map((item) => ({
+      latitude: item.latitude,
+      longitude: item.longitude,
+      mainImage: item.imgSrc,
+    }));
+    setMarkers(newMarkers);
+  }, [eventDetails]);
+
+  const handleOrderChange = useCallback(
+    (newOrder: number[]) => {
+      setCourseEvent(newOrder);
     },
     [setCourseEvent]
   );
+
+  const handleEnableEditMode = () => {
+    setIsEditMode(true);
+  };
+
+  const handleDisableEditMode = async () => {
+    const orderValues = eventDetails.map((_, index) => index);
+    try {
+      const response = await fetch(`/api/course/detail`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: courseEvent,
+          order: orderValues,
+        }),
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("코스 순서 업데이트 실패");
+      }
+      console.log("코스 순서 업데이트 성공");
+    } catch (error) {
+      console.error("코스 순서 업데이트 에러:", error);
+    }
+    setIsEditMode(false);
+  };
 
   return (
     <div className={styles.homeContainer}>
@@ -70,14 +96,15 @@ export default function CoursePage() {
       </div>
       <BottomSheet>
         <EditHeader
-          courseId={courseId}
+          courseId={Number(course_id)}
           isEditMode={isEditMode}
-          onToggleEditMode={() => setIsEditMode((prev) => !prev)}
+          onEnableEditMode={handleEnableEditMode}
+          onDisableEditMode={handleDisableEditMode}
         />
         <DraggableEventList
           isEditMode={isEditMode}
           initialEventDetails={eventDetails}
-          onFinalizeOrder={handleFinalizeOrder}
+          onOrderChange={handleOrderChange}
         />
       </BottomSheet>
     </div>
