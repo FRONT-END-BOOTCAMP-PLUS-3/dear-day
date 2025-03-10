@@ -52,4 +52,22 @@ export class PgCourseEventRepository implements CourseEventRepository {
       console.error("코스 이벤트 삭제 중 오류 발생", error);
     }
   }
+
+  async updateCourseEvent(id: number, order: number): Promise<CourseEvent> {
+    try {
+      return await prisma.courseEvent.update({
+        where: {
+          id,
+        },
+        data: {
+          order,
+        },
+      });
+    } catch (error) {
+      console.error("코스 이벤트 생성 중 오류 발생:", error);
+      throw new Error("코스 이벤트를 생성하는 중 오류가 발생했습니다.");
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }

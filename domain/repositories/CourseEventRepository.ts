@@ -8,4 +8,5 @@ export interface CourseEventRepository {
     order: number
   ): Promise<CourseEvent>;
   deleteCourseEvent(courseId: number, eventId: number): Promise<void>;
+  updateCourseEvent(id: number, order: number): Promise<CourseEvent>;
 }

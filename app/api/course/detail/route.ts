@@ -115,3 +115,40 @@ export async function DELETE(req: NextRequest) {
     );
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const userId = await getUserIdFromToken();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    const body = await req.json();
+    const { id, order } = body;
+    if (!id || !order || !Array.isArray(id) || !Array.isArray(order)) {
+      return NextResponse.json(
+        { error: "잘못된 입력입니다." },
+        { status: 400 }
+      );
+    }
+
+    const courseEventRepository = new PgCourseEventRepository();
+
+    await Promise.all(
+      id.map((eventId: number, index: number) =>
+        courseEventRepository.updateCourseEvent(eventId, order[index])
+      )
+    );
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("코스 이벤트 순서 업데이트 중 오류 발생:", error);
+    return NextResponse.json(
+      { error: "코스 이벤트 순서 업데이트 중 오류가 발생했습니다." },
+      { status: 500 }
+    );
+  }
+}
