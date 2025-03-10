@@ -47,37 +47,45 @@ const ManagePage = () => {
   return (
     <div className={styles.homeContainer}>
       <div className={styles.tabContent}>
-        <p className={styles.title}>진행중인 생카</p>
-        <SwipeCardContainer>
-          {onGoingEvents.map((event) => (
-            <SmallCardView
-              key={event.id}
-              id={event.id}
-              imgSrc={event.mainImage}
-              title={event.title}
-              starName={event.starName}
-              address={event.address}
-              noLikeBtn={true}
-              overlay={event.status === "예정"}
-              openDate={event.startDate}
-              endDate={event.endDate}
-            />
-          ))}
-        </SwipeCardContainer>
+        <p className={styles.title}>진행 중인 생카</p>
+        {onGoingEvents.length === 0 ? (
+          <p className={styles.noEvent}>진행 중인 생카가 없습니다.</p>
+        ) : (
+          <SwipeCardContainer>
+            {onGoingEvents.map((event) => (
+              <SmallCardView
+                key={event.id}
+                id={event.id}
+                imgSrc={event.mainImage}
+                title={event.title}
+                starName={event.starName}
+                address={event.address}
+                noLikeBtn={true}
+                overlay={event.status === "예정"}
+                openDate={event.startDate}
+                endDate={event.endDate}
+              />
+            ))}
+          </SwipeCardContainer>
+        )}
         <p className={styles.title}>종료된 생카</p>
-        <ScrollCardContainer variant={"grid"}>
-          {endEvents.map((event) => (
-            <SmallCardView
-              key={event.id}
-              id={event.id}
-              imgSrc={event.mainImage}
-              title={event.title}
-              starName={event.starName}
-              address={event.address}
-              noLikeBtn={true}
-            />
-          ))}
-        </ScrollCardContainer>
+        {endEvents.length === 0 ? (
+          <p className={styles.noEvent}>종료된 생카가 없습니다.</p>
+        ) : (
+          <ScrollCardContainer variant={"grid"}>
+            {endEvents.map((event) => (
+              <SmallCardView
+                key={event.id}
+                id={event.id}
+                imgSrc={event.mainImage}
+                title={event.title}
+                starName={event.starName}
+                address={event.address}
+                noLikeBtn={true}
+              />
+            ))}
+          </ScrollCardContainer>
+        )}
       </div>
     </div>
   );
