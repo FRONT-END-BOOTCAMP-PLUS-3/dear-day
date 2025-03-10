@@ -66,9 +66,9 @@ export default async function EventDetail({
         <LocationSection eventData={eventData} />
       </div>
       <div className={styles.divider}></div>
-      <div id="div4">
+      <div id="div4" className={styles.reservation}>
         {eventData.mode == "RESERVATION" ? <h3>예약</h3> : <h3>대기</h3>}
-        로그인 후 이용할 수 있는 서비스입니다.
+        <p className={styles.notice}>로그인 후 이용할 수 있는 서비스입니다.</p>
         <ClientButton /> {/* 클라이언트 컴포넌트로 변경 */}
       </div>
     </div>
