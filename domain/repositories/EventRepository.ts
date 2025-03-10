@@ -7,4 +7,5 @@ export interface EventRepository {
   findEventsByStartDate(startDate: Date): Promise<Event[]>; // 다가오는 이벤트
   findAll(): Promise<Event[]>;
   findAllEventListByStarId(starId: number): Promise<Event[]>;
+  findAllEventsByUserId(userId: string): Promise<Event[]>; // 사용자의 이벤트 조회
 }
