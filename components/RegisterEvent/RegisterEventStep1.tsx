@@ -17,8 +17,8 @@ export interface RegisterEventStep1Form {
   longitude: number;
   title: string;
   twitterId: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   startTime: string;
   endTime: string;
 }
@@ -45,8 +45,8 @@ const RegisterEventStep1 = ({
       longitude: eventData?.longitude || 0,
       title: eventData?.title || "",
       twitterId: eventData?.twitterId || "",
-      startDate: eventData?.startDate ? eventData.startDate.toString() : "",
-      endDate: eventData?.endDate ? eventData.endDate.toString() : "",
+      startDate: eventData?.startDate || null,
+      endDate: eventData?.endDate || null,
       startTime: eventData?.startTime || "",
       endTime: eventData?.endTime || "",
     },
@@ -80,8 +80,8 @@ const RegisterEventStep1 = ({
       longitude: data.longitude,
       title: data.title,
       twitterId: data.twitterId,
-      startDate: data.startDate ? new Date(data.startDate) : null,
-      endDate: data.endDate ? new Date(data.endDate) : null,
+      startDate: data.startDate,
+      endDate: data.endDate,
       startTime: data.startTime,
       endTime: data.endTime,
     });
@@ -166,11 +166,19 @@ const RegisterEventStep1 = ({
               rules={{ required: "운영 시작 시간을 선택해주세요." }}
               render={({ field }) => (
                 <TimeSelectButton
-                  value={field.value ? new Date(field.value) : undefined}
-                  onChange={(date) => field.onChange(date.toISOString())}
+                  value={
+                    field.value
+                      ? new Date(`1970-01-01T${field.value}:00`)
+                      : undefined
+                  }
+                  onChange={(date) => {
+                    const formattedTime = date.toTimeString().slice(0, 5);
+                    field.onChange(formattedTime);
+                  }}
                 />
               )}
             />
+
             <span>~</span>
             <Controller
               name="endTime"
@@ -178,20 +186,27 @@ const RegisterEventStep1 = ({
               rules={{ required: "운영 종료 시간을 선택해주세요." }}
               render={({ field }) => (
                 <TimeSelectButton
-                  value={field.value ? new Date(field.value) : undefined}
+                  value={
+                    field.value
+                      ? new Date(`1970-01-01T${field.value}:00`)
+                      : undefined
+                  }
                   onChange={(date) => {
                     const startTime = watch("startTime")
-                      ? new Date(watch("startTime"))
+                      ? new Date(`1970-01-01T${watch("startTime")}:00`)
                       : null;
+
+                    const formattedTime = date.toTimeString().slice(0, 5);
+
                     if (startTime && date < startTime) {
-                      field.onChange(startTime.toISOString());
+                      field.onChange(startTime.toTimeString().slice(0, 5));
                     } else {
-                      field.onChange(date.toISOString());
+                      field.onChange(formattedTime);
                     }
                   }}
                   minTime={
                     watch("startTime")
-                      ? new Date(watch("startTime"))
+                      ? new Date(`1970-01-01T${watch("startTime")}:00`)
                       : undefined
                   }
                 />
@@ -235,7 +250,6 @@ const RegisterEventStep1 = ({
             )}
           />
         </div>
-
         <NextButton
           onClick={handleSubmit(onSubmit)}
           value="다음"

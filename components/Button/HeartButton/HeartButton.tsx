@@ -25,7 +25,7 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
           throw new Error("좋아요 상태를 불러오는데 실패했습니다.");
         }
         const data = await response.json();
-        setLiked(!!data.eventId);
+        setLiked(!!data);
       } catch (error) {
         console.error("좋아요 상태 확인 실패:", error);
       }

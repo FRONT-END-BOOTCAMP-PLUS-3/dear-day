@@ -11,6 +11,16 @@
   background: var(--color-white);
   display: flex;
   gap: 12px;
+   // 버튼 아래 부분을 가려줄 배경 추가
+   &::after {
+    content: "";
+    position: absolute;
+    bottom: -24px;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    background: var(--color-white);
+  }
 }
 
 .btn {

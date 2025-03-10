@@ -1,9 +1,34 @@
+import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
 import { StarRepository } from "@/domain/repositories/StarRepository";
 import { Star, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export class PgStarRepository implements StarRepository {
+  async findLikedStarsByUserId(userId: string): Promise<UserLikedStarDto[]> {
+    // LikedStar 테이블에서 userId에 해당하는 starId 찾기
+    const likedStars = await prisma.likedStar.findMany({
+      where: { userId },
+      select: { starId: true },
+    });
+
+    const starIds = likedStars.map((liked) => liked.starId);
+
+    if (starIds.length === 0) return [];
+
+    // 찾은 starId를 기반으로 Star 테이블에서 스타 정보 가져오기
+    const stars = await prisma.star.findMany({
+      where: { id: { in: starIds } },
+      select: { id: true, stageName: true, image: true },
+    });
+
+    return stars.map((star) => ({
+      starId: star.id,
+      name: star.stageName,
+      image: star.image,
+    }));
+  }
+
   async createStar(star: Star): Promise<void> {
     try {
       await prisma.star.create({
@@ -59,6 +84,15 @@ export class PgStarRepository implements StarRepository {
           ],
         },
       });
+      return stars;
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
+  async findAll(): Promise<Star[]> {
+    try {
+      const stars = await prisma.star.findMany();
       return stars;
     } finally {
       await prisma.$disconnect();
