@@ -26,3 +26,14 @@
   margin: calc(-1 * var(--padding-xl));
   padding: var(--padding-xl);
 }
+
+.noEvent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  background-color: var(--color-white);
+  border-radius: 20px;
+  height: 150px;
+}

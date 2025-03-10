@@ -8,4 +8,21 @@
     width: 100%;
     border-bottom: 1px solid var(--divider);
   }
+  .sectionDiv {
+    height: fit-content;
+  }
+  .reservation {
+    gap: var(--padding-lg);
+    width: 100%;
+    h3 {
+      font-size: var(--font-size-md);
+      font-weight: 400;
+      margin-bottom: 2px;
+    }
+    .notice {
+      margin: 10px 0px 20px 0px;
+      display: flex;
+      justify-content: center;
+    }
+  }
 }
