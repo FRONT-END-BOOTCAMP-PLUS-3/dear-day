@@ -7,7 +7,7 @@ export interface CourseListViewProps {
   imgSrc: string;
   name: string;
   date: Date;
-  createAt: Date;
+  createAt?: Date;
   eventCount: number;
 }
 

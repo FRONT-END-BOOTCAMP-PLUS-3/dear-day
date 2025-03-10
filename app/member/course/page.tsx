@@ -11,12 +11,13 @@ import { useRouter } from "next/navigation";
 import useToggle from "@/hooks/useToggle";
 import { useCourseStore } from "@/store/courseStore";
 import { InputFormData } from "@/components/modal/Modal.type";
+import { ShowCourseListDto } from "@/application/usecases/course/dto/ShowCourseListDto";
 
 export default function CoursePage() {
   const router = useRouter();
   const [isModalOpen, toggleModal] = useToggle(false);
-  const { setName, setDate, setCourseId, setCourseEvent } = useCourseStore();
-  const [courseList, setCourseList] = useState<CourseListViewProps[]>([]);
+  const { setName, setDate } = useCourseStore();
+  const [courseList, setCourseList] = useState<ShowCourseListDto[]>([]);
 
   useEffect(() => {
     const fetchCourseList = async () => {
@@ -57,19 +58,7 @@ export default function CoursePage() {
   };
 
   const handleCourseClick = async (course: CourseListViewProps) => {
-    setCourseId(course.id);
-    try {
-      const response = await fetch(`/api/course/${course.id}`);
-      if (!response.ok) {
-        console.error("Course Event 테이블 호출 실패");
-        return;
-      }
-      const data = await response.json();
-      setCourseEvent(data.events);
-      router.push(`/member/course/${course.id}`);
-    } catch (error) {
-      console.error("Error fetching course events:", error);
-    }
+    router.push(`/member/course/${course.id}`);
   };
 
   return (
