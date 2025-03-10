@@ -17,7 +17,7 @@ export const ShowUpcomingEvents = async (
       const star = await starRepository.findStarByStarId(event.starId);
       return {
         id: event.id,
-        imgSrc: event.mainImage,
+        mainImage: event.mainImage,
         title: event.title,
         startDate: event.startDate,
         endDate: event.endDate,

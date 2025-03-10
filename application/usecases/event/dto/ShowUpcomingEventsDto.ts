@@ -4,7 +4,7 @@ export interface ShowUpcomingEventsDto {
 
 export interface UpcomingEventDto {
   id: number;
-  imgSrc: string;
+  mainImage: string;
   title: string;
   startDate: Date;
   endDate: Date;
