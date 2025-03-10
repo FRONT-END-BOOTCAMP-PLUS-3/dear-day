@@ -2,6 +2,7 @@ import Link from "next/link";
 import styles from "./SmallCardView.module.scss";
 import Image from "next/image";
 import HeartButton from "@/components/Button/HeartButton/HeartButton";
+import { usePathname } from "next/navigation";
 
 interface SmallCardViewProps {
   id: number;
@@ -35,8 +36,17 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
     return `${year}.${month}.${day}`;
   };
 
+  const currentPath = usePathname();
+  const pathSegments = currentPath.split("/").filter(Boolean);
+  // 기본적으로 현재 경로 유지
+  let newPath = `/${pathSegments.join("/")}/${id}`;
+  console.log("newPath", pathSegments.indexOf("mypage"));
+  if (pathSegments.includes("mypage")) {
+    newPath = `/${pathSegments.slice(0, pathSegments.indexOf("mypage")).join("/")}/event/${id}`;
+  }
+
   return (
-    <Link href={`/event/${id}`}>
+    <Link href={newPath}>
       <li className={styles.smallCardView}>
         <div className={styles.smallCardWrapper}>
           <Image
