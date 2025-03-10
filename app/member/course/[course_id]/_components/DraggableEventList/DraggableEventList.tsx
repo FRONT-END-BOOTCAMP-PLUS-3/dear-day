@@ -1,35 +1,27 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import CourseDetailListView from "@/components/EventView/CourseDetailListView/CourseDetailListView";
 import { ShowCourseEventsDto } from "@/application/usecases/course/dto/ShowCourseEventsDto";
 
 interface DraggableEventListProps {
   isEditMode: boolean;
   initialEventDetails: ShowCourseEventsDto[];
-  onFinalizeOrder: (finalOrder: number[]) => void;
+  onOrderChange: (newOrder: number[]) => void;
 }
 
 const DraggableEventList = ({
   isEditMode,
   initialEventDetails,
-  onFinalizeOrder,
+  onOrderChange,
 }: DraggableEventListProps) => {
   const [localEventDetails, setLocalEventDetails] =
     useState<ShowCourseEventsDto[]>(initialEventDetails);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-  const prevEditModeRef = useRef(isEditMode);
 
   useEffect(() => {
     setLocalEventDetails(initialEventDetails);
   }, [initialEventDetails]);
-
-  useEffect(() => {
-    if (prevEditModeRef.current && !isEditMode) {
-      onFinalizeOrder(localEventDetails.map((event) => event.id));
-    }
-    prevEditModeRef.current = isEditMode;
-  }, [isEditMode, localEventDetails, onFinalizeOrder]);
 
   const handleDragStart = (
     e: React.DragEvent<HTMLDivElement>,
@@ -69,6 +61,8 @@ const DraggableEventList = ({
     newDetails.splice(index, 0, draggedItem);
     setLocalEventDetails(newDetails);
     setDraggingIndex(null);
+    const newOrder = newDetails.map((event) => event.id);
+    onOrderChange(newOrder);
   };
 
   const handleDragEnd = () => {
