@@ -7,8 +7,9 @@ export interface CourseListViewProps {
   imgSrc: string;
   name: string;
   date: Date;
-  createAt: Date;
+  createAt?: Date;
   eventCount: number;
+  isPast?: boolean;
 }
 
 const CourseListView: React.FC<CourseListViewProps> = ({
@@ -17,6 +18,7 @@ const CourseListView: React.FC<CourseListViewProps> = ({
   name,
   date,
   eventCount,
+  isPast = false,
 }) => {
   const dateObj = typeof date === "string" ? new Date(date) : date;
 
@@ -26,7 +28,9 @@ const CourseListView: React.FC<CourseListViewProps> = ({
 
   return (
     <Link href={`/member/course/${id}`}>
-      <li className={styles.courseListView}>
+      <li
+        className={isPast ? styles.pastCourseListView : styles.courseListView}
+      >
         <Image
           className={styles.courseListImg}
           src={imgSrc}

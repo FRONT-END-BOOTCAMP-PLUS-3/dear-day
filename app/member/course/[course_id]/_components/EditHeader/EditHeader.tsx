@@ -4,30 +4,41 @@ import React from "react";
 import Icon from "@/components/Icon/Icon";
 import styles from "./EditHeader.module.scss";
 import { useRouter } from "next/navigation";
-import { useCourseStore } from "@/store/courseStore";
 
 interface EditHeaderProps {
+  courseId: number;
   isEditMode: boolean;
-  onToggleEditMode: () => void;
+  onEnableEditMode: () => void;
+  onDisableEditMode: () => void;
 }
 
-const EditHeader = ({ isEditMode, onToggleEditMode }: EditHeaderProps) => {
+const EditHeader = ({
+  courseId,
+  isEditMode,
+  onEnableEditMode,
+  onDisableEditMode,
+}: EditHeaderProps) => {
   const router = useRouter();
-  const { courseId } = useCourseStore();
 
   return (
     <header className={styles.header}>
-      {isEditMode && (
-        <span
-          className={styles.editHeader}
-          onClick={() => router.push(`/member/course/${courseId}/edit`)}
-        >
-          <Icon id="plus" />
+      {isEditMode ? (
+        <>
+          <span
+            className={styles.editHeader}
+            onClick={() => router.push(`/member/course/${courseId}/edit`)}
+          >
+            <Icon id="plus" />
+          </span>
+          <span onClick={onDisableEditMode} className={styles.editText}>
+            <p className={styles.text}>완료</p>
+          </span>
+        </>
+      ) : (
+        <span onClick={onEnableEditMode} className={styles.editText}>
+          <p className={styles.text}>편집</p>
         </span>
       )}
-      <span onClick={onToggleEditMode} className={styles.editText}>
-        <p className={styles.text}>{isEditMode ? "완료" : "편집"}</p>
-      </span>
     </header>
   );
 };

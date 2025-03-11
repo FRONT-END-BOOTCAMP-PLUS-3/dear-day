@@ -17,14 +17,13 @@ export const ShowCourseList = async (
         course.id
       );
       let imgSrc = "";
-      if (events.length > 0) {
-        const eventData = await eventRepository.findEventByEventId(
-          events[0].id
-        );
-        if (eventData) {
-          imgSrc = eventData.mainImage;
-        }
+      const eventData = await eventRepository.findEventByEventId(
+        events[0].eventId
+      );
+      if (eventData) {
+        imgSrc = eventData.mainImage;
       }
+      console.log(imgSrc);
       return {
         id: course.id,
         name: course.name,

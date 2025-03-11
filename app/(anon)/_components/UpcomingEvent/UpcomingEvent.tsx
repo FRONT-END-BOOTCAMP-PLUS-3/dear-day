@@ -28,7 +28,6 @@ const UpcomingEvent = () => {
   };
 
   useEffect(() => {
-    console.log("호출");
     const fetchEvents = async () => {
       try {
         const response = await fetch("/api/main/upcoming-event", {

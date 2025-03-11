@@ -5,6 +5,7 @@ import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer"
 import LargeCardView from "@/components/EventView/LargeCardView/LargeCardView";
 import styles from "./LikedEventsContainer.module.scss";
 import EmptyText from "../EmptyText/EmptyText";
+import { useCourseStore } from "@/store/courseStore";
 
 export interface CourseEventProps {
   id: number;
@@ -27,6 +28,8 @@ const LikedEventsContainer: React.FC<LikedEventsContainerProps> = ({
   selectedEvents,
   onSelectionChange,
 }) => {
+  const { date } = useCourseStore();
+
   const handleToggleEvent = (e: React.MouseEvent, event: CourseEventProps) => {
     e.stopPropagation();
     let updated: number[];
@@ -41,22 +44,34 @@ const LikedEventsContainer: React.FC<LikedEventsContainerProps> = ({
   if (!likedEvents || likedEvents.length === 0) {
     return <EmptyText />;
   }
-
   return (
     <ScrollCardContainer variant="grid">
-      {likedEvents.map((event) => (
-        <div
-          key={event.id}
-          onClick={(e) => handleToggleEvent(e, event)}
-          className={
-            selectedEvents.includes(event.id)
-              ? `${styles.cardWrapper} ${styles.selected}`
-              : styles.cardWrapper
-          }
-        >
-          <LargeCardView {...event} readOnly={true} />
-        </div>
-      ))}
+      {likedEvents.map((event) => {
+        if (
+          new Date(event.startDate) <= new Date(date) &&
+          new Date(date) <= new Date(event.endDate)
+        ) {
+          return (
+            <div
+              key={event.id}
+              onClick={(e) => handleToggleEvent(e, event)}
+              className={
+                selectedEvents.includes(event.id)
+                  ? `${styles.cardWrapper} ${styles.selected}`
+                  : styles.cardWrapper
+              }
+            >
+              <LargeCardView {...event} readOnly={true} isPast={false} />
+            </div>
+          );
+        } else {
+          return (
+            <div key={event.id} className={styles.cardWrapper}>
+              <LargeCardView {...event} readOnly={true} isPast={true} />
+            </div>
+          );
+        }
+      })}
     </ScrollCardContainer>
   );
 };
