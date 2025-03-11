@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   const dynamicTitle = useHeaderStore((state) => state.title); // Zustand에서 title 가져오기
-  console.log("dynamicTitle", dynamicTitle);
+
   // 현재 경로와 일치하는 헤더 설정 찾기
   const headerInfo = headerConfig.find(({ pattern }) =>
     pattern.test(pathname as string)
