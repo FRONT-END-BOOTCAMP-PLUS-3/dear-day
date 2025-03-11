@@ -11,6 +11,7 @@ interface LargeCardViewProps {
   starName: string;
   address: string;
   readOnly?: boolean;
+  isPast?: boolean;
 }
 
 const LargeCardView: React.FC<LargeCardViewProps> = ({
@@ -22,6 +23,7 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
   starName,
   address,
   readOnly = false,
+  isPast = false,
 }) => {
   const startDateObj =
     typeof startDate === "string" ? new Date(startDate) : startDate;
@@ -36,7 +38,7 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
   };
 
   const cardContent = (
-    <li className={styles.LargeCardView}>
+    <li className={isPast ? styles.pastLargeCardView : styles.LargeCardView}>
       <Image
         className={styles.LargeCardImg}
         src={mainImage}
