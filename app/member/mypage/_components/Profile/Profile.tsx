@@ -1,5 +1,6 @@
 import Icon from "@/components/Icon/Icon";
 import styles from "./Profile.module.scss";
+import Link from "next/link";
 
 type ProfileProps = {
   username: string;
@@ -12,9 +13,11 @@ const Profile: React.FC<ProfileProps> = ({ username, email }) => {
         <h1>{username}</h1>
         <p>{email}</p>
       </div>
-      <div className={styles.iconContainer}>
-        <Icon id="setting" />
-      </div>
+      <Link href={"/member/mypage/setting/"}>
+        <div className={styles.iconContainer}>
+          <Icon id="setting" />
+        </div>
+      </Link>
     </div>
   );
 };
