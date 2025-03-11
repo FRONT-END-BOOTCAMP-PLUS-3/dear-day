@@ -3,7 +3,7 @@
 import styles from "./NextButton.module.scss";
 
 interface NextButtonProps {
-  type: "button";
+  type?: "button";
   onClick?: () => void;
   value: string;
   disabled?: boolean;

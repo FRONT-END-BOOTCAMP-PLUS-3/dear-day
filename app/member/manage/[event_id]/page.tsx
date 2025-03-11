@@ -3,27 +3,27 @@
 import DateTimeSelectButton from "@/components/Button/DateTimeSelectButton/DateTimeSelectButton";
 import EventInfo from "./EventInfo/EventInfo";
 import styles from "./page.module.scss";
-import { useState } from "react";
-import ReservationWaitList from "./ReservationWaitList/ReservationWaitList";
+// import { useState } from "react";
+// import ReservationWaitList from "./ReservationWaitList/ReservationWaitList";
 
 const managePage = () => {
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedTime, setSelectedTime] = useState<string>("");
+  // const [selectedDate, setSelectedDate] = useState<string>("");
+  // const [selectedTime, setSelectedTime] = useState<string>("");
 
   const handleDateSelect = (date: string) => {
-    setSelectedDate(date);
+    // setSelectedDate(date);
     console.log("선택한 날짜:", date);
   };
 
   const handleTimeSelect = (time: string) => {
-    setSelectedTime(time);
+    // setSelectedTime(time);
     console.log("선택한 시간:", time);
   };
 
-  const handleConfirm = (id: string) => {
-    const confirmTime = new Date().toISOString();
-    console.log("입장완료:", id, confirmTime);
-  };
+  // const handleConfirm = (id: string) => {
+  //   const confirmTime = new Date().toISOString();
+  //   console.log("입장완료:", id, confirmTime);
+  // };
 
   return (
     <div className={styles.homeContainer}>
@@ -47,7 +47,7 @@ const managePage = () => {
           onSelectTime={handleTimeSelect}
         />
         <ul className={styles.reservationListContianer}>
-          {reservations.map((reservation, index) => (
+          {/* {reservations.map((reservation, index) => (
             <ReservationWaitList
               key={reservation.id}
               id={reservation.id}
@@ -58,13 +58,13 @@ const managePage = () => {
               status={reservation.status}
               onConfirm={handleConfirm}
             />
-          ))}
+          ))} */}
         </ul>
       </div>
 
       <div>
         <ul className={styles.reservationListContianer}>
-          {waittingList.map((waitting, index) => (
+          {/* {waittingList.map((waitting, index) => (
             <ReservationWaitList
               key={waitting.id}
               id={waitting.id}
@@ -76,7 +76,7 @@ const managePage = () => {
               status={waitting.status}
               onConfirm={handleConfirm}
             />
-          ))}
+          ))} */}
         </ul>
       </div>
     </div>

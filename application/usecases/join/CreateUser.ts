@@ -16,5 +16,6 @@ export const CreateUserUsecase = async (
     email: user.email,
     password: hashedPassword, // 암호화된 비밀번호 저장
     createdAt: new Date(),
+    deleteDate: null,
   });
 };

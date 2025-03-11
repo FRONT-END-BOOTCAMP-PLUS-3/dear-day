@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import styles from "./DateTimeSelectButton.module.scss";
 import SelectButton from "./SelectButton/SelectButton";
 import useReservations from "./_hooks/useReservations";
@@ -30,7 +30,10 @@ const DateTimeSelectButton: React.FC<DateTimeSelectButtonProps> = ({
   const { isSoldOut, setSoldOut } = useReservationStore(); // ✅ Zustand에서 솔드아웃 상태 가져오기
 
   const dates = generateDateList(startDate, endDate);
-  const times = selectedDate ? generateHourlyList(startTime, endTime) : [];
+  const times = useMemo(
+    () => (selectedDate ? generateHourlyList(startTime, endTime) : []),
+    [selectedDate, startTime, endTime]
+  );
 
   const convertToISODate = (formattedDate: string): string => {
     const today = new Date();
