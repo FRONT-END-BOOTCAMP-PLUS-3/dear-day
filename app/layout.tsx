@@ -17,7 +17,7 @@ export default function RootLayout({
 
   // 현재 경로와 일치하는 헤더 설정 찾기
   const headerInfo = headerConfig.find(({ pattern }) =>
-    pattern.test(pathname)
+    pattern.test(pathname as string)
   )?.config;
 
   let HeaderComponent;
