@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 export const nextConfig: NextConfig = {
   /* config options here */
-  webpack5: true,
   webpack: (config, options) => {
     config.cache = false;
     return config;
