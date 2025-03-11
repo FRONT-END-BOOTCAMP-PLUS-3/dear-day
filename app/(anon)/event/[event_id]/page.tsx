@@ -41,7 +41,7 @@ export default async function EventDetail({
 }: {
   params: { event_id: string };
 }) {
-  const eventId = await params.event_id; // `await`으로 비동기 처리
+  const eventId = params.event_id; // `await`으로 비동기 처리
   let eventData = await getEventData(eventId);
 
   if (!eventData) {
