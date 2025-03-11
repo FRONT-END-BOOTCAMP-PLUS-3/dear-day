@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./BottomSheet.module.scss";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 type SheetState = "closed" | "middle" | "open";
 
@@ -55,49 +55,55 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
     setStartHeight(currentHeight);
   };
 
-  const handleDragMove = (e: MouseEvent | TouchEvent) => {
-    if (!dragging || startY === null) return;
-    const clientY =
-      "touches" in e
-        ? (e as TouchEvent).touches[0].clientY
-        : (e as MouseEvent).clientY;
-    const delta = startY - clientY;
-    const newHeight = Math.max(40, startHeight + delta);
-    setDragHeight(newHeight);
-  };
+  const handleDragMove = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (!dragging || startY === null) return;
+      const clientY =
+        "touches" in e
+          ? (e as TouchEvent).touches[0].clientY
+          : (e as MouseEvent).clientY;
+      const delta = startY - clientY;
+      const newHeight = Math.max(40, startHeight + delta);
+      setDragHeight(newHeight);
+    },
+    [dragging, startY, startHeight]
+  );
 
-  const handleDragEnd = (e: MouseEvent | TouchEvent) => {
-    if (!dragging || startY === null) return;
-    const clientY =
-      "changedTouches" in e
-        ? (e as TouchEvent).changedTouches[0].clientY
-        : (e as MouseEvent).clientY;
-    const delta = startY - clientY;
-    const newHeight = Math.max(40, startHeight + delta);
+  const handleDragEnd = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (!dragging || startY === null) return;
+      const clientY =
+        "changedTouches" in e
+          ? (e as TouchEvent).changedTouches[0].clientY
+          : (e as MouseEvent).clientY;
+      const delta = startY - clientY;
+      const newHeight = Math.max(40, startHeight + delta);
 
-    const H = mounted ? window.innerHeight : 800;
-    const closedHeight = 40;
-    const middleHeight = H * 0.4;
-    const openHeight = H * 0.92;
+      const H = mounted ? window.innerHeight : 800;
+      const closedHeight = 40;
+      const middleHeight = H * 0.4;
+      const openHeight = H * 0.92;
 
-    const diffClosed = Math.abs(newHeight - closedHeight);
-    const diffMiddle = Math.abs(newHeight - middleHeight);
-    const diffOpen = Math.abs(newHeight - openHeight);
+      const diffClosed = Math.abs(newHeight - closedHeight);
+      const diffMiddle = Math.abs(newHeight - middleHeight);
+      const diffOpen = Math.abs(newHeight - openHeight);
 
-    let finalState: SheetState = "middle";
-    const minDiff = Math.min(diffClosed, diffMiddle, diffOpen);
-    if (minDiff === diffClosed) {
-      finalState = "closed";
-    } else if (minDiff === diffMiddle) {
-      finalState = "middle";
-    } else if (minDiff === diffOpen) {
-      finalState = "open";
-    }
-    setSheetState(finalState);
-    setDragging(false);
-    setStartY(null);
-    setDragHeight(null);
-  };
+      let finalState: SheetState = "middle";
+      const minDiff = Math.min(diffClosed, diffMiddle, diffOpen);
+      if (minDiff === diffClosed) {
+        finalState = "closed";
+      } else if (minDiff === diffMiddle) {
+        finalState = "middle";
+      } else if (minDiff === diffOpen) {
+        finalState = "open";
+      }
+      setSheetState(finalState);
+      setDragging(false);
+      setStartY(null);
+      setDragHeight(null);
+    },
+    [dragging, startY, startHeight, mounted]
+  );
 
   useEffect(() => {
     if (dragging) {
@@ -112,7 +118,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
       document.removeEventListener("touchmove", handleDragMove);
       document.removeEventListener("touchend", handleDragEnd);
     };
-  }, [dragging, startY, startHeight, mounted]);
+  }, [dragging, handleDragMove, handleDragEnd]);
 
   const handleDragHandleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
