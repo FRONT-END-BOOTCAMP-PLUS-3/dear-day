@@ -17,9 +17,8 @@ async function getEventData(
   try {
     const queryParams = new URLSearchParams({ eventId }).toString();
 
-    console.log("queryParams", queryParams);
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/event?${queryParams}`,
+      `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_PORT}/api/event?${queryParams}`,
       {
         method: "GET",
         credentials: "include", // 서버에서도 인증 필요
