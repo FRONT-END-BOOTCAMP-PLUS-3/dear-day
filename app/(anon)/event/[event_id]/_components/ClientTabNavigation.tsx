@@ -1,7 +1,7 @@
 "use client"; // 클라이언트 컴포넌트
 
 import FourTab from "@/components/Tab/FourTab/FourTab";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 interface TabNavigationProps {
   mode: string;
@@ -10,10 +10,13 @@ interface TabNavigationProps {
 export default function ClientTabNavigation({ mode }: TabNavigationProps) {
   const [selectedTab, setSelectedTab] = useState<string>("상세");
 
-  const tabOptions =
-    mode === "RESERVATION"
-      ? ["상세", "특전", "위치", "예약"]
-      : ["상세", "특전", "위치", "대기"];
+  const tabOptions = useMemo(
+    () =>
+      mode === "RESERVATION"
+        ? ["상세", "특전", "위치", "예약"]
+        : ["상세", "특전", "위치", "대기"],
+    [mode]
+  );
 
   // 탭 클릭 시 해당 div로 스크롤 이동하는 함수
   const handleTabChange = (tab: string) => {

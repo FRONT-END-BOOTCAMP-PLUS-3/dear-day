@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import TitleHeader from "./_components/TitleHeader/TitleHeader";
 import DetailSection from "./_components/DetailSection/DetailSection";
@@ -26,10 +26,13 @@ export default function EventDetail() {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const tabList =
-    eventData.mode == "RESERVATION"
-      ? ["상세", "특전", "위치", "예약"]
-      : ["상세", "특전", "위치", "대기"];
+  const tabList = useMemo(
+    () =>
+      eventData.mode == "RESERVATION"
+        ? ["상세", "특전", "위치", "예약"]
+        : ["상세", "특전", "위치", "대기"],
+    [eventData.mode]
+  );
 
   // activeTab 변경 시 해당 섹션으로 스크롤 이동
   useEffect(() => {
@@ -39,7 +42,7 @@ export default function EventDetail() {
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "end" });
     }
-  }, [activeTab]);
+  }, [activeTab, tabList]);
 
   useEffect(() => {
     if (!eventId) {
@@ -68,7 +71,7 @@ export default function EventDetail() {
     return () => {
       clearReservation();
     };
-  }, [eventId]);
+  }, [eventId, clearReservation, router]);
 
   return (
     <div ref={containerRef} className={styles.eventDetailPage}>
