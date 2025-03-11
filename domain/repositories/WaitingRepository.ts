@@ -1,4 +1,5 @@
 import { HeadCountDto } from "@/application/usecases/ticket/dto/HeadCountDto";
+import { WaitingCardViewDto } from "@/application/usecases/mypage/dto/WaitingCardViewDto";
 import { Waiting } from "@prisma/client";
 
 export interface WaitingRepository {
@@ -6,4 +7,5 @@ export interface WaitingRepository {
   createWaiting(waiting: Waiting): Promise<void>; // 대기 정보 전송하는 메서드
   findWaitingTicket(eventId: number, userId: string): Promise<HeadCountDto>;
   deleteWaiting(eventId: number, userId: string): Promise<void>; // 대기 취소하는 메서드
+  findAllWaitingByUserId(userId: string): Promise<WaitingCardViewDto[]>;
 }

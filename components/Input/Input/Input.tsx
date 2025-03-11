@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent } from "react";
-import styles from "./input.module.scss";
+import styles from "./Input.module.scss";
 
 interface InputProps {
   name: string;

@@ -1,63 +1,116 @@
 import SwipeCardContainer from "@/components/CardContainer/SwipeCardContainer";
-import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
-import SmallCardView from "@/components/EventView/SmallCardView/SmallCardView";
 import styles from "@/app/member/mypage/page.module.scss";
+import TicketCardView from "../TicketCardView/TicketCardView";
+import { useEffect, useState } from "react";
+import { ReservationCardViewDto } from "@/application/usecases/mypage/dto/ReservationCardViewDto";
+import { WaitingCardViewDto } from "@/application/usecases/mypage/dto/WaitingCardViewDto";
+import SmallCardView from "@/components/EventView/SmallCardView/SmallCardView";
+import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
+import { VisitedEventDto } from "@/application/usecases/mypage/dto/VisitedEventDto";
 
 const ReservationWaiting = () => {
-  const cardData = [
-    {
-      id: 1,
-      imgSrc: "/demo/main-poster.jpeg",
-      title: "스타 1",
-      starName: "카리나",
-      address: "서울 강남구",
-    },
-    {
-      id: 2,
-      imgSrc: "/demo/main-poster.jpeg",
-      title: "스타 2",
-      starName: "윈터",
-      address: "서울 강동구",
-    },
-  ];
+  const [reservationTicketData, setReservationTicketData] = useState<
+    ReservationCardViewDto[]
+  >([]);
+  const [waitingTicketData, setWaitingTicketData] = useState<
+    WaitingCardViewDto[]
+  >([]);
+  const [visitedEventData, setVisitedEventData] = useState<VisitedEventDto[]>(
+    []
+  );
+
+  const fetchReservationCardView = async () => {
+    try {
+      const response = await fetch("/api/mypage/reservation-cardview", {
+        method: "GET",
+      });
+
+      if (!response.ok)
+        throw new Error("Failed to fetch reservation card view");
+
+      const data = await response.json();
+      setReservationTicketData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchWaitingCardView = async () => {
+    try {
+      const response = await fetch("/api/mypage/waiting-cardview", {
+        method: "GET",
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch waiting card view");
+
+      const data = await response.json();
+      setWaitingTicketData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchVisitedEvent = async () => {
+    try {
+      const response = await fetch("/api/mypage/visited-event", {
+        method: "GET",
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch visited event");
+
+      const data = await response.json();
+      setVisitedEventData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReservationCardView();
+    fetchWaitingCardView();
+    fetchVisitedEvent();
+  }, []);
 
   return (
     <div className={styles.tabContent}>
       <p className={styles.title}>진행중인 예약</p>
       <SwipeCardContainer>
-        {cardData.map((card) => (
-          <SmallCardView
-            key={card.id}
-            id={card.id}
-            imgSrc={card.imgSrc}
+        {reservationTicketData.map((card) => (
+          <TicketCardView
+            mode={"RESERVATION"}
+            key={card.eventId}
+            eventId={card.eventId}
+            mainImage={card.mainImage}
             title={card.title}
-            starName={card.starName}
+            stageName={card.stageName}
             address={card.address}
+            reservationConfirmedAt={card.reservationConfirmedAt}
           />
         ))}
       </SwipeCardContainer>
       <p className={styles.title}>진행중인 대기</p>
       <SwipeCardContainer>
-        {cardData.map((card) => (
-          <SmallCardView
-            key={card.id}
-            id={card.id}
-            imgSrc={card.imgSrc}
+        {waitingTicketData.map((card) => (
+          <TicketCardView
+            mode={"WAITING"}
+            key={card.eventId}
+            eventId={card.eventId}
+            mainImage={card.mainImage}
             title={card.title}
-            starName={card.starName}
+            stageName={card.stageName}
             address={card.address}
+            waitingAhead={card.waitingAhead}
+            waitingNumber={card.waitingNumber}
           />
         ))}
       </SwipeCardContainer>
       <p className={styles.title}>다녀온 생카</p>
       <ScrollCardContainer variant="grid">
-        {cardData.map((card) => (
+        {visitedEventData.map((card) => (
           <SmallCardView
-            key={card.id}
-            id={card.id}
-            imgSrc={card.imgSrc}
+            key={card.eventId}
+            id={card.eventId}
+            imgSrc={card.mainImage}
             title={card.title}
-            starName={card.starName}
+            starName={card.stageName}
             address={card.address}
           />
         ))}

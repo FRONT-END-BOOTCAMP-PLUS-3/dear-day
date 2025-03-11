@@ -3,6 +3,8 @@ import { PgReservationRepository } from "@/infrastructure/repositories/PgReserva
 import { NextRequest, NextResponse } from "next/server";
 import { getUserIdFromToken } from "@/utils/auth";
 import { MakeReservation } from "@/application/usecases/event/MakeReservation";
+import { PgReservationSettingRepository } from "@/infrastructure/repositories/PgReservationSettingRepository";
+import { ReservationLimitExceededError } from "@/application/usecases/event/MakeReservation"; // 에러 임포트 추가
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,7 +35,23 @@ export async function POST(req: NextRequest) {
     };
 
     const reservationRepository = new PgReservationRepository();
-    await MakeReservation(reservationData, reservationRepository);
+    const reservationSettingRepository = new PgReservationSettingRepository();
+
+    try {
+      await MakeReservation(
+        reservationData,
+        reservationRepository,
+        reservationSettingRepository
+      );
+    } catch (error) {
+      if (error instanceof ReservationLimitExceededError) {
+        return NextResponse.json(
+          { error: "예약 가능 인원을 초과했습니다." },
+          { status: 409 }
+        );
+      }
+      throw error; // 다른 에러는 그대로 throw하여 아래에서 처리
+    }
 
     return NextResponse.json(
       { message: "예약 완료", reservationData },

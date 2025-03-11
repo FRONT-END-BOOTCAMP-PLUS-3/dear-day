@@ -28,9 +28,10 @@
   background: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--color-white);
   font-size: var(--font-size-sm);
   text-align: center;
 }

@@ -4,6 +4,7 @@ import styles from "./HeartButton.module.scss";
 import React, { useEffect, useState } from "react";
 import Icon from "@/components/Icon/Icon";
 import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 interface HeartButtonProps {
   eventId: number;
@@ -12,7 +13,7 @@ interface HeartButtonProps {
 const HeartButton = ({ eventId }: HeartButtonProps) => {
   const { user } = useAuthStore();
   const [liked, setLiked] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const checkLikedStatus = async () => {
@@ -21,6 +22,9 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
           method: "GET",
           credentials: "include",
         });
+        if (response.status === 400) {
+          return false;
+        }
         if (!response.ok) {
           throw new Error("좋아요 상태를 불러오는데 실패했습니다.");
         }
@@ -37,11 +41,6 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // if (!user) {
-    //   router.push("/login");
-    //   return;
-    // }
-
     const previousLiked = liked;
     setLiked(!previousLiked);
 
@@ -53,6 +52,14 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
           body: JSON.stringify({ eventId }),
           credentials: "include",
         });
+        // 만약 서버에서 로그인되지 않은 경우 401을 반환하도록 했다면:
+        if (response.status === 401) {
+          return router.push(`/login`);
+        }
+        // 또는 리디렉션 상태 처리 (307)도 고려
+        if (response.status === 307) {
+          return router.push(`/login`);
+        }
         if (!response.ok) {
           throw new Error("좋아요 추가 실패");
         }
@@ -63,6 +70,9 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
           body: JSON.stringify({ eventId }),
           credentials: "include",
         });
+        if (response.status === 401 || response.status === 307) {
+          return router.push(`/login`);
+        }
         if (!response.ok) {
           throw new Error("좋아요 삭제 실패");
         }

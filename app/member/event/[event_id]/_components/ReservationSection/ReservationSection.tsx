@@ -103,7 +103,13 @@ export default function ReservationSection({ eventData }: Props) {
       });
 
       if (!response.ok) {
-        throw new Error("예약 요청 실패!");
+        if (response.status === 409) {
+          alert("예약 가능 인원을 초과했습니다.");
+          window.location.reload(); // 페이지 새로고침
+        } else {
+          throw new Error("예약 요청 실패!");
+        }
+        return;
       }
 
       toggleModal();

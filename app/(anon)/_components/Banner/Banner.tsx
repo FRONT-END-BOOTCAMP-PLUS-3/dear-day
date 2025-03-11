@@ -8,9 +8,10 @@ import styles from "./Banner.module.scss";
 const Banner: React.FC = () => {
   // 임시 배너 이미지
   const banners = [
-    "/img/header-logo.png",
-    "/img/header-logo.png",
-    "/img/header-logo.png",
+    "/img/banner/1.png",
+    "/img/banner/2.png",
+    "/img/banner/3.png",
+    "/img/banner/4.png",
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
 
