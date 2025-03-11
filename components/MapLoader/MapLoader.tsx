@@ -93,8 +93,8 @@ export default function MapLoader({ markers }: MapLoaderProps) {
       new window.naver.maps.Polyline({
         map: map,
         path: paths,
-        strokeColor: "black",
-        strokeStyle: "solid",
+        strokeColor: "var(--color-gray-1)",
+        strokeStyle: "shortdash",
         strokeLineCap: "round",
         strokeLineJoin: "round",
         strokeWeight: 3,
