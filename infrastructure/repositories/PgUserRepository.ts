@@ -66,4 +66,18 @@ export class PgUserRepository implements UserRepository {
       await prisma.$disconnect();
     }
   }
+
+  async updateDropUser(userId: string): Promise<void> {
+    try {
+      await prisma.user.update({
+        where: { id: userId },
+        data: {
+          delete_date: new Date(),
+        },
+      });
+    } catch (error) {
+      console.error("유저 탈퇴 업데이트 실패:", error);
+      throw new Error("유저 탈퇴 업데이트 중 오류 발생");
+    }
+  }
 }
