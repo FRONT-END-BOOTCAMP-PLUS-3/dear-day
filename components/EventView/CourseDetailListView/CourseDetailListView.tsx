@@ -8,11 +8,12 @@ import styles from "./CourseDetailListView.module.scss";
 
 interface CourseDetailListViewProps {
   id: number;
+  eventId: number;
   index: number;
   title: string;
   eventImage: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
   starName: string;
   isEditMode: boolean;
   onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void;
@@ -20,8 +21,22 @@ interface CourseDetailListViewProps {
   onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
+const safeDateToISOString = (date: Date | string): string => {
+  const d = date instanceof Date ? date : new Date(date);
+  return !isNaN(d.getTime()) ? d.toISOString() : "";
+};
+
+const formatShortDate = (date: Date | string): string => {
+  const d = date instanceof Date ? date : new Date(date);
+  if (isNaN(d.getTime())) return "Invalid Date";
+  const year = d.getFullYear().toString();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+};
+
 const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
-  id,
+  eventId,
   index,
   title,
   eventImage,
@@ -33,17 +48,13 @@ const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
   onDragOver,
   onDrop,
 }) => {
-  const formatShortDate = (date: Date): string => {
-    const year = date.getFullYear().toString();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}.${month}.${day}`;
-  };
-
   return (
     <div className={styles.courseDetailContainer}>
       <div className={styles.courseDetailIndex}>{index}</div>
-      <Link href={`/course/${id}`} className={styles.courseDetailView}>
+      <Link
+        href={`/member/event/${eventId}`}
+        className={styles.courseDetailView}
+      >
         <>
           <Image
             className={styles.courseDetailImg}
@@ -59,11 +70,11 @@ const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
                 <h3 className={styles.courseDetailTitle}>{title}</h3>
               </div>
               <p className={styles.courseDetailTime}>
-                <time dateTime={startDate.toISOString()}>
+                <time dateTime={safeDateToISOString(startDate)}>
                   {formatShortDate(startDate)}
                 </time>
                 &nbsp;~&nbsp;
-                <time dateTime={endDate.toISOString()}>
+                <time dateTime={safeDateToISOString(endDate)}>
                   {formatShortDate(endDate)}
                 </time>
               </p>

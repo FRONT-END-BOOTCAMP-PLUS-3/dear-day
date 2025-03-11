@@ -6,9 +6,15 @@
   max-width: 164px;
 }
 
+.pastLargeCardView {
+  @extend .LargeCardView;
+  filter: grayscale(100%) brightness(0.8) contrast(1.2);
+  cursor: not-allowed;
+}
+
 .LargeCardImg {
   width: 100%;
-  min-height: 200px;
+  max-height: 200px;
 }
 
 .LargeCardContent {
