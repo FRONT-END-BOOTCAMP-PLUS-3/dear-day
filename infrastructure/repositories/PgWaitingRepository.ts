@@ -1,10 +1,52 @@
 import { PrismaClient, Waiting } from "@prisma/client";
 import { WaitingRepository } from "@/domain/repositories/WaitingRepository";
 import { HeadCountDto } from "@/application/usecases/ticket/dto/HeadCountDto";
+import { WaitingCardViewDto } from "@/application/usecases/mypage/dto/WaitingCardViewDto";
 
 const prisma = new PrismaClient();
 
 export class PgWaitingRepository implements WaitingRepository {
+  async findAllWaitingByUserId(userId: string): Promise<WaitingCardViewDto[]> {
+    const waitings = await prisma.waiting.findMany({
+      where: { userId },
+      include: {
+        event: {
+          select: {
+            id: true,
+            title: true,
+            address: true,
+            mainImage: true,
+            star: { select: { stageName: true } },
+          },
+        },
+      },
+    });
+
+    return await Promise.all(
+      waitings.map(async (waiting) => {
+        const waitingAhead = await prisma.waiting.count({
+          where: {
+            eventId: waiting.eventId,
+            status: "PENDING",
+            waitingNumber: { lt: waiting.waitingNumber },
+          },
+        });
+
+        return {
+          mode: "WAITING",
+          eventId: waiting.eventId,
+          userId: waiting.userId,
+          mainImage: waiting.event.mainImage,
+          stageName: waiting.event.star.stageName,
+          title: waiting.event.title,
+          address: waiting.event.address,
+          waitingNumber: waiting.waitingNumber,
+          waitingAhead,
+        };
+      })
+    );
+  }
+
   async deleteWaiting(eventId: number, userId: string): Promise<void> {
     const deleted = await prisma.waiting.deleteMany({
       where: { eventId, userId },

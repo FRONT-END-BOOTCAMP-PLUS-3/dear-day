@@ -1,10 +1,41 @@
 import { PrismaClient, Reservation } from "@prisma/client";
 import { ReservationRepository } from "@/domain/repositories/ReservationRepository";
 import { ReservationConfirmedAtDto } from "@/application/usecases/ticket/dto/ReservationConfirmedAtDto";
+import { ReservationCardViewDto } from "@/application/usecases/mypage/dto/ReservationCardViewDto";
 
 const prisma = new PrismaClient();
 
 export class PgReservationRepository implements ReservationRepository {
+  async findAllReservationByUserId(
+    userId: string
+  ): Promise<ReservationCardViewDto[]> {
+    const reservations = await prisma.reservation.findMany({
+      where: { userId },
+      include: {
+        event: {
+          select: {
+            id: true,
+            title: true,
+            address: true,
+            mainImage: true,
+            star: { select: { stageName: true } },
+          },
+        },
+      },
+    });
+
+    return reservations.map((reservation) => ({
+      mode: "RESERVATION",
+      eventId: reservation.eventId,
+      userId: reservation.userId,
+      mainImage: reservation.event.mainImage,
+      title: reservation.event.title,
+      stageName: reservation.event.star.stageName,
+      address: reservation.event.address,
+      reservationConfirmedAt: reservation.reservationConfirmedAt.toISOString(),
+    }));
+  }
+
   async deleteReservation(eventId: number, userId: string): Promise<void> {
     const deleted = await prisma.reservation.deleteMany({
       where: { eventId, userId },

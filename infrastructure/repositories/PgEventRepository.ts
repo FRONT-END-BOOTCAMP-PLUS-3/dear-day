@@ -1,6 +1,7 @@
 import { PrismaClient, Event } from "@prisma/client";
 import { EventRepository } from "@/domain/repositories/EventRepository";
 import { CreateEventRequestDto } from "@/application/usecases/event/dto/CreateEventRequestDto";
+import { VisitedEventDto } from "@/application/usecases/mypage/dto/VisitedEventDto";
 
 const prisma = new PrismaClient();
 
@@ -117,6 +118,74 @@ export class PgEventRepository implements EventRepository {
     } catch (error) {
       console.error("사용자의 이벤트 조회 중 오류 발생:", error);
       throw new Error("사용자의 이벤트를 불러오는 중 오류가 발생했습니다.");
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+  async findVisitedEventsByUserId(userId: string): Promise<VisitedEventDto[]> {
+    try {
+      const waitingEvents = await prisma.waiting.findMany({
+        where: { userId, status: "ENTERED" },
+        select: {
+          eventId: true,
+          updatedAt: true,
+          event: {
+            select: {
+              id: true,
+              title: true,
+              address: true,
+              mainImage: true,
+              star: { select: { stageName: true } },
+            },
+          },
+        },
+      });
+
+      const reservationEvents = await prisma.reservation.findMany({
+        where: { userId, status: "ENTERED" },
+        select: {
+          eventId: true,
+          reservationConfirmedAt: true,
+          event: {
+            select: {
+              id: true,
+              title: true,
+              address: true,
+              mainImage: true,
+              star: { select: { stageName: true } },
+            },
+          },
+        },
+      });
+
+      const allVisitedEvents = [
+        ...waitingEvents.map((waiting) => ({
+          eventId: waiting.eventId,
+          mainImage: waiting.event.mainImage,
+          title: waiting.event.title,
+          stageName: waiting.event.star.stageName,
+          address: waiting.event.address,
+          date: waiting.updatedAt,
+        })),
+        ...reservationEvents.map((reservation) => ({
+          eventId: reservation.eventId,
+          mainImage: reservation.event.mainImage,
+          title: reservation.event.title,
+          stageName: reservation.event.star.stageName,
+          address: reservation.event.address,
+          date: reservation.reservationConfirmedAt,
+        })),
+      ];
+
+      // 최신 날짜순 정렬
+      allVisitedEvents.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+
+      return allVisitedEvents;
+    } catch (error) {
+      console.error("사용자의 방문한 이벤트 조회 중 오류 발생:", error);
+      throw new Error("방문한 이벤트를 불러오는 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect();
     }

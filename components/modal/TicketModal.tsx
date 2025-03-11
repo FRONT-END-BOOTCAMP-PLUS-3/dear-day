@@ -7,6 +7,7 @@ import Notice from "./_components/Notice";
 import Image from "next/image";
 import useToggle from "@/hooks/useToggle";
 import Modal from "./Modal";
+import { createPortal } from "react-dom";
 
 type TicketModalProps = {
   eventId: number;
@@ -34,7 +35,10 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
   const [loading, setLoading] = useState(true);
   const [isReservationModalOpen, toggleReservationModal] = useToggle(false);
   const [isWaitingModalOpen, toggleWaitingModal] = useToggle(false);
-
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   useEffect(() => {
     if (!isOpen || !eventId) return;
 
@@ -81,7 +85,7 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
   if (loading) return null;
   if (!data) return <p>티켓 정보를 찾을 수 없습니다.</p>;
 
-  return (
+  const modalContent = (
     <div className={styles.modalContainer}>
       <div className={styles.ticketModal}>
         <div className={styles.modalContent}>
@@ -138,7 +142,10 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
               </div>
               <div className={styles.ticketNotice}>
                 {data.breaktime !== undefined && (
-                  <Notice breaktime={data.breaktime} />
+                  <Notice
+                    breaktime={data.breaktime}
+                    startTime={`${String(new Date(data.reservationConfirmedAt || "").getHours()).padStart(2, "0")}:${String(new Date(data.reservationConfirmedAt || "").getMinutes()).padStart(2, "0")}`}
+                  />
                 )}
               </div>
               <div className={styles.ticketFooter}>
@@ -224,6 +231,8 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
       />
     </div>
   );
+  // 모달을 `document.body`에 추가하여 부모 요소의 영향에서 벗어나게 함
+  return mounted ? createPortal(modalContent, document.body) : null;
 };
 
 export default TicketModal;
