@@ -82,7 +82,6 @@ export default function CoursePage() {
       if (!response.ok) {
         throw new Error("코스 순서 업데이트 실패");
       }
-      console.log("코스 순서 업데이트 성공");
     } catch (error) {
       console.error("코스 순서 업데이트 에러:", error);
     }
