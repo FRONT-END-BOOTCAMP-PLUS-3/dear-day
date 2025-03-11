@@ -7,6 +7,7 @@ import { WaitingCardViewDto } from "@/application/usecases/mypage/dto/WaitingCar
 import SmallCardView from "@/components/EventView/SmallCardView/SmallCardView";
 import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
 import { VisitedEventDto } from "@/application/usecases/mypage/dto/VisitedEventDto";
+import EmptyText from "../EmptyText/EmptyText";
 
 const ReservationWaiting = () => {
   const [reservationTicketData, setReservationTicketData] = useState<
@@ -72,49 +73,61 @@ const ReservationWaiting = () => {
   return (
     <div className={styles.tabContent}>
       <p className={styles.title}>진행중인 예약</p>
-      <SwipeCardContainer>
-        {reservationTicketData.map((card) => (
-          <TicketCardView
-            mode={"RESERVATION"}
-            key={card.eventId}
-            eventId={card.eventId}
-            mainImage={card.mainImage}
-            title={card.title}
-            stageName={card.stageName}
-            address={card.address}
-            reservationConfirmedAt={card.reservationConfirmedAt}
-          />
-        ))}
-      </SwipeCardContainer>
+      {reservationTicketData.length > 0 ? (
+        <SwipeCardContainer>
+          {reservationTicketData.map((card) => (
+            <TicketCardView
+              mode={"RESERVATION"}
+              key={card.eventId}
+              eventId={card.eventId}
+              mainImage={card.mainImage}
+              title={card.title}
+              stageName={card.stageName}
+              address={card.address}
+              reservationConfirmedAt={card.reservationConfirmedAt}
+            />
+          ))}
+        </SwipeCardContainer>
+      ) : (
+        <EmptyText container="Reservation" />
+      )}
       <p className={styles.title}>진행중인 대기</p>
-      <SwipeCardContainer>
-        {waitingTicketData.map((card) => (
-          <TicketCardView
-            mode={"WAITING"}
-            key={card.eventId}
-            eventId={card.eventId}
-            mainImage={card.mainImage}
-            title={card.title}
-            stageName={card.stageName}
-            address={card.address}
-            waitingAhead={card.waitingAhead}
-            waitingNumber={card.waitingNumber}
-          />
-        ))}
-      </SwipeCardContainer>
+      {waitingTicketData.length > 0 ? (
+        <SwipeCardContainer>
+          {waitingTicketData.map((card) => (
+            <TicketCardView
+              mode={"WAITING"}
+              key={card.eventId}
+              eventId={card.eventId}
+              mainImage={card.mainImage}
+              title={card.title}
+              stageName={card.stageName}
+              address={card.address}
+              waitingAhead={card.waitingAhead}
+              waitingNumber={card.waitingNumber}
+            />
+          ))}
+        </SwipeCardContainer>
+      ) : (
+        <EmptyText container="Waiting" />
+      )}
       <p className={styles.title}>다녀온 생카</p>
-      <ScrollCardContainer variant="grid">
-        {visitedEventData.map((card) => (
-          <SmallCardView
-            key={card.eventId}
-            id={card.eventId}
-            imgSrc={card.mainImage}
-            title={card.title}
-            starName={card.stageName}
-            address={card.address}
-          />
-        ))}
-      </ScrollCardContainer>
+      {visitedEventData.length > 0 ? (
+        <ScrollCardContainer variant="grid">
+          {visitedEventData.map((card) => (
+            <SmallCardView
+              key={card.eventId}
+              id={card.eventId}
+              imgSrc={card.mainImage}
+              title={card.title}
+              starName={card.stageName}
+              address={card.address}
+            />
+          ))}
+        </ScrollCardContainer>
+      ) : (
+        <EmptyText container="VisitedEvent" />
+      )}
     </div>
   );
 };
