@@ -83,6 +83,7 @@ const DraggableEventList = ({
         >
           <CourseDetailListView
             id={item.id}
+            eventId={item.eventId}
             starName={item.starName}
             title={item.title}
             eventImage={item.imgSrc}

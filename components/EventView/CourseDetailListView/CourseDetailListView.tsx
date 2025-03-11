@@ -8,6 +8,7 @@ import styles from "./CourseDetailListView.module.scss";
 
 interface CourseDetailListViewProps {
   id: number;
+  eventId: number;
   index: number;
   title: string;
   eventImage: string;
@@ -35,7 +36,7 @@ const formatShortDate = (date: Date | string): string => {
 };
 
 const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
-  id,
+  eventId,
   index,
   title,
   eventImage,
@@ -50,7 +51,10 @@ const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
   return (
     <div className={styles.courseDetailContainer}>
       <div className={styles.courseDetailIndex}>{index}</div>
-      <Link href={`/course/${id}`} className={styles.courseDetailView}>
+      <Link
+        href={`/member/event/${eventId}`}
+        className={styles.courseDetailView}
+      >
         <>
           <Image
             className={styles.courseDetailImg}
