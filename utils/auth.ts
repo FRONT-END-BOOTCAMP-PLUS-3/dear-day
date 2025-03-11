@@ -27,6 +27,7 @@ export async function getUserIdFromToken(): Promise<string | null> {
 
       return decoded.id as string; // 정상적인 userId 반환
     } catch (error) {
+      console.error(error);
       return null; // 토큰 검증 실패
     }
   } catch (error) {

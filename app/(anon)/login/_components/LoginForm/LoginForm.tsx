@@ -23,6 +23,7 @@ const LoginForm = () => {
       alert("로그인 성공!");
       router.push("/member");
     } catch (error) {
+      console.error(error);
       alert("로그인 실패"); // ✅ 사용자에게 에러 메시지 표시
     }
   }

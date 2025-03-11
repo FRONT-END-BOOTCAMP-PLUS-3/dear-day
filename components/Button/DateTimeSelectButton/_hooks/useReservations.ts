@@ -38,6 +38,7 @@ const useReservations = (
         const transformedData = transformReservations(data);
         setReservations(transformedData);
       } catch (err) {
+        console.error(err);
         setReservations([]);
       }
     };
