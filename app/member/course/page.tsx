@@ -12,12 +12,14 @@ import useToggle from "@/hooks/useToggle";
 import { useCourseStore } from "@/store/courseStore";
 import { InputFormData } from "@/components/modal/Modal.type";
 import { ShowCourseListDto } from "@/application/usecases/course/dto/ShowCourseListDto";
+import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
 
 export default function CoursePage() {
   const router = useRouter();
   const [isModalOpen, toggleModal] = useToggle(false);
   const { setName, setDate } = useCourseStore();
   const [courseList, setCourseList] = useState<ShowCourseListDto[]>([]);
+  const [pastCourseList, setPastCourseList] = useState<ShowCourseListDto[]>([]);
 
   useEffect(() => {
     const fetchCourseList = async () => {
@@ -27,13 +29,20 @@ export default function CoursePage() {
           console.error("코스 목록 불러오기 실패");
           return;
         }
-        const data = await response.json();
-        setCourseList(data);
+        const data: ShowCourseListDto[] = await response.json();
+
+        const currentCourse = data.filter(
+          (course) => new Date(course.date) > new Date()
+        );
+        const pastCourse = data.filter(
+          (course) => new Date(course.date) < new Date()
+        );
+        setCourseList(currentCourse);
+        setPastCourseList(pastCourse);
       } catch (error) {
         console.error("코스 목록 불러오기 실패:", error);
       }
     };
-
     fetchCourseList();
   }, []);
 
@@ -84,11 +93,29 @@ export default function CoursePage() {
         cancelText="취소"
       />
       {courseList.length > 0 ? (
-        courseList.map((course) => (
-          <div key={course.id} onClick={() => handleCourseClick(course)}>
-            <CourseListView {...course} />
-          </div>
-        ))
+        <>
+          <p>다가오는 코스</p>
+          <ScrollCardContainer variant="list">
+            {courseList.map((course) => (
+              <div key={course.id} onClick={() => handleCourseClick(course)}>
+                <CourseListView {...course} isPast={false} />
+              </div>
+            ))}
+          </ScrollCardContainer>
+          <p>종료된 코스</p>
+          <ScrollCardContainer variant="list">
+            {pastCourseList.length > 0
+              ? pastCourseList.map((course) => (
+                  <div
+                    key={course.id}
+                    onClick={() => handleCourseClick(course)}
+                  >
+                    <CourseListView {...course} isPast={true} />
+                  </div>
+                ))
+              : null}
+          </ScrollCardContainer>
+        </>
       ) : (
         <div className={styles.emptyNoticeContainer}>
           <p className={styles.text}>등록된 코스가 없습니다.</p>
