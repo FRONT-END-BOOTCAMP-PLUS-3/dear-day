@@ -10,7 +10,7 @@ export const LoginUsecase = async (
 ): Promise<{ user: User | null; token?: string }> => {
   const userInfo = await userRepository.execute(loginInfo.email);
 
-  if (userInfo?.deleteDate) {
+  if (userInfo?.deleteDate !== null) {
     return { user: null };
   }
 
