@@ -1,0 +1,16 @@
+.homeContainer {
+  @include pageContainer;
+}
+
+.pageContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 60px;
+}
+.item {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xl);
+}
