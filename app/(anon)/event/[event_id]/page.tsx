@@ -39,10 +39,12 @@ async function getEventData(
 export default async function EventDetail({
   params,
 }: {
-  params: { event_id: string };
+  params: Promise<{
+    event_id: string;
+  }>;
 }) {
-  const eventId = params.event_id; // `await`으로 비동기 처리
-  let eventData = await getEventData(eventId);
+  const { event_id } = await params;
+  let eventData = await getEventData(event_id);
 
   if (!eventData) {
     eventData = demoEventData;
