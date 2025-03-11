@@ -44,6 +44,7 @@
 
 .ticketHeader {
   position: relative;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -68,15 +69,14 @@
 }
 
 .imageContainer {
-  width: 50%;
-  height: auto;
+  height: 160px;
   border-radius: 8px;
   overflow: hidden;
 }
 .thumbnail {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .text {
   text-align: left;
@@ -131,6 +131,7 @@
   justify-content: center;
   align-items: center;
   font-size: 14px;
+  margin-top: 20px;
   flex: 40%;
 }
 .waitingFooter {
@@ -139,7 +140,8 @@
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  flex: 30%;
+  margin-top: 60px;
+  flex: 25%;
 }
 .cancel{
   position: absolute;
@@ -155,15 +157,15 @@
   background: var(--color-gray-bg);
   color: var(--color-black);
   padding: 0 10px;
+  display: flex;
+  justify-content: center;
   border-radius: 8px;
   text-align: left;
-  flex: 20%;
   ul {
     background-color: var(--color-blue-bg);
     padding: var(--padding-sm);
     border-radius: 10px;
     font-size: var(--font-size-xs);
-    margin-top: 5%;
 
     list-style-type: disc !important;
     list-style-position: outside;

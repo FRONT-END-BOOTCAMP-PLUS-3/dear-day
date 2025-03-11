@@ -190,13 +190,13 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
                   </span>{" "}
                   팀
                 </p>
-                <h2>
+                <h1>
                   대기 번호{" "}
                   <span className={styles.waitingNumber}>
                     <strong>{data.waitingNumber}</strong>
                   </span>{" "}
                   번
-                </h2>
+                </h1>
               </div>
             </>
           )}
