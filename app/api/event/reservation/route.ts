@@ -22,7 +22,10 @@ export async function POST(req: NextRequest) {
       );
       return NextResponse.json(reservationList);
     } catch (error) {
-      if (error.message === "이벤트를 찾을 수 없습니다.") {
+      if (
+        error instanceof Error &&
+        error.message === "이벤트를 찾을 수 없습니다."
+      ) {
         return NextResponse.json(
           { error: "예약 목록을 찾을 수 없습니다." },
           { status: 404 }

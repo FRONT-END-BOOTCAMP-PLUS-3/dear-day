@@ -19,7 +19,10 @@ export async function POST(req: NextRequest) {
       const data = await ShowWaitingCount(eventId, waitingRepository);
       return NextResponse.json(data);
     } catch (error) {
-      if (error.message === "대기 목록을 찾을 수 없습니다.") {
+      if (
+        error instanceof Error &&
+        error.message === "대기 목록을 찾을 수 없습니다."
+      ) {
         return NextResponse.json(
           { error: "대기 목록을 찾을 수 없습니다." },
           { status: 404 }
