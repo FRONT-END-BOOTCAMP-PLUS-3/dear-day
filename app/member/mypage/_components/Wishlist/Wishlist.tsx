@@ -73,7 +73,7 @@ const Wishlist = () => {
           ))}
         </ScrollCardContainer>
       ) : (
-        <EmptyText />
+        <EmptyText container="LikedEvent" />
       )}
 
       <SearchModal
