@@ -5,11 +5,13 @@ import styles from "./page.module.scss";
 import { useEffect, useState } from "react";
 import { searchEventListByStarDto } from "@/application/usecases/event/dto/SearchEventListByStarDto";
 import { useParams } from "next/navigation";
+import { useHeaderStore } from "@/store/HeaderStore"; // Zustand import
 
 const MemberSearchResultPage = () => {
   const [eventList, setEventList] = useState<searchEventListByStarDto[]>([]);
   const params = useParams();
   const starId = params.star_id;
+  const setTitle = useHeaderStore((state) => state.setTitle); // Zustand의 setTitle 가져오기
 
   useEffect(() => {
     if (!starId) {
@@ -34,13 +36,16 @@ const MemberSearchResultPage = () => {
         const { data } = await response.json();
         console.log(data);
         setEventList(data);
+        if (data.length > 0) {
+          setTitle(data[0].starName); // starName 설정
+        }
       } catch (error) {
         console.log("목록 조회 실패: ", error);
         setEventList([]);
       }
     };
     fetchSearchEvent();
-  }, [starId]);
+  }, [starId, setTitle]);
 
   return (
     <div className={styles.homeContainer}>
