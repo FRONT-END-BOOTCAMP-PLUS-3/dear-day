@@ -1,16 +1,14 @@
 "use client";
 
-import useReservationStore from "@/store/reservationStore"; // ✅ Zustand 스토어 가져오기
 import styles from "./Notice.module.scss";
 
 interface Props {
+  startTime: string; // ✅ startTime을 props로 받음 ("HH:mm" 형식)
   breaktime: number; // ✅ breaktime은 0, 10, 15, 20 중 하나
 }
 
-export default function Notice({ breaktime }: Props) {
-  const { time } = useReservationStore(); // ✅ Zustand에서 상태 가져오기
-
-  // time이 존재할 경우 HH:mm 형식을 파싱하여 계산
+export default function Notice({ startTime, breaktime }: Props) {
+  // startTime이 존재할 경우 HH:mm 형식을 파싱하여 계산
   const calculateEndTime = (startTime: string, breaktime: number): string => {
     const [hours, minutes] = startTime.split(":").map(Number); // "HH:mm" → [HH, mm]
     const totalMinutes = hours * 60 + minutes + (60 - breaktime); // 현재 시간 + 이용 시간
@@ -20,17 +18,17 @@ export default function Notice({ breaktime }: Props) {
     return `${String(endHours).padStart(2, "0")}:${String(endMinutes).padStart(2, "0")}`; // "HH:mm" 형식으로 반환
   };
 
-  const endTime = time ? calculateEndTime(time, breaktime) : null; // ✅ 종료 시간 계산
+  const endTime = startTime ? calculateEndTime(startTime, breaktime) : null; // ✅ 종료 시간 계산
 
   return (
     <div className={styles.noticeContainer}>
       <ul>
-        {time && endTime && (
+        {startTime && endTime && (
           <>
             <li>
               해당 시간대{" "}
               <span className={styles.bold}>
-                ({time}~{endTime})
+                ({startTime}~{endTime})
               </span>{" "}
               내에 자유롭게 입장할 수 있습니다.
             </li>

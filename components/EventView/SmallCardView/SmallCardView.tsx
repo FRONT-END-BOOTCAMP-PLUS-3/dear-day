@@ -37,7 +37,7 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
   };
 
   const currentPath = usePathname();
-  const pathSegments = currentPath.split("/").filter(Boolean);
+  const pathSegments = (currentPath as string).split("/").filter(Boolean);
   // 기본적으로 현재 경로 유지
   let newPath = `/${pathSegments.join("/")}/${id}`;
   console.log("newPath", pathSegments.indexOf("mypage"));

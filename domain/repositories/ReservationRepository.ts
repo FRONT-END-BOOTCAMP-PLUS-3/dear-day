@@ -1,3 +1,4 @@
+import { ReservationCardViewDto } from "@/application/usecases/mypage/dto/ReservationCardViewDto";
 import { ReservationConfirmedAtDto } from "@/application/usecases/ticket/dto/ReservationConfirmedAtDto";
 import { Reservation } from "@prisma/client";
 
@@ -9,4 +10,5 @@ export interface ReservationRepository {
     userId: string
   ): Promise<ReservationConfirmedAtDto>;
   deleteReservation(eventId: number, userId: string): Promise<void>; // 예약 취소하는 메서드
+  findAllReservationByUserId(userId: string): Promise<ReservationCardViewDto[]>;
 }

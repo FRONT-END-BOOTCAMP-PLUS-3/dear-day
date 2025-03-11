@@ -1,4 +1,5 @@
 import { CreateEventRequestDto } from "@/application/usecases/event/dto/CreateEventRequestDto";
+import { VisitedEventDto } from "@/application/usecases/mypage/dto/VisitedEventDto";
 import { Event } from "@prisma/client";
 
 export interface EventRepository {
@@ -8,4 +9,5 @@ export interface EventRepository {
   findAll(): Promise<Event[]>;
   findAllEventListByStarId(starId: number): Promise<Event[]>;
   findAllEventsByUserId(userId: string): Promise<Event[]>; // 사용자의 이벤트 조회
+  findVisitedEventsByUserId(userId: string): Promise<VisitedEventDto[]>;
 }
