@@ -62,11 +62,7 @@ const DropNotice: React.FC<DropNoticeProps> = ({
           </p>
         </div>
         <div className={styles.checkBox}>
-          <Checkbox
-            label="유의사항을 전부 확인했어요."
-            checked={checked}
-            onChange={setChecked}
-          />
+          <Checkbox checked={checked} onChange={setChecked} />
         </div>
         <div className={styles.actions}>
           <button

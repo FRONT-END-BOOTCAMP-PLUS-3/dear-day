@@ -3,12 +3,11 @@ import styles from "./CheckBox.module.scss";
 import Icon from "@/components/Icon/Icon";
 
 interface CheckboxProps {
-  label: string;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
 }
 
-const Checkbox = ({ label, checked = false, onChange }: CheckboxProps) => {
+const Checkbox = ({ checked = false, onChange }: CheckboxProps) => {
   const [isChecked, setIsChecked] = useState(checked);
 
   const handleChange = () => {
@@ -19,14 +18,18 @@ const Checkbox = ({ label, checked = false, onChange }: CheckboxProps) => {
 
   return (
     <label className={styles.label}>
-      <Icon id="close" />
+      {isChecked ? (
+        <Icon id="checked" size={26} />
+      ) : (
+        <Icon id="not-checked" size={26} />
+      )}
       <input
         className={styles.checkBox}
         type="checkbox"
         checked={isChecked}
         onChange={handleChange}
       />
-      {label}
+      유의사항을 전부 확인했어요
     </label>
   );
 };
