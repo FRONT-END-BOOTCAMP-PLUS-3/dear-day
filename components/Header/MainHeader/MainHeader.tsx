@@ -21,7 +21,7 @@ const MainHeader = () => {
         <Link href="/notice" className={style.icon}>
           <Icon id="notification" />
         </Link>
-        <Link href="/profile" className={style.icon}>
+        <Link href="/mypage" className={style.icon}>
           <Icon id="profile" />
         </Link>
       </div>
