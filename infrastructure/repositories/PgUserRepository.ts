@@ -72,7 +72,7 @@ export class PgUserRepository implements UserRepository {
       await prisma.user.update({
         where: { id: userId },
         data: {
-          deleteDate: new Date(),
+          delete_date: new Date(),
         },
       });
     } catch (error) {
