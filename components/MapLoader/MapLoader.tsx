@@ -60,7 +60,11 @@ export default function MapLoader({ markers, isCourse }: MapLoaderProps) {
         const markerElement = document.createElement("div");
         const root = createRoot(markerElement);
         root.render(
-          <MapMarker mainImage={mainImage} index={index + 1} iscourse={true} />
+          <MapMarker
+            mainImage={mainImage}
+            index={index + 1}
+            isCourse={isCourse}
+          />
         );
 
         new window.naver.maps.Marker({
