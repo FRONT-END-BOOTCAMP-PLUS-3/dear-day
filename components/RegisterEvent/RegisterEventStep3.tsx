@@ -109,7 +109,7 @@ const RegisterEventStep3 = ({
       });
 
       alert("생일 카페 등록 완료!");
-      router.push(`/member/event/${result.eventId}`);
+      router.replace(`/member/event/${result.eventId}`);
     } catch (error) {
       console.error("이벤트 등록 중 오류:", error);
       setIsSubmitting(false);

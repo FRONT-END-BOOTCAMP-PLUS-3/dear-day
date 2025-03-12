@@ -43,11 +43,16 @@ const RegisterEventStep2 = ({
 
   // 초기 상태에서 버튼을 disabled 상태로 설정
   const [isConfirmDisabled, setIsConfirmDisabled] = useState(true);
-  useEffect(() => {
-    setIsConfirmDisabled(!(isValid && isDirty)); // 값이 변경되었을 때만 활성화
-  }, [isValid, isDirty]);
-
   const modeValue = watch("mode");
+
+  useEffect(() => {
+    // "대기(WAITING)" 선택 시 즉시 버튼 활성화
+    if (modeValue === "WAITING") {
+      setIsConfirmDisabled(false);
+    } else {
+      setIsConfirmDisabled(!(isValid && isDirty));
+    }
+  }, [modeValue, isValid, isDirty]); // mode 변경 시 즉시 반응하도록 추가
 
   useEffect(() => {
     reset({
@@ -113,6 +118,10 @@ const RegisterEventStep2 = ({
                   breaktime: value === "WAITING" ? 0 : watch("breaktime"),
                   limit: value === "WAITING" ? 0 : watch("limit"),
                 });
+
+                if (value === "WAITING") {
+                  setIsConfirmDisabled(false);
+                }
               }}
             />
           )}
