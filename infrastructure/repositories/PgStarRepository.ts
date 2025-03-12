@@ -1,5 +1,6 @@
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
 import { StarRepository } from "@/domain/repositories/StarRepository";
+import { StarProfileDto } from "@/application/usecases/star/dto/StarProfileDto";
 import { Star, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
