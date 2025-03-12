@@ -8,8 +8,14 @@
 
 .pastLargeCardView {
   @extend .LargeCardView;
-  filter: grayscale(100%) brightness(0.8) contrast(1.2);
   cursor: not-allowed;
+  color: var(--color-gray-2);
+  .LargeCardImg {
+  filter: grayscale(100%) brightness(0.4)
+  };
+  .LargeCardTime, .LargeCardNameLocation{
+  color: var(--color-gray-2);
+  }
 }
 
 .LargeCardImg {
