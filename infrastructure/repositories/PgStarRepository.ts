@@ -1,11 +1,37 @@
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
 import { StarRepository } from "@/domain/repositories/StarRepository";
 import { StarProfileDto } from "@/application/usecases/star/dto/StarProfileDto";
+
 import { Star, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export class PgStarRepository implements StarRepository {
+  async findStarProfile(starId: number): Promise<StarProfileDto> {
+    const star = await prisma.star.findUnique({
+      where: { id: starId },
+      select: {
+        id: true,
+        image: true,
+        stageName: true,
+        group: true,
+        birthday: true,
+      },
+    });
+    if (!star) {
+      throw new Error("User not found");
+    }
+
+    return {
+      id: star.id,
+      image: star.image,
+      stageName: star.stageName,
+      group: star.group ?? null,
+      birthday: star.birthday
+        ? star.birthday.toISOString().split("T")[0]
+        : null,
+    };
+  }
   async findLikedStarsByUserId(userId: string): Promise<UserLikedStarDto[]> {
     // LikedStar 테이블에서 userId에 해당하는 starId 찾기
     const likedStars = await prisma.likedStar.findMany({
