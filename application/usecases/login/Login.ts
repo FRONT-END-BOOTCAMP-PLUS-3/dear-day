@@ -10,6 +10,10 @@ export const LoginUsecase = async (
 ): Promise<{ user: User | null; token?: string }> => {
   const userInfo = await userRepository.execute(loginInfo.email);
 
+  if (userInfo?.deleteDate !== null) {
+    return { user: null };
+  }
+
   if (!userInfo) {
     return { user: null };
   }
@@ -23,7 +27,7 @@ export const LoginUsecase = async (
   const token = jwt.sign(
     { id: userInfo.id }, // 페이로드 (유저 정보 일부 포함)
     process.env.JWT_SECRET!, // 환경 변수에서 비밀키 가져오기
-    { expiresIn: "1h" } // 토큰 만료 시간 설정
+    { expiresIn: "3h" } // 토큰 만료 시간 설정
   );
 
   return { user: userInfo, token }; // 로그인 성공 시 사용자 정보 반환
