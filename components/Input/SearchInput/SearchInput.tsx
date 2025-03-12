@@ -3,7 +3,7 @@ import styles from "./SearchInput.module.scss";
 import Icon from "@/components/Icon/Icon";
 
 interface SearchInputProps {
-  value: string;
+  value?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   onFocus?: () => void;
