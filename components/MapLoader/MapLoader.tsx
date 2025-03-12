@@ -81,6 +81,27 @@ export default function MapLoader({ markers }: MapLoaderProps) {
           map.setZoom(16);
         }
       }, 300); // ✅ 300ms 딜레이 후 실행 (렌더링 안정화)
+
+      const paths = markers.map(
+        (markerData) =>
+          new window.naver.maps.LatLng(
+            markerData.latitude,
+            markerData.longitude
+          )
+      );
+
+      new window.naver.maps.Polyline({
+        map: map,
+        path: paths,
+        strokeColor: "var(--color-gray-1)",
+        strokeStyle: "shortdash",
+        strokeLineCap: "round",
+        strokeLineJoin: "round",
+        strokeWeight: 3,
+        strokeOpacity: 1.0,
+        startIcon: naver.maps.PointingIcon.DIAMOND,
+        endIcon: naver.maps.PointingIcon.BLOCK_ARROW,
+      });
     }
   }, [markers]);
 

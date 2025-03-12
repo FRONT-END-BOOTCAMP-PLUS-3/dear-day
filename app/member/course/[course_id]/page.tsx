@@ -48,13 +48,18 @@ export default function CoursePage() {
   }, [course_id, setCourseEvent, courseEvent.length]);
 
   useEffect(() => {
-    const newMarkers = eventDetails.map((item) => ({
-      latitude: item.latitude,
-      longitude: item.longitude,
-      mainImage: item.imgSrc,
-    }));
-    setMarkers(newMarkers);
-  }, [eventDetails]);
+    if (eventDetails.length > 0 && courseEvent.length > 0) {
+      const sortedEvents = courseEvent
+        .map((id) => eventDetails.find((e) => e.id === id))
+        .filter((e): e is ShowCourseEventsDto => Boolean(e));
+      const newMarkers = sortedEvents.map((item) => ({
+        latitude: item.latitude,
+        longitude: item.longitude,
+        mainImage: item.imgSrc,
+      }));
+      setMarkers(newMarkers);
+    }
+  }, [eventDetails, courseEvent]);
 
   const handleOrderChange = useCallback(
     (newOrder: number[]) => {
