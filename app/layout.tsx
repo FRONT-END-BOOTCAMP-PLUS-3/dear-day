@@ -42,7 +42,7 @@ export default function RootLayout({
           content="원하는 생일카페를 쉽게 찾고 주최해보세요!"
         />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/icons/icon512_rounded.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
 
