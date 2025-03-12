@@ -13,8 +13,7 @@ export function middleware(req: NextRequest) {
       "/login",
       "/join",
       "/list",
-      "/mypage",
-      "/search", // "/search/[star_id]" 대응
+      "/search_star", // "/search/[star_id]" 대응
       "/event", // "/event/[event_id]" 대응
     ];
 
@@ -35,8 +34,7 @@ export function middleware(req: NextRequest) {
     "/login",
     "/join",
     "/list",
-    "/mypage",
-    "/search", // "/search/[star_id]" 대응
+    "/search_star", // "/search/[star_id]" 대응
     "/event", // "/event/[event_id]" 대응
   ];
   if (
@@ -59,8 +57,7 @@ export const config = {
     "/login", // ✅ 로그인 페이지 보호
     "/join", // ✅ 회원가입 페이지 보호
     "/list", // ✅ 리스트 페이지 보호
-    "/mypage", // ✅ 마이페이지 보호
-    "/search/:path*", // ✅ "/search/[star_id]" 대응
+    "/search_star/:path*", // ✅ "/search/[star_id]" 대응
     "/event/:path*", // ✅ "/event/[event_id]" 대응
   ],
 };
