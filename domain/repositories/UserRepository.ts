@@ -7,4 +7,5 @@ export interface UserRepository {
   execute(email: string): Promise<User | null>; // 로그인하는 메서드
   findUserInfo(userId: string): Promise<UserInfoDto>; // 마이페이지 사용자 정보 보여주는 메서드
   updateDropUser(userId: string): Promise<void>;
+  findUserByUserId(userId: string): Promise<User | null>; // 아이디로 사용자 찾는 메서드
 }
