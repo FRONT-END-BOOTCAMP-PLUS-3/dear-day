@@ -7,7 +7,7 @@
     padding: var(--padding-sm);
     text-align: center;
     font-size: var(--font-size-md);
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
     transition: color 0.3s ease-in-out;
     border-bottom: 2px solid transparent;
@@ -15,6 +15,7 @@
     &.active {
       color: var(--color-black);
       border-bottom: 2px solid black;
+      font-weight: 600;
     }
 
     &:not(.active) {

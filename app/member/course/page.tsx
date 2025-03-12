@@ -94,7 +94,7 @@ export default function CoursePage() {
       />
       {courseList.length > 0 ? (
         <>
-          <p>다가오는 코스</p>
+          <p className={styles.title}>다가오는 코스</p>
           <ScrollCardContainer variant="list">
             {courseList.map((course) => (
               <div key={course.id} onClick={() => handleCourseClick(course)}>
@@ -102,7 +102,7 @@ export default function CoursePage() {
               </div>
             ))}
           </ScrollCardContainer>
-          <p>종료된 코스</p>
+          <p className={styles.title}>종료된 코스</p>
           <ScrollCardContainer variant="list">
             {pastCourseList.length > 0
               ? pastCourseList.map((course) => (
