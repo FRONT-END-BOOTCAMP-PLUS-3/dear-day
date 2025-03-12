@@ -2,6 +2,22 @@
   @include pageContainer;
 }
 
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.courseListView {
+  flex: 1;
+}
+
+.trash {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
 .emptyNoticeContainer {
   display: flex;
   justify-content: center;
