@@ -13,7 +13,7 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   { pattern: /^\/list$/, config: { type: "back", title: "생카 목록" } },
   { pattern: /^\/login$/, config: { type: "back", title: "" } },
   {
-    pattern: /^\/search\/[^/]+$/, // /search/[star_id]
+    pattern: /^\/search_star\/[^/]+$/, // /search_star/[star_id]
     config: { type: "back", title: "" },
   },
 
