@@ -70,7 +70,7 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
   return readOnly ? (
     cardContent
   ) : (
-    <Link href={`/event/${id}`}>{cardContent}</Link>
+    <Link href={`/member/event/${id}`}>{cardContent}</Link>
   );
 };
 

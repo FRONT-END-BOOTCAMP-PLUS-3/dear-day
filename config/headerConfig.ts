@@ -12,8 +12,10 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   { pattern: /^\/join$/, config: { type: "back", title: "회원가입" } },
   { pattern: /^\/list$/, config: { type: "back", title: "생카 목록" } },
   { pattern: /^\/login$/, config: { type: "back", title: "" } },
-  { pattern: /^\/mypage$/, config: { type: "back", title: "" } },
-  { pattern: /^\/search$/, config: { type: "dynamic", title: "사람이름" } },
+  {
+    pattern: /^\/search_star\/[^/]+$/, // /search_star/[star_id]
+    config: { type: "back", title: "" },
+  },
 
   { pattern: /^\/member\/$/, config: { type: "main" } },
   {
@@ -26,7 +28,7 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   },
   {
     pattern: /^\/member\/course\/[^/]+$/,
-    config: { type: "back", title: "코스이름" },
+    config: { type: "dynamic", title: "코스이름" },
   }, // /member/course/[course_id]
   {
     pattern: /^\/member\/course\/[^/]+\/edit$/,
@@ -44,6 +46,11 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   }, // /member/manage/[event_id]
   { pattern: /^\/member\/mypage$/, config: { type: "back", title: "프로필" } },
   {
+    pattern: /^\/member\/mypage\/setting$/,
+    config: { type: "back", title: "" },
+  },
+
+  {
     pattern: /^\/member\/register_event$/,
     config: { type: "back", title: "생카 등록하기" },
   },
@@ -52,11 +59,11 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
     config: { type: "back", title: "스타 등록하기" },
   },
   {
-    pattern: /^\/member\/search$/,
-    config: { type: "dynamic", title: "사람이름" },
-  },
-  {
     pattern: /^\/member\/search_star$/,
     config: { type: "back", title: "스타 검색" },
+  },
+  {
+    pattern: /^\/member\/search_star\/[^/]+$/,
+    config: { type: "back", title: "" },
   },
 ];

@@ -8,8 +8,8 @@
 .selected {
   position: relative;
   z-index: 999;
-  outline: 2px solid var(--color-secondary);
-  box-shadow: 0 0 10px rgba(68, 78, 99, 0.5);
+  outline: 2px solid var(--color-primary);
+  box-shadow: 0 0 10px rgba(84, 95, 119, 0.7);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -17,5 +17,5 @@
 
 .selected:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 15px rgba(68, 78, 99, 0.7);
+  box-shadow: 0 0 15px rgba(84, 95, 119, 0.7);
 }

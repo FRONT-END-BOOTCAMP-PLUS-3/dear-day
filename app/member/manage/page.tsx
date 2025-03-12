@@ -13,7 +13,7 @@ const ManagePage = () => {
   useEffect(() => {
     const fetchMyEvent = async () => {
       try {
-        const response = await fetch("/api/event/show-my-event", {
+        const response = await fetch("/api/manage/show-my-event", {
           method: "GET",
           credentials: "include",
         });

@@ -72,12 +72,22 @@ export class PgUserRepository implements UserRepository {
       await prisma.user.update({
         where: { id: userId },
         data: {
-          delete_date: new Date(),
+          deleteDate: new Date(),
         },
       });
     } catch (error) {
       console.error("유저 탈퇴 업데이트 실패:", error);
       throw new Error("유저 탈퇴 업데이트 중 오류 발생");
+    }
+  }
+
+  async findUserByUserId(userId: string): Promise<User | null> {
+    try {
+      return await prisma.user.findUnique({
+        where: { id: userId },
+      });
+    } finally {
+      await prisma.$disconnect();
     }
   }
 }
