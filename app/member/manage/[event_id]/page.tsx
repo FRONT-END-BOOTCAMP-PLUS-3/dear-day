@@ -6,8 +6,8 @@ import styles from "./page.module.scss";
 import { useEffect, useState } from "react";
 import ReservationWaitList from "./ReservationWaitList/ReservationWaitList";
 import { useParams } from "next/navigation";
-import { showWaitingListDto } from "@/application/usecases/event/dto/ShowWaitingListDto";
-import { showReservationListDto } from "@/application/usecases/event/dto/ShowReservationListDto";
+import { showWaitingListDto } from "@/application/usecases/manage/dto/ShowWaitingListDto";
+import { showReservationListDto } from "@/application/usecases/manage/dto/ShowReservationListDto";
 
 const ManagePage = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");

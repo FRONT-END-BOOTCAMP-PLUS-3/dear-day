@@ -121,4 +121,23 @@ export class PgWaitingRepository implements WaitingRepository {
       await prisma.$disconnect();
     }
   }
+
+  async updateWaitingByWaitingId(
+    waitingId: number,
+    status: string
+  ): Promise<boolean> {
+    try {
+      const updated = await prisma.waiting.update({
+        where: { id: waitingId },
+        data: { status },
+      });
+
+      return !!updated;
+    } catch (error) {
+      console.error("예약 상태 변경 중 오류 발생:", error);
+      throw new Error("예약 상태 변경 중 오류가 발생했습니다.");
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
