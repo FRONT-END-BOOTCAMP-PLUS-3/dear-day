@@ -31,9 +31,9 @@ const MainHeader = () => {
         />
       </Link>
       <div className={style.icons}>
-        <Link href="/notice" className={style.icon}>
+        {/* <Link href="/notice" className={style.icon}>
           <Icon id="notification" />
-        </Link>
+        </Link> */}
         <button className={style.icon} onClick={handleProfileClick}>
           <Icon id="profile" />
         </button>
