@@ -2,26 +2,50 @@
   position: absolute;
   transform: translate(-50%, -50%);
   background-size: contain;
-  width: 40px;
+  width: 42px;
   height: 59px;
   background: url("/img/marker.svg") no-repeat center;
-  img {
+  .markerImage {
     position: absolute;
-    left: 0px;
-    top: 1px;
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
+    top: 5.5px;
+    left: 5px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-  }
-}
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
 
-.markerImage {
-  position: absolute;
-  top: 5.5px;
-  left: 5px;
-  width: 30px;
-  height: 30px;
-  background: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cpath d='M27.5 14C27.5 21.4558 21.4558 27.5 14 27.5C6.54416 27.5 0.5 21.4558 0.5 14C0.5 6.54416 6.54416 0.5 14 0.5C21.4558 0.5 27.5 6.54416 27.5 14Z' fill='%23D9D9D9'/%3E%3Cpath d='M27.5 14C27.5 21.4558 21.4558 27.5 14 27.5C6.54416 27.5 0.5 21.4558 0.5 14C0.5 6.54416 6.54416 0.5 14 0.5C21.4558 0.5 27.5 6.54416 27.5 14Z' fill='url(%23pattern0_135_1162)'/%3E%3Cpath d='M27.5 14C27.5 21.4558 21.4558 27.5 14 27.5C6.54416 27.5 0.5 21.4558 0.5 14C0.5 6.54416 6.54416 0.5 14 0.5C21.4558 0.5 27.5 6.54416 27.5 14Z' stroke='%23F2F2F2'/%3E%3C/svg%3E")
-    no-repeat;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    // ✅ index가 있는 경우 오버레이 추가
+    &.hasIndex::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); // ✅ 어두운 효과
+      border-radius: 50%;
+    }
+
+    // ✅ index 숫자 표시
+    .indexNumber {
+      position: absolute;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      z-index: 2;
+    }
+  }
 }

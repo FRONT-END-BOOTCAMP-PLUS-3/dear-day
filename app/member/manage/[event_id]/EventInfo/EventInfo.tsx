@@ -10,7 +10,7 @@ interface EventInfoProps {
   address: string;
   startDate: Date;
   endDate: Date;
-  mode: "RESERVATION" | "WAITTING";
+  mode: string;
 }
 
 const EventInfo: React.FC<EventInfoProps> = ({

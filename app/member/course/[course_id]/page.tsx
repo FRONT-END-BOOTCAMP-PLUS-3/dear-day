@@ -96,7 +96,7 @@ export default function CoursePage() {
   return (
     <div className={styles.homeContainer}>
       <div className={styles.mapSection}>
-        <MapLoader markers={markers} />
+        <MapLoader markers={markers} isCourse={true} />
       </div>
       <BottomSheet>
         <EditHeader

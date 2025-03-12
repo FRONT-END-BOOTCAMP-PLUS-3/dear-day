@@ -16,7 +16,10 @@ const MainButton = () => {
   const [hasManage, setHasManage] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("/api/manage")
+    fetch("/api/manage/show-my-event", {
+      method: "GET",
+      credentials: "include",
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("네트워크 응답에 문제가 있습니다.");
@@ -24,14 +27,13 @@ const MainButton = () => {
         return response.json();
       })
       .then((data) => {
-        if (Array.isArray(data)) {
-          setHasManage(data.length > 0);
+        if (data.results.length > 0) {
+          setHasManage(true);
         } else {
           setHasManage(false);
         }
       })
-      .catch((error) => {
-        console.error("에러 발생:", error);
+      .catch(() => {
         setHasManage(false);
       });
   }, []);
@@ -49,7 +51,7 @@ const MainButton = () => {
         </Link>
       ))}
       {hasManage && (
-        <Link href="/route" key="/route">
+        <Link href="/member/manage" key="/member/manage">
           <div className={styles.buttonContainer}>
             <button className={styles.button}>
               <Icon id="setting" />

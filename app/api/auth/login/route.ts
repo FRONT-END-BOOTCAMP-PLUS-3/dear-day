@@ -26,7 +26,9 @@ export async function POST(req: Request) {
     const response = NextResponse.json({ id: data.user.id });
     response.headers.set(
       "Set-Cookie",
-      `auth_token=${data.token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=3600`
+      `auth_token=${data.token}; Path=/; HttpOnly; SameSite=Strict; ${
+        process.env.NODE_ENV === "production" ? "Secure;" : ""
+      } Max-Age=3600`
     );
 
     return response;

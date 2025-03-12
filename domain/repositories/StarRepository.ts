@@ -1,5 +1,4 @@
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
-import { StarProfileDto } from "@/application/usecases/star/dto/StarProfileDto";
 import { Star } from "@prisma/client";
 
 export interface StarRepository {

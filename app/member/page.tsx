@@ -1,24 +1,22 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
 import UpcomingEvent from "../(anon)/_components/UpcomingEvent/UpcomingEvent";
 import MainButton from "../(anon)/_components/MainButton/MainButton";
 import Banner from "../(anon)/_components/Banner/Banner";
 import styles from "./page.module.scss";
+import SearchStarModal from "../(anon)/_components/SearchStarModal/SearchStarModal";
+import useToggle from "@/hooks/useToggle";
 import SearchInput from "@/components/Input/SearchInput/SearchInput";
 
 export default function HomePage() {
-  const [searchWord, setSearchWord] = useState("");
-
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchWord(e.target.value);
-  };
+  const [isModalOpen, toggleModal] = useToggle(false);
 
   return (
     <div className={styles.homeContainer}>
       <Banner />
       <div className={styles.contentsWrapper}>
-        <SearchInput value={searchWord} onChange={handleSearch} />
+        <SearchInput onFocus={toggleModal} />
+        <SearchStarModal isOpen={isModalOpen} onClose={toggleModal} />
         <MainButton />
         <UpcomingEvent />
       </div>

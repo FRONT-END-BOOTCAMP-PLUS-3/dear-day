@@ -44,7 +44,7 @@ const MemberSearchResultPage = () => {
 
   return (
     <div className={styles.homeContainer}>
-      {eventList ? (
+      {eventList.length > 0 ? (
         <ul>
           {eventList.map((event) => (
             <ListView
