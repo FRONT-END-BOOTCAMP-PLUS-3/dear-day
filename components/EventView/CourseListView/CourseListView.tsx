@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./CourseListView.module.scss";
 import Image from "next/image";
+import { useHeaderStore } from "@/store/HeaderStore";
 
 export interface CourseListViewProps {
   id: number;
@@ -21,13 +22,19 @@ const CourseListView: React.FC<CourseListViewProps> = ({
   isPast = false,
 }) => {
   const dateObj = typeof date === "string" ? new Date(date) : date;
+  const { setTitle } = useHeaderStore();
 
   if (!dateObj) {
     return null;
   }
 
+  const handleClick = () => {
+    setTitle(name); // 선택한 코스의 이름을 헤더 제목으로 설정
+  };
+
   return (
-    <Link href={`/member/course/${id}`}>
+    // 여기서 name도 전달해야 함
+    <Link href={`/member/course/${id}`} onClick={handleClick}>
       <li
         className={isPast ? styles.pastCourseListView : styles.courseListView}
       >
