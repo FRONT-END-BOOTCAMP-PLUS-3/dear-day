@@ -3,17 +3,19 @@ import styles from "./ReservationWaitList.module.scss";
 interface ReservationWaitListProps {
   id: number;
   index: number;
+  userId: string;
   name: string;
   headCount?: number;
   email: string;
   createdAt: Date;
-  status: "CONFIRMED" | "ENTERED";
-  onStatus: (id: number) => void;
+  status: string;
+  onStatus: (id: number, userId: string) => void;
 }
 
 const ReservationWaitList: React.FC<ReservationWaitListProps> = ({
   id,
   index,
+  userId,
   name,
   headCount,
   email,
@@ -34,9 +36,9 @@ const ReservationWaitList: React.FC<ReservationWaitListProps> = ({
 
   return (
     <li className={styles.reservationWaitItem}>
-      <p className={styles.reservationWaitItemIndex}>{index}</p>
+      <p className={styles.reservationWaitItemIndex}>{index + 1}</p>
       <div className={styles.reservationWaitItemContent}>
-        <p>{headCount ? `${name} (${headCount})` : name}</p>
+        <p>{headCount ? `${name} (${headCount}명)` : name}</p>
         <p>{email}</p>
         <p>
           <time dateTime={createdAt.toISOString()}>
@@ -44,10 +46,13 @@ const ReservationWaitList: React.FC<ReservationWaitListProps> = ({
           </time>
         </p>
       </div>
-      {status ? (
+      {status === "ENTERED" ? (
         <p className={styles.enteredText}>입장완료</p>
       ) : (
-        <button className={styles.enterButton} onClick={() => onStatus(id)}>
+        <button
+          className={styles.enterButton}
+          onClick={() => onStatus(id, userId)}
+        >
           입장시키기
         </button>
       )}

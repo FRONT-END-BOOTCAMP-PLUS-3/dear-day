@@ -40,7 +40,6 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
   const pathSegments = (currentPath as string).split("/").filter(Boolean);
   // 기본적으로 현재 경로 유지
   let newPath = `/${pathSegments.join("/")}/${id}`;
-  console.log("newPath", pathSegments.indexOf("mypage"));
   if (pathSegments.includes("mypage")) {
     newPath = `/${pathSegments.slice(0, pathSegments.indexOf("mypage")).join("/")}/event/${id}`;
   }

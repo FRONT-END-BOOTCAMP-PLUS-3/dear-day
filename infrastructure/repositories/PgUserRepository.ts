@@ -80,4 +80,14 @@ export class PgUserRepository implements UserRepository {
       throw new Error("유저 탈퇴 업데이트 중 오류 발생");
     }
   }
+
+  async findUserByUserId(userId: string): Promise<User | null> {
+    try {
+      return await prisma.user.findUnique({
+        where: { id: userId },
+      });
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
