@@ -8,8 +8,10 @@ import React, { useEffect, useState } from "react";
 import NextButton from "@/components/Button/NextButton/NextButton";
 import { createStar } from "./_api/createStar";
 import { CreateStarDto } from "@/application/usecases/star/dto/CreateStarDto";
+import { useRouter } from "next/navigation";
 
 const RegisterStarPage = () => {
+  const router = useRouter();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string>("");
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
@@ -54,8 +56,13 @@ const RegisterStarPage = () => {
 
     try {
       await createStar(starForm, selectedFile);
+
       alert("스타 등록이 완료되었습니다!");
-      // window.location.href = "/";
+      if (window.history.length > 1) {
+        router.back();
+      } else {
+        router.replace("/");
+      }
     } catch (error) {
       console.error("스타 등록 실패(page): ", error);
     }
