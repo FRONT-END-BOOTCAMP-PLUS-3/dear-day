@@ -56,7 +56,7 @@ const MemberSearchResultPage = () => {
               endDate={event.endDate}
               stageName={event.starName}
               address={event.address}
-              currentPath={`/member/search_star/${starId}`}
+              currentPath={`/search_star/${starId}`}
             />
           ))}
         </ul>
