@@ -47,8 +47,9 @@ const Banner: React.FC = () => {
             <Image
               src={banner}
               alt={`Banner ${idx + 1}`}
-              fill
-              style={{ objectFit: "cover" }}
+              width={1000}
+              height={0}
+              style={{ width: "100%", height: "auto", objectFit: "cover" }} // ✅ width는 100%, height는 원본 비율 유지
             />
           </div>
         ))}
