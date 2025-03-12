@@ -4,7 +4,7 @@ import Icon from "@/components/Icon/Icon";
 
 interface SearchInputProps {
   value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   onFocus?: () => void;
 }
