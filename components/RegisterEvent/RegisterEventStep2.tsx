@@ -1,6 +1,6 @@
 "use client";
 import { Controller, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./RegisterEvent.module.scss";
@@ -24,12 +24,13 @@ const RegisterEventStep2 = ({
   onPrev: () => void;
 }) => {
   const { eventData, updateEventData } = useRegisterEventStore();
+  const { startDate } = eventData; // ✅ eventData에서 직접 가져오기
   const {
     control,
     handleSubmit,
     reset,
     watch,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = useForm<RegisterEventStep2Form>({
     mode: "onChange", // 입력값 변경될 때마다 유효성 검사
     defaultValues: {
@@ -40,13 +41,19 @@ const RegisterEventStep2 = ({
     },
   });
 
+  // 초기 상태에서 버튼을 disabled 상태로 설정
+  const [isConfirmDisabled, setIsConfirmDisabled] = useState(true);
+  useEffect(() => {
+    setIsConfirmDisabled(!(isValid && isDirty)); // 값이 변경되었을 때만 활성화
+  }, [isValid, isDirty]);
+
   const modeValue = watch("mode");
 
   useEffect(() => {
     reset({
       mode: eventData.mode || "RESERVATION",
       openAt: eventData.openAt ?? undefined,
-      breaktime: eventData.breaktime || 0,
+      breaktime: eventData.breaktime || 10,
       limit: eventData.limit || 0,
     });
   }, [eventData, reset]);
@@ -132,7 +139,17 @@ const RegisterEventStep2 = ({
                   timeIntervals={30}
                   dateFormat="MMMM d, yyyy h:mm aa"
                   popperPlacement="bottom-start"
-                  customInput={<CustomInput />} // ✅ 커스텀 Input 적용
+                  minDate={new Date()}
+                  maxDate={
+                    startDate
+                      ? new Date(
+                          new Date(startDate).setDate(
+                            new Date(startDate).getDate() - 1
+                          )
+                        )
+                      : undefined
+                  }
+                  customInput={<CustomInput />}
                 />
               )}
             />
@@ -152,16 +169,13 @@ const RegisterEventStep2 = ({
                 <RadioButtonGroup
                   name={field.name}
                   options={[
-                    { label: "10분", value: 10 },
-                    { label: "15분", value: 15 },
-                    { label: "20분", value: 20 },
-                    { label: "없음", value: 0 },
+                    { label: "10분", value: "10" },
+                    { label: "15분", value: "15" },
+                    { label: "20분", value: "20" },
+                    { label: "없음", value: "0" },
                   ]}
-                  defaultValue={10}
-                  value={field.value}
-                  onChange={(value) => {
-                    field.onChange(Number(value));
-                  }}
+                  value={String(field.value)}
+                  onChange={(value) => field.onChange(Number(value))}
                 />
               )}
             />
@@ -195,7 +209,7 @@ const RegisterEventStep2 = ({
       <ConfirmCancelButton
         onConfirm={handleSubmit(onSubmit)}
         onCancel={onPrev}
-        isConfirmDisabled={!isValid}
+        isConfirmDisabled={isConfirmDisabled}
       />
     </form>
   );

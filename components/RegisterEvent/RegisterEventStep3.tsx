@@ -27,6 +27,7 @@ const RegisterEventStep3 = ({
   const router = useRouter();
   const [selectedMainImage, setSelectedMainImage] = useState<File | null>(null);
   const [selectedDetailImages, setSelectedDetailImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -68,7 +69,9 @@ const RegisterEventStep3 = ({
   }, [eventData, reset]);
 
   const onSubmit = async (data: RegisterEventStep3Form) => {
-    // ✅ 최신 benefits 값 store에 반영
+    if (isSubmitting) return;
+    setIsSubmitting(true); // 버튼 비활성화 (중복 제출 방지)
+
     updateEventData({
       ...eventData,
       benefits: data.benefits,
@@ -109,6 +112,7 @@ const RegisterEventStep3 = ({
       router.push(`/member/event/${result.eventId}`);
     } catch (error) {
       console.error("이벤트 등록 중 오류:", error);
+      setIsSubmitting(false);
     }
   };
 
@@ -209,7 +213,7 @@ const RegisterEventStep3 = ({
       <ConfirmCancelButton
         onConfirm={handleSubmit(onSubmit)}
         onCancel={onPrev}
-        isConfirmDisabled={!isValid}
+        isConfirmDisabled={!isValid || isSubmitting}
       />
     </form>
   );
