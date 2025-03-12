@@ -3,7 +3,7 @@ import { PgUserRepository } from "@/infrastructure/repositories/PgUserRepository
 import { getUserIdFromToken } from "@/utils/auth";
 import { NextResponse } from "next/server";
 
-export async function DELETE() {
+export async function PATCH() {
   const userId = await getUserIdFromToken();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

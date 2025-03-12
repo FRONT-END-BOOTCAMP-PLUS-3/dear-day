@@ -29,7 +29,7 @@ const DropNotice: React.FC<DropNoticeProps> = ({
   const handleConfirm = async () => {
     try {
       const response = await fetch("/api/mypage/drop-user", {
-        method: "DELETE",
+        method: "PATCH",
       });
 
       if (!response.ok) {
