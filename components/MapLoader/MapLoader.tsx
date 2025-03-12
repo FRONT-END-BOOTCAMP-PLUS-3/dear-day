@@ -52,14 +52,16 @@ export default function MapLoader({ markers, isCourse }: MapLoaderProps) {
         new window.naver.maps.LatLng(markers[0].latitude, markers[0].longitude)
       );
 
-      markers.forEach(({ latitude, longitude, mainImage }) => {
+      markers.forEach(({ latitude, longitude, mainImage }, index) => {
         const position = new window.naver.maps.LatLng(latitude, longitude);
         bounds.extend(position); // ✅ 경계 확장 (마커들을 포함하도록)
 
         // HTML 요소 생성 후 React 마운트
         const markerElement = document.createElement("div");
         const root = createRoot(markerElement);
-        root.render(<MapMarker mainImage={mainImage} />);
+        root.render(
+          <MapMarker mainImage={mainImage} index={index + 1} iscourse={true} />
+        );
 
         new window.naver.maps.Marker({
           position,
