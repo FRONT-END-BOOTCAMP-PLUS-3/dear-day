@@ -1,5 +1,4 @@
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
-import { StarProfileDto } from "@/application/usecases/star/dto/StarProfileDto";
 import { Star } from "@prisma/client";
 
 export interface StarRepository {
@@ -8,5 +7,4 @@ export interface StarRepository {
   findAllStarsByKeyword(keyword: string): Promise<Star[]>;
   findLikedStarsByUserId(userId: string): Promise<UserLikedStarDto[]>; // 유저 아이디로 스타 정보 가져오기
   findAll(): Promise<Star[]>;
-  findStarProfile(starId: number): Promise<StarProfileDto>;
 }
