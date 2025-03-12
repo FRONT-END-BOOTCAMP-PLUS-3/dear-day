@@ -15,7 +15,7 @@ export default function HomePage() {
     <div className={styles.homeContainer}>
       <Banner />
       <div className={styles.contentsWrapper}>
-        <SearchInput value="" onFocus={toggleModal} />
+        <SearchInput onFocus={toggleModal} />
         <SearchStarModal isOpen={isModalOpen} onClose={toggleModal} />
         <MainButton />
         <UpcomingEvent />
