@@ -20,7 +20,8 @@
 
 ## 💻 기술 스택
 
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"> <img src="https://img.shields.io/badge/Zustand-5A31F4?style=for-the-badge&logo=zustand&logoColor=white"> <img src="https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white"> <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"> <img src="https://img.shields.io/badge/Zustand-5A31F4?style=for-the-badge&logo=zustand&logoColor=white"> <img src="https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white"> <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white">
 
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/PWA-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white">
 
@@ -33,7 +34,7 @@
 
 <br />
 
-## 팀원 소개
+##  💝 팀원 소개
 
 | 항목   | [윤진](https://github.com/jin62413) | [엄하영](https://github.com/gkdud7351) | [한정현](https://github.com/hanjeonghyun) | [손아현](https://github.com/iinuyha) |
 | ------ | -------------------------------------- | -------------------------------------- | -------------------------------------- | -------------------------------------- |
