@@ -14,7 +14,7 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   { pattern: /^\/login$/, config: { type: "back", title: "" } },
   {
     pattern: /^\/search\/[^/]+$/, // /search/[star_id]
-    config: { type: "dynamic", title: "사람이름" },
+    config: { type: "back", title: "" },
   },
 
   { pattern: /^\/member\/$/, config: { type: "main" } },
@@ -64,6 +64,6 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   },
   {
     pattern: /^\/member\/search_star\/[^/]+$/,
-    config: { type: "dynamic", title: "사람 이름" },
+    config: { type: "back", title: "" },
   },
 ];
