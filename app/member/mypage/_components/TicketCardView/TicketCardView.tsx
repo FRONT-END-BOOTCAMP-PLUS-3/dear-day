@@ -39,7 +39,7 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
         <div className={styles.smallCardWrapper}>
           <Image
             className={styles.smallCardImg}
-            src={mainImage}
+            src={process.env.NEXT_PUBLIC_FRONT_SRC + mainImage}
             alt={title}
             fill
           />

@@ -50,7 +50,7 @@ const SmallCardView: React.FC<SmallCardViewProps> = ({
         <div className={styles.smallCardWrapper}>
           <Image
             className={styles.smallCardImg}
-            src={imgSrc}
+            src={process.env.NEXT_PUBLIC_FRONT_SRC + imgSrc}
             alt={title}
             fill
           />

@@ -96,7 +96,7 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
           <div className={styles.ticketHeader}>
             <div className={styles.imageContainer}>
               <Image
-                src={data.mainImage}
+                src={process.env.NEXT_PUBLIC_FRONT_SRC + data.mainImage}
                 alt="Ticket Thumbnail"
                 width={200}
                 height={0}
