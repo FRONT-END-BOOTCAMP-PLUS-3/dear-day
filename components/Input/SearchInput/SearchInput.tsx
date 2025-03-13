@@ -12,7 +12,7 @@ interface SearchInputProps {
 const SearchInput = ({
   value,
   onChange,
-  placeholder = "검색어를 입력하세요",
+  placeholder = "좋아하는 스타의 생일카페를 찾아보세요!",
   onFocus,
 }: SearchInputProps) => {
   return (

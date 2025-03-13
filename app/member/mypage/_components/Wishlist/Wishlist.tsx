@@ -53,6 +53,7 @@ const Wishlist = () => {
         {starData.map((card) => (
           <StarView
             key={card.starId}
+            starId={card.starId}
             starImage={card.image}
             starName={card.name}
           />

@@ -13,6 +13,8 @@
 
 .emptyText {
   text-align: center;
+  font-size: var(--font-size-md);
+  font-weight: 200;
   color: var(--color-gray-1);
 }
 .createEventBtn {

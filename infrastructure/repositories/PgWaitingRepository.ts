@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export class PgWaitingRepository implements WaitingRepository {
   async findAllWaitingByUserId(userId: string): Promise<WaitingCardViewDto[]> {
     const waitings = await prisma.waiting.findMany({
-      where: { userId },
+      where: { userId, status: "PENDING" },
       include: {
         event: {
           select: {
