@@ -10,7 +10,7 @@ export class PgReservationRepository implements ReservationRepository {
     userId: string
   ): Promise<ReservationCardViewDto[]> {
     const reservations = await prisma.reservation.findMany({
-      where: { userId },
+      where: { userId, status: "CONFIRMED" },
       include: {
         event: {
           select: {

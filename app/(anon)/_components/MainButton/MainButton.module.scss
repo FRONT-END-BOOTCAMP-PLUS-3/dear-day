@@ -1,7 +1,7 @@
 .buttonListContainer {
   display: flex;
   justify-content: space-evenly;
-  margin: var(--margin-sm) 0;
+  margin: var(--margin-xl) 0;
 }
 
 .buttonContainer {
@@ -17,7 +17,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: var(--color-gray-bg);
+  background-color: var(--color-blue-bg);
   cursor: pointer;
 }
 
@@ -25,10 +25,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0rem;
   border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: 400;
   cursor: pointer;
   transition: background-color 0.2s;
 }

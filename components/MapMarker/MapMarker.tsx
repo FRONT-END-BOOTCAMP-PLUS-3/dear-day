@@ -6,19 +6,19 @@ import Image from "next/image";
 const MapMarker = ({
   mainImage,
   index,
-  iscourse,
+  isCourse,
 }: {
   mainImage: string;
   index?: number;
-  iscourse?: boolean;
+  isCourse?: boolean;
 }) => {
   return (
     <div className={styles.markerImageWrap}>
       <div
-        className={`${styles.markerImage} ${iscourse ? styles.hasIndex : ""}`}
+        className={`${styles.markerImage} ${isCourse ? styles.hasIndex : ""}`}
       >
         {/* ✅ 숫자 추가 */}
-        {iscourse && <span className={styles.indexNumber}>{index}</span>}
+        {isCourse && <span className={styles.indexNumber}>{index}</span>}
 
         {/* ✅ 이미지 */}
         <Image src={mainImage} alt="Marker" width={30} height={30} />
