@@ -18,7 +18,10 @@ export class RegisterEventUsecase {
   }
 
   private async saveFile(file: File, folder: string): Promise<string> {
-    const uploadFolder = path.join(process.cwd(), `/demo/event/${folder}`);
+    const uploadFolder = path.join(
+      process.cwd(),
+      `${process.env.DEMO_FOLDER_LOCATION}/demo/event/${folder}`
+    );
 
     if (!fs.existsSync(uploadFolder)) {
       fs.mkdirSync(uploadFolder, { recursive: true });
