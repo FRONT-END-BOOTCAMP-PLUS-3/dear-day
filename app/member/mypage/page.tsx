@@ -6,7 +6,6 @@ import styles from "./page.module.scss";
 import ReservationWaiting from "./_components/ReservationWaiting/ReservationWaiting";
 import { useEffect, useState } from "react";
 import { UserInfoDto } from "@/application/usecases/mypage/dto/UserInfoDto";
-import TwoTab from "@/components/Tab/TwoTab/TwoTab";
 
 const Page = () => {
   const [userInfo, setUserInfo] = useState<UserInfoDto>();
