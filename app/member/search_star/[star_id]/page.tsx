@@ -97,10 +97,10 @@ const MemberSearchResultPage = () => {
             <div className={styles.info}>
               <h2>{starProfile.stageName}</h2>
               <p>{starProfile.group}</p>
-              <p>{starProfile.birthday}</p>
+              <p>🎂 {starProfile.birthday}</p>
             </div>
-            <div className={styles.heartBox}>
-              <button className={styles.heartBtn}>
+            <div className={styles.starBox}>
+              <button className={styles.starBtn}>
                 <StarButton starId={starProfile.id} />
               </button>
             </div>
