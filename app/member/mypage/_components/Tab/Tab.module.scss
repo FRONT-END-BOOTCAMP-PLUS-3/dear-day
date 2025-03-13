@@ -1,5 +1,10 @@
+.tabContainer {
+  width: 100%;
+}
+
 .tabButtons {
   display: flex;
+  position: relative;
   border-bottom: 1px solid var(--color-gray-2);
 
   button {
@@ -10,11 +15,12 @@
     font-weight: 500;
     cursor: pointer;
     transition: color 0.3s ease-in-out;
-    border-bottom: 2px solid transparent;
+    background: none;
+    border: none;
+    outline: none;
 
     &.active {
       color: var(--color-black);
-      border-bottom: 2px solid black;
       font-weight: 600;
     }
 
@@ -22,7 +28,19 @@
       color: var(--color-gray-1);
     }
   }
+
+  /* 하단 슬라이드 효과 */
+  .indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%; /* 버튼 2개일 경우 (2개면 50%, 3개면 33.3%로 조정) */
+    height: 2px;
+    background-color: black;
+    transition: transform 0.3s ease-in-out;
+  }
 }
+
 .tabContent {
   padding: 15px;
   background-color: #f5f5f5;

@@ -21,6 +21,11 @@ const Tab = ({
             {tab.label}
           </button>
         ))}
+        {/* 밑줄 애니메이션 효과 */}
+        <div
+          className={styles.indicator}
+          style={{ transform: `translateX(${activeIndex * 100}%)` }}
+        />
       </div>
 
       {/* 선택된 탭의 내용 */}
