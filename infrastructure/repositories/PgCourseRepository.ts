@@ -38,4 +38,18 @@ export class PgCourseRepository implements CourseRepository {
       await prisma.$disconnect();
     }
   }
+
+  async deleteCourse(courseId: number): Promise<void> {
+    try {
+      await prisma.course.delete({
+        where: {
+          id: courseId,
+        },
+      });
+    } catch (error) {
+      console.error("코스 삭제 중 오류 발생", error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }

@@ -3,7 +3,7 @@ import { PgCourseEventRepository } from "@/infrastructure/repositories/PgCourseE
 import { PgCourseRepository } from "@/infrastructure/repositories/PgCourseRepository";
 import { PgEventRepository } from "@/infrastructure/repositories/PgEventRepository";
 import { getUserIdFromToken } from "@/utils/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -39,5 +39,36 @@ export async function GET() {
   } catch (error) {
     console.error("서버 오류 발생:", error);
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const userId = await getUserIdFromToken();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    const body = await req.json();
+    const { courseId } = body;
+    if (!courseId) {
+      return NextResponse.json(
+        { error: "잘못된 입력입니다." },
+        { status: 400 }
+      );
+    }
+
+    const courseRepository = new PgCourseRepository();
+    courseRepository.deleteCourse(courseId);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("코스 삭제 중 오류 발생:", error);
+    return NextResponse.json(
+      { error: "코스 삭제 중 오류가 발생했습니다." },
+      { status: 500 }
+    );
   }
 }
