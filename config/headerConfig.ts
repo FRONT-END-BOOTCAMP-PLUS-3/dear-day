@@ -59,10 +59,6 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
     config: { type: "back", title: "스타 등록하기" },
   },
   {
-    pattern: /^\/member\/search_star$/,
-    config: { type: "back", title: "스타 검색" },
-  },
-  {
     pattern: /^\/member\/search_star\/[^/]+$/,
     config: { type: "back", title: "" },
   },
