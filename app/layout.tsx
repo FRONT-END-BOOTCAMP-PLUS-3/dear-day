@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import MainHeader from "@/components/Header/MainHeader/MainHeader";
 import BackHeader from "@/components/Header/BackHeader/BackHeader";
 import DetailHeader from "@/components/Header/DetailHeader/DetailHeader";
@@ -8,6 +8,7 @@ import { headerConfig } from "@/config/headerConfig";
 import "./globals.scss";
 import Script from "next/script";
 import { useHeaderStore } from "@/store/HeaderStore";
+import { useEffect } from "react";
 
 export default function RootLayout({
   children,
@@ -15,12 +16,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const dynamicTitle = useHeaderStore((state) => state.title); // Zustand에서 title 가져오기
 
   // 현재 경로와 일치하는 헤더 설정 찾기
   const headerInfo = headerConfig.find(({ pattern }) =>
     pattern.test(pathname as string)
   )?.config;
+
+  useEffect(() => {
+    if (!headerInfo) {
+      router.replace("/login"); // headerConfig에 없는 경로면 로그인 페이지로 리다이렉트
+    }
+  }, [pathname, headerInfo, router]);
 
   let HeaderComponent;
   if (headerInfo?.type === "back") {
