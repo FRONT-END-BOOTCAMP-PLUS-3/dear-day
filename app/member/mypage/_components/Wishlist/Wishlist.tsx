@@ -1,3 +1,5 @@
+"use client";
+
 import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
 import SmallCardView from "@/components/EventView/SmallCardView/SmallCardView";
 import StarView from "@/components/StarView/StarView";
@@ -9,8 +11,11 @@ import { useEffect, useState } from "react";
 import { UserLikedStarDto } from "@/application/usecases/mypage/dto/UserLikedStarDto";
 import { UserLikedEventDto } from "@/application/usecases/mypage/dto/UserLikedEventDto";
 import EmptyText from "../EmptyText/EmptyText";
+import { useRouter } from "next/navigation";
 
 const Wishlist = () => {
+  const router = useRouter();
+
   const [isModalOpen, toggleModal] = useToggle(false);
   const [starData, setStarData] = useState<UserLikedStarDto[]>([]);
   const [likedEvents, setLikedEvents] = useState<UserLikedEventDto[]>([]);
@@ -45,18 +50,23 @@ const Wishlist = () => {
     fetchLikedEvents();
   }, []);
 
+  const handleStarViewClick = (starId?: number) => {
+    if (!starId) return;
+    router.push(`/member/search_star/${starId}`);
+  };
+
   return (
     <div className={styles.tabContent}>
       <p className={styles.title}>찜한 스타</p>
       <ScrollCardContainer variant="gridStar">
         <StarUpload onClick={toggleModal} />
         {starData.map((card) => (
-          <StarView
+          <div
             key={card.starId}
-            starId={card.starId}
-            starImage={card.image}
-            starName={card.name}
-          />
+            onClick={() => handleStarViewClick(card.starId)}
+          >
+            <StarView starImage={card.image} starName={card.name} />
+          </div>
         ))}
       </ScrollCardContainer>
       <p className={styles.title}>찜한 생카</p>

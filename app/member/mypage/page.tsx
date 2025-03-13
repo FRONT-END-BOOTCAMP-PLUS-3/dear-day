@@ -1,4 +1,5 @@
 "use client";
+
 import Profile from "./_components/Profile/Profile";
 import Tab from "./_components/Tab/Tab";
 import Wishlist from "./_components/Wishlist/Wishlist";

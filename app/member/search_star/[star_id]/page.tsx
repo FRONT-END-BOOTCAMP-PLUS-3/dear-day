@@ -36,8 +36,8 @@ const MemberSearchResultPage = () => {
         }
 
         const { data } = await response.json();
-        console.log(data);
-        setEventList(data);
+
+        setEventList(data.length > 0 ? data : []); // 데이터가 없을 경우 빈 배열로 설정
       } catch (error) {
         console.log("목록 조회 실패: ", error);
         setEventList([]);
@@ -65,7 +65,7 @@ const MemberSearchResultPage = () => {
           image:
             data.image && data.image.trim() !== ""
               ? data.image
-              : "/default-profile.png",
+              : "/event-detail-error/main.png",
           stageName: data.stageName,
           group: data.group ?? null,
           birthday: data.birthday ?? undefined,
@@ -108,7 +108,7 @@ const MemberSearchResultPage = () => {
         </div>
       )}
       <div>
-        {eventList ? (
+        {eventList.length > 0 ? ( // ✅ 데이터가 있을 때만 리스트 표시
           <ul>
             {eventList.map((event) => (
               <ListView
@@ -126,7 +126,7 @@ const MemberSearchResultPage = () => {
           </ul>
         ) : (
           <div className={styles.noResult}>
-            <p>검색 결과가 없습니다.</p>
+            <p>등록된 생일카페가 없습니다.</p>
           </div>
         )}
       </div>
