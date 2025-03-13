@@ -31,7 +31,9 @@ const Wishlist = () => {
       const data = await response.json();
       setStarData(data);
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 :", error);
+      }
     }
   };
 
@@ -41,7 +43,9 @@ const Wishlist = () => {
       const data = await response.json();
       setLikedEvents(data);
     } catch (error) {
-      console.error("Liked Events Fetch Error:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 좋아요 목록 불러오는 중 오류 발생:", error);
+      }
     }
   };
 

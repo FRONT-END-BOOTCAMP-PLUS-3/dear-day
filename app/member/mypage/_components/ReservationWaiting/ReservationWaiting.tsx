@@ -32,7 +32,9 @@ const ReservationWaiting = () => {
       const data = await response.json();
       setReservationTicketData(data);
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 :", error);
+      }
     }
   };
   const fetchWaitingCardView = async () => {
@@ -46,7 +48,9 @@ const ReservationWaiting = () => {
       const data = await response.json();
       setWaitingTicketData(data);
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 :", error);
+      }
     }
   };
   const fetchVisitedEvent = async () => {
@@ -60,7 +64,9 @@ const ReservationWaiting = () => {
       const data = await response.json();
       setVisitedEventData(data);
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 :", error);
+      }
     }
   };
 

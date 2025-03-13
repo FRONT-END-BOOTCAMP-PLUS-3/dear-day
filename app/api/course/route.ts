@@ -30,14 +30,18 @@ export async function GET() {
       );
       return NextResponse.json(course);
     } catch (error) {
-      console.error("코스 목록 오류 발생", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 코스 목록 오류 발생:", error);
+      }
       return NextResponse.json(
         { error: "코스 목록을 찾을 수 없습니다." },
         { status: 404 }
       );
     }
   } catch (error) {
-    console.error("서버 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 서버 오류 발생:", error);
+    }
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }
@@ -65,7 +69,9 @@ export async function DELETE(req: NextRequest) {
     courseRepository.deleteCourse(courseId);
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("코스 삭제 중 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 코스 삭제 중 오류 발생:", error);
+    }
     return NextResponse.json(
       { error: "코스 삭제 중 오류가 발생했습니다." },
       { status: 500 }

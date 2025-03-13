@@ -64,8 +64,6 @@ const DateTimeSelectButton: React.FC<DateTimeSelectButtonProps> = ({
     setSelectedDate(date);
     setSelectedTime(null);
     const isoDate = convertToISODate(date);
-    console.log("선택한 날짜", date);
-    console.log("선택한 날짜", isoDate);
 
     onSelectDate(isoDate);
   };

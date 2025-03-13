@@ -26,13 +26,17 @@ const CourseEditPage = () => {
           credentials: "include",
         });
         if (!response.ok) {
-          console.error("Failed to fetch liked events");
+          if (process.env.NODE_ENV === "development") {
+            console.error("🚨 이벤트 불러오는 중 에러 발생:");
+          }
           return;
         }
         const data = await response.json();
         setLikedEvents(data);
       } catch (error) {
-        console.error("Error fetching liked events:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 좋아요 목록 불러오는 중 에러 발생:", error);
+        }
       }
     }
     fetchLikedEvents();
@@ -49,7 +53,9 @@ const CourseEditPage = () => {
           }
         );
         if (!response.ok) {
-          console.error("Failed to fetch course events");
+          if (process.env.NODE_ENV === "development") {
+            console.error("🚨 코스 목록 불러오는 중 에러 발생");
+          }
           return;
         }
         const data = await response.json();
@@ -57,7 +63,9 @@ const CourseEditPage = () => {
         setSelectedEvents(ids);
         setOriginalCourseEvents(ids);
       } catch (error) {
-        console.error("Error fetching course events:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 코스 이벤트 불러오는 중 에러 발생:", error);
+        }
       }
     }
     fetchCourseEvents();
@@ -92,7 +100,9 @@ const CourseEditPage = () => {
 
       router.back();
     } catch (error) {
-      console.error("코스 수정 실패:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 코스 수정 실패:", error);
+      }
       alert("코스 수정에 실패했습니다.");
     }
   };

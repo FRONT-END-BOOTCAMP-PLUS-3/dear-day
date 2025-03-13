@@ -79,10 +79,6 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
       set((state) => ({
         eventData: { ...state.eventData, ...data },
       }));
-      console.log(
-        "최신 Store 데이터:",
-        useRegisterEventStore.getState().eventData
-      );
       resolve();
     }),
   resetEventData: () =>

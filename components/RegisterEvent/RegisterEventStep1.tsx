@@ -72,7 +72,6 @@ const RegisterEventStep1 = ({
   }, [eventData, setValue]);
 
   const onSubmit = (data: RegisterEventStep1Form) => {
-    console.log("Step1 제출 데이터:", data);
     updateEventData({
       placeName: data.placeName,
       address: data.address,

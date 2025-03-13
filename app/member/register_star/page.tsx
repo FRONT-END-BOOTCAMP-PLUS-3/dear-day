@@ -64,7 +64,9 @@ const RegisterStarPage = () => {
         router.replace("/");
       }
     } catch (error) {
-      console.error("스타 등록 실패(page): ", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 스타 등록 실패:", error);
+      }
     }
   };
 

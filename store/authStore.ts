@@ -27,7 +27,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       const data = await res.json();
       set({ user: { id: data.id } });
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 로그인 실패:", error);
+      }
       throw new Error("로그인 실패"); // 프론트엔드에서 에러 메시지를 처리하도록 다시 던짐
     }
   },

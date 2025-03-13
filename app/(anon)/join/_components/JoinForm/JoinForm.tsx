@@ -87,7 +87,9 @@ export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
       checkFormValidity(formData, !data.isDuplicate);
     } catch (error) {
       setEmailError("이메일 확인 중 오류가 발생했습니다.");
-      console.error("이메일 확인 중 오류 발생:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 이메일 확인 중 오류 발생:", error);
+      }
     }
   };
   // ✅ 폼이 유효해지면 부모 컴포넌트로 데이터 전달

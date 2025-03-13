@@ -40,7 +40,9 @@ const SearchStar: React.FC<SearchStarProps> = ({ onSelectStarId }) => {
         const data = await searchStarByKeyword(debouncedQuery);
         setResults(data);
       } catch (error) {
-        console.error("검색 중 오류 발생:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 검색 중 오류 발생:", error);
+        }
       } finally {
         setIsLoading(false);
       }

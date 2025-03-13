@@ -38,7 +38,9 @@ const DropNotice: React.FC<DropNoticeProps> = ({
 
       onConfirm();
     } catch (error) {
-      console.error("탈퇴 실패:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 탈퇴 실패:", error);
+      }
       alert("탈퇴 처리 중 오류가 발생했습니다.");
     }
   };

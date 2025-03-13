@@ -31,7 +31,9 @@ export default function CoursePage() {
           { method: "GET" }
         );
         if (!response.ok) {
-          console.error("Failed to fetch event data");
+          if (process.env.NODE_ENV === "development") {
+            console.error("🚨 코스 불러오기 실패");
+          }
           return;
         }
         const data: ShowCourseEventsDto[] = await response.json();
@@ -41,7 +43,9 @@ export default function CoursePage() {
           setCourseEvent(initialIds);
         }
       } catch (error) {
-        console.error("Error fetching event data:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 코스 불러오기 실패:", error);
+        }
       }
     }
     fetchData();
@@ -88,7 +92,9 @@ export default function CoursePage() {
         throw new Error("코스 순서 업데이트 실패");
       }
     } catch (error) {
-      console.error("코스 순서 업데이트 에러:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 코스 순서 업데이트 실패:", error);
+      }
     }
     setIsEditMode(false);
   };

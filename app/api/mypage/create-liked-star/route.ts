@@ -32,7 +32,9 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("스타 추가 중 오류:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 API 요청 처리 중 오류 발생:", error);
+    }
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

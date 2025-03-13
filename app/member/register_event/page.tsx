@@ -39,11 +39,6 @@ export default function RegisterEventPage() {
             ? new Date(data.endDate)
             : eventData.endDate,
       });
-
-      console.log(
-        "🚀 최신 Store 데이터:",
-        useRegisterEventStore.getState().eventData
-      );
     }
 
     if (step < 3) {
@@ -54,11 +49,7 @@ export default function RegisterEventPage() {
   // 스타 선택 시 store에 저장 후 step 이동
   const handleSelectStar = async (id: number) => {
     await updateEventData({ starId: id });
-    console.log("✅ 선택된 스타 ID:", id);
-    console.log(
-      "🚀 최신 Store 데이터:",
-      useRegisterEventStore.getState().eventData
-    );
+
     setStep(1);
   };
 

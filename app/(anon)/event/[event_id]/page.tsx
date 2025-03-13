@@ -29,7 +29,9 @@ async function getEventData(
     if (!res.ok) throw new Error("Failed to fetch event data");
     return await res.json();
   } catch (error) {
-    console.error("Error fetching event data:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 fetch 에러:", error);
+    }
     return null;
   }
 }

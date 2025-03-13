@@ -31,7 +31,9 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
         const data = await response.json();
         setLiked(!!data);
       } catch (error) {
-        console.error("좋아요 상태 확인 실패:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 좋아요 상태 확인 실패:", error);
+        }
       }
     };
     checkLikedStatus();
@@ -78,7 +80,9 @@ const HeartButton = ({ eventId }: HeartButtonProps) => {
         }
       }
     } catch (error) {
-      console.error("좋아요 요청 에러:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 좋아요 요청 실패:", error);
+      }
       setLiked(previousLiked);
     }
   };

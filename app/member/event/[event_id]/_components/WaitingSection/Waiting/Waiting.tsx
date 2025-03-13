@@ -35,7 +35,9 @@ export default function Waiting({ eventId, headCount, setHeadCount }: Props) {
         const data = await response.json();
         setWaitingCount(data.waitingCount);
       } catch (err) {
-        console.error(err);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 대기 정보 불러오기 오류:", err);
+        }
         setError("대기 정보를 불러올 수 없습니다.");
       } finally {
         setLoading(false);

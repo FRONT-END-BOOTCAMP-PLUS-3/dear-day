@@ -38,7 +38,9 @@ const useReservations = (
         const transformedData = transformReservations(data);
         setReservations(transformedData);
       } catch (err) {
-        console.error(err);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 :", err);
+        }
         setReservations([]);
       }
     };

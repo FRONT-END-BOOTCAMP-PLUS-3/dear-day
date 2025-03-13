@@ -17,7 +17,9 @@ const MemberSearchResultPage = () => {
 
   useEffect(() => {
     if (!starId) {
-      console.log("id를 찾을 수 없음");
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 ID를 찾을 수 없음");
+      }
       return;
     }
 
@@ -31,7 +33,9 @@ const MemberSearchResultPage = () => {
         );
 
         if (!response.ok) {
-          console.error("목록을 불러오는 데 실패했습니다.");
+          if (process.env.NODE_ENV === "development") {
+            console.error("🚨 목록을 불러오는데 실패했습니다");
+          }
           return [];
         }
 
@@ -39,7 +43,9 @@ const MemberSearchResultPage = () => {
 
         setEventList(data.length > 0 ? data : []); // 데이터가 없을 경우 빈 배열로 설정
       } catch (error) {
-        console.log("목록 조회 실패: ", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 목록 조회 실패:", error);
+        }
         setEventList([]);
       }
     };
@@ -54,7 +60,6 @@ const MemberSearchResultPage = () => {
         if (!response.ok) throw new Error("Failed to fetch user info");
 
         const { data } = await response.json();
-        console.log("API 응답 데이터:", data);
 
         if (!data) {
           throw new Error("Invalid response structure");
@@ -73,7 +78,9 @@ const MemberSearchResultPage = () => {
 
         setStarProfile(starData);
       } catch (error) {
-        console.log("프로필 조회 실패: ", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 프로필 조회 실패:", error);
+        }
       }
     };
 

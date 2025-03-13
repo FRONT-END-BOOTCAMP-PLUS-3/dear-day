@@ -30,7 +30,9 @@ export default function CoursePage() {
           credentials: "include",
         });
         if (!response.ok) {
-          console.error("코스 목록 불러오기 실패");
+          if (process.env.NODE_ENV === "development") {
+            console.error("🚨 코스 목록 불러오기 실패");
+          }
           return;
         }
         const data: ShowCourseListDto[] = await response.json();
@@ -44,7 +46,9 @@ export default function CoursePage() {
         setCourseList(currentCourse);
         setPastCourseList(pastCourse);
       } catch (error) {
-        console.error("코스 목록 불러오기 실패:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 코스 목록 불러오기 실패:", error);
+        }
       }
     };
     fetchCourseList();
@@ -69,7 +73,9 @@ export default function CoursePage() {
         );
       }
     } catch (error) {
-      console.error("코스 삭제 실패:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 코스 삭제 실패:", error);
+      }
     }
   };
 

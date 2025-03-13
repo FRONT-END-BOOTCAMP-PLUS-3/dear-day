@@ -23,7 +23,9 @@ const LoginForm = () => {
       alert("로그인 성공!");
       router.push("/member");
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 로그인 실패:", error);
+      }
       alert("로그인 실패"); // ✅ 사용자에게 에러 메시지 표시
     }
   }

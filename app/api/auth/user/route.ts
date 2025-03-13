@@ -18,7 +18,9 @@ export async function GET() {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
   } catch (err) {
-    console.log(err);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 서버 오류 발생:", err);
+    }
     return NextResponse.json({ message: "Invalid token" }, { status: 401 });
   }
 }
