@@ -1,4 +1,5 @@
 "use client";
+
 import Profile from "./_components/Profile/Profile";
 import Tab from "./_components/Tab/Tab";
 import Wishlist from "./_components/Wishlist/Wishlist";
@@ -6,7 +7,6 @@ import styles from "./page.module.scss";
 import ReservationWaiting from "./_components/ReservationWaiting/ReservationWaiting";
 import { useEffect, useState } from "react";
 import { UserInfoDto } from "@/application/usecases/mypage/dto/UserInfoDto";
-import TwoTab from "@/components/Tab/TwoTab/TwoTab";
 
 const Page = () => {
   const [userInfo, setUserInfo] = useState<UserInfoDto>();
