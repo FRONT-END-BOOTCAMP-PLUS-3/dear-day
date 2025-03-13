@@ -187,20 +187,28 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
                 </ul>
               </div>
               <div className={styles.waitingFooter}>
-                <p>
-                  내 앞에{" "}
-                  <span className={styles.waitingNumber}>
-                    <strong>{data.waitingAhead}</strong>
-                  </span>{" "}
-                  팀
-                </p>
-                <h1>
-                  대기 번호{" "}
-                  <span className={styles.waitingNumber}>
-                    <strong>{data.waitingNumber}</strong>
-                  </span>{" "}
-                  번
-                </h1>
+                {data.waitingAhead === 0 ? (
+                  <div className={styles.floatingText}>
+                    <h2>지금 바로 입장하세요 !</h2>
+                  </div>
+                ) : (
+                  <>
+                    <p>
+                      내 앞에{" "}
+                      <span className={styles.waitingNumber}>
+                        <strong>{data.waitingAhead}</strong>
+                      </span>{" "}
+                      팀
+                    </p>
+                    <h1>
+                      대기 번호{" "}
+                      <span className={styles.waitingNumber}>
+                        <strong>{data.waitingNumber}</strong>
+                      </span>{" "}
+                      번
+                    </h1>
+                  </>
+                )}
               </div>
             </>
           )}
