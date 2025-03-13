@@ -10,7 +10,12 @@ const StarView = ({ starImage, starName }: StarViewProps) => {
   return (
     <div className={styles.starViewContainer}>
       <div className={styles.starImage}>
-        <Image src={starImage} alt={starName} fill className={styles.image} />
+        <Image
+          src={process.env.NEXT_PUBLIC_FRONT_SRC + starImage}
+          alt={starName}
+          fill
+          className={styles.image}
+        />
       </div>
       <p className={styles.starName}>{starName}</p>
     </div>

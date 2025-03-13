@@ -40,7 +40,7 @@ const CourseListView: React.FC<CourseListViewProps> = ({
       >
         <Image
           className={styles.courseListImg}
-          src={imgSrc}
+          src={process.env.NEXT_PUBLIC_FRONT_SRC + imgSrc}
           alt={name}
           width={56}
           height={56}
