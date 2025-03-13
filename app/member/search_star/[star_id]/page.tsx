@@ -100,9 +100,9 @@ const MemberSearchResultPage = () => {
               <p>{starProfile.birthday}</p>
             </div>
             <div className={styles.heartBox}>
-              <button className={styles.heartBtn}>
+              <div className={styles.heartBtn}>
                 <StarButton starId={starProfile.id} />
-              </button>
+              </div>
             </div>
           </div>
         </div>
