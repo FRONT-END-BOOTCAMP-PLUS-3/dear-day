@@ -9,7 +9,10 @@ export const createStarUsecase = async (
   data: CreateStarDto,
   imageFile: File
 ): Promise<void> => {
-  const uploadFolder = path.join(process.cwd(), "/demo/star"); // 이미지 저장될 경로
+  const uploadFolder = path.join(
+    process.cwd(),
+    `${process.env.DEMO_FOLDER_LOCATION}/demo/star`
+  ); // 이미지 저장될 경로
 
   // 폴더가 없으면 생성
   if (!fs.existsSync(uploadFolder)) {
