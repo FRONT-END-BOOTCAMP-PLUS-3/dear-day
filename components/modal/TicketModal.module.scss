@@ -183,3 +183,19 @@
 .waitingNumber {
   color: var(--color-primary);
 }
+@keyframes floating {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.floatingText {
+  display: inline-block;
+  animation: floating 1.3s infinite ease-in-out;
+}
