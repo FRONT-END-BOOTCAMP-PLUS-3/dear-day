@@ -30,7 +30,9 @@ export async function PATCH(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("서버 오류:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 API 요청 처리 중 오류 발생:", error);
+    }
     return NextResponse.json({ message: "서버 오류 발생" }, { status: 500 });
   }
 }

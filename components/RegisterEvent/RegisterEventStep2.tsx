@@ -64,8 +64,6 @@ const RegisterEventStep2 = ({
   }, [eventData, reset]);
 
   const onSubmit = (data: RegisterEventStep2Form) => {
-    console.log("Step2 제출 데이터:", data);
-
     updateEventData({
       mode: data.mode,
       openAt: data.mode === "WAITING" ? null : data.openAt,

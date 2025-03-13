@@ -71,9 +71,7 @@ export default function ReservationSection({ eventData }: Props) {
     return () => clearInterval(interval);
   }, [eventData]);
 
-  useEffect(() => {
-    console.log("🔄 isOpen 변경됨:", isOpen);
-  }, [isOpen]);
+  useEffect(() => {}, [isOpen]);
 
   // 모달 닫힐 때 페이지 새로고침
   const handleCloseModal = () => {
@@ -115,7 +113,9 @@ export default function ReservationSection({ eventData }: Props) {
       toggleModal();
     } catch (error) {
       alert("예약 중 오류가 발생했습니다. 다시 시도해주세요.");
-      console.error("예약 오류:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 예약 오류:", error);
+      }
     }
   };
 

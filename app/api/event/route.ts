@@ -50,7 +50,9 @@ export async function GET(req: Request) {
       }
     }
   } catch (error) {
-    console.error("서버 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 서버 오류 발생:", error);
+    }
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }
@@ -91,7 +93,9 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("🚨 이벤트 등록 중 오류:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 이벤트 등록 중 오류 발생:", error);
+    }
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }

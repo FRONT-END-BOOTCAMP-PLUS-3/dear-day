@@ -101,7 +101,6 @@ const RegisterEventStep3 = ({
       if (!response.ok) throw new Error("이벤트 등록 실패");
 
       const result = await response.json();
-      console.log("이벤트 등록 성공:", result);
 
       updateEventData({
         mainImage: result.mainImage,
@@ -111,7 +110,9 @@ const RegisterEventStep3 = ({
       alert("생일 카페 등록 완료!");
       router.replace(`/member/event/${result.eventId}`);
     } catch (error) {
-      console.error("이벤트 등록 중 오류:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 이벤트 등록 중 요류:", error);
+      }
       setIsSubmitting(false);
     }
   };

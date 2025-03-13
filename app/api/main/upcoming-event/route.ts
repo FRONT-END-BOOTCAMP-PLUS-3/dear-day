@@ -36,7 +36,9 @@ export async function GET() {
       throw error;
     }
   } catch (error: unknown) {
-    console.log("서버 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 서버 오류 발생:", error);
+    }
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }

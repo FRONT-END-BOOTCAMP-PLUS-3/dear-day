@@ -34,7 +34,9 @@ export default function CourseModal({
       });
       router.push(`/member/course`);
     } catch (error) {
-      console.error("코스 생성 실패:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 코스 생성 실패:", error);
+      }
       alert("코스 생성에 실패했습니다.");
     }
   };

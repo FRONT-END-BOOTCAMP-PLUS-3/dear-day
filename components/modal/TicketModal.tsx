@@ -51,7 +51,9 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
         const result: TicketData = await response.json();
         setData(result);
       } catch (error) {
-        console.error(error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 :", error);
+        }
       } finally {
         setLoading(false);
       }
@@ -76,7 +78,9 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
       }
       onClose();
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 :", error);
+      }
       alert("취소에 실패했습니다.");
     }
   };

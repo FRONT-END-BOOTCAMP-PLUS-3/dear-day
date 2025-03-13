@@ -33,7 +33,6 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
       <li
         className={styles.smallCardView}
         onClick={() => {
-          console.log("✅ TicketCardView 클릭됨!");
           setIsModalOpen(true);
         }}
       >

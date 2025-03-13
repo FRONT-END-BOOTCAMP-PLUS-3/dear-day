@@ -78,7 +78,9 @@ export class PgStarRepository implements StarRepository {
         where: { id: starId },
       });
     } catch (error) {
-      console.error("스타 정보 조회 중 오류 발생:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 스타 정보 조회 중 오류 발생:", error);
+      }
       throw new Error("스타 정보를 불러오는 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect(); // DB 연결 해제

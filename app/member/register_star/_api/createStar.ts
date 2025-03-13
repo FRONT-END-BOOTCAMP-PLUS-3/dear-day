@@ -16,7 +16,9 @@ export const createStar = async (starData: CreateStarDto, imageFile: File) => {
   try {
     return await response.json();
   } catch (error) {
-    console.error("JSON 파싱 오류:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 JSON 파싱 오류:", error);
+    }
     throw new Error("서버에서 올바른 JSON 응답을 반환하지 않았습니다.");
   }
 };

@@ -27,11 +27,15 @@ export async function getUserIdFromToken(): Promise<string | null> {
 
       return decoded.id as string; // 정상적인 userId 반환
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 토큰 검증 실패:", error);
+      }
       return null; // 토큰 검증 실패
     }
   } catch (error) {
-    console.error("🔥 토큰 해석 중 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 토큰 해석 중 오류 발생:", error);
+    }
     return null;
   }
 }

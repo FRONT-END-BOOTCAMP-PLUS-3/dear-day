@@ -21,7 +21,9 @@ const CourseCreatePage = () => {
         const data = await response.json();
         setLikedEvents(data);
       } catch (error) {
-        console.error("Liked Events Fetch Error:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 찜 목록 불러오기 에러 발생:", error);
+        }
       }
     };
     fetchLikedEvents();
