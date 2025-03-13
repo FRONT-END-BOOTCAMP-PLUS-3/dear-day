@@ -122,7 +122,7 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
               <ul className={styles.resultList}>
                 {searchResults.map((place) => (
                   <li
-                    key={place.address}
+                    key={place.placeName}
                     onClick={() => handleSelectLocation(place)}
                   >
                     <strong>{place.placeName}</strong>
