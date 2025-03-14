@@ -41,10 +41,11 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
     <li className={isPast ? styles.pastLargeCardView : styles.LargeCardView}>
       <Image
         className={styles.LargeCardImg}
-        src={mainImage}
+        src={process.env.NEXT_PUBLIC_FRONT_IMG + mainImage}
         alt={title}
         width={106}
         height={128}
+        unoptimized
       />
       <div className={styles.LargeCardContent}>
         <h3 className={styles.LargeCardTitle}>{title}</h3>
