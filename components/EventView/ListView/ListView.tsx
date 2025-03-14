@@ -43,7 +43,7 @@ const ListView: React.FC<ListViewProps> = ({
   pathSegments.pop();
 
   // `member`가 포함된 경우, `/member`까지만 유지
-  let newBasePath = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_PORT}`;
+  let newBasePath = `${process.env.NEXT_PUBLIC_API_URL}`;
   if (pathSegments.includes("member")) {
     newBasePath = `/${pathSegments.slice(0, pathSegments.indexOf("member") + 1).join("/")}`;
   }
