@@ -5,7 +5,7 @@ import Icon from "@/components/Icon/Icon";
 import styles from "./MainButton.module.scss";
 
 const MainButtonList = [
-  { icon: "list", text: "생카 목록", route: "/login" },
+  { icon: "list", text: "생카 목록", route: "/list" },
   { icon: "course", text: "내 코스", route: "/login" },
   { icon: "edit", text: "생카 등록", route: "/login" },
   { icon: "black-heart", text: "찜 목록", route: "/login" },

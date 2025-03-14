@@ -17,7 +17,7 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
     config: { type: "back", title: "" },
   },
 
-  { pattern: /^\/member\/$/, config: { type: "main" } },
+  { pattern: /^\/member$/, config: { type: "main" } },
   {
     pattern: /^\/member\/course$/,
     config: { type: "back", title: "내 코스" },
