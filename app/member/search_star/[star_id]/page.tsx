@@ -95,9 +95,10 @@ const MemberSearchResultPage = () => {
           <div className={styles.imageBox}>
             <Image
               className={styles.cardImg}
-              src={starProfile.image}
+              src={process.env.NEXT_PUBLIC_FRONT_IMG + starProfile.image}
               alt={starProfile.stageName}
               fill
+              unoptimized
             />
           </div>
           <div className={styles.profile}>
