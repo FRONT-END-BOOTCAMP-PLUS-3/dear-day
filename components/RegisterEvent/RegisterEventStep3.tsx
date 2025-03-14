@@ -74,7 +74,7 @@ const RegisterEventStep3 = ({
 
     updateEventData({
       ...eventData,
-      benefits: data.benefits,
+      ...data,
     });
 
     const formData = new FormData();
@@ -88,7 +88,6 @@ const RegisterEventStep3 = ({
       "eventData",
       JSON.stringify({
         ...useRegisterEventStore.getState().eventData,
-        benefits: data.benefits,
       })
     );
 
@@ -103,11 +102,12 @@ const RegisterEventStep3 = ({
       const result = await response.json();
 
       updateEventData({
-        mainImage: result.mainImage,
-        detailImage: result.detailImage,
+        ...eventData,
+        ...data,
       });
-
+      console.log("스탭3", eventData);
       alert("생일 카페 등록 완료!");
+      useRegisterEventStore.getState().resetEventData();
       router.replace(`/member/event/${result.eventId}`);
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
