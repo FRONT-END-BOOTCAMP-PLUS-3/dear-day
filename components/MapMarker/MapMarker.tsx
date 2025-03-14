@@ -21,7 +21,12 @@ const MapMarker = ({
         {isCourse && <span className={styles.indexNumber}>{index}</span>}
 
         {/* ✅ 이미지 */}
-        <Image src={mainImage} alt="Marker" width={30} height={30} />
+        <Image
+          src={process.env.NEXT_PUBLIC_FRONT_SRC + mainImage}
+          alt="Marker"
+          width={30}
+          height={30}
+        />
       </div>
     </div>
   );

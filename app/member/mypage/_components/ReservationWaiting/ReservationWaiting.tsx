@@ -91,6 +91,9 @@ const ReservationWaiting = () => {
               stageName={card.stageName}
               address={card.address}
               reservationConfirmedAt={card.reservationConfirmedAt}
+              onTicketCancel={() => {
+                fetchReservationCardView();
+              }}
             />
           ))}
         </SwipeCardContainer>
@@ -111,6 +114,9 @@ const ReservationWaiting = () => {
               address={card.address}
               waitingAhead={card.waitingAhead}
               waitingNumber={card.waitingNumber}
+              onTicketCancel={() => {
+                fetchWaitingCardView();
+              }}
             />
           ))}
         </SwipeCardContainer>
