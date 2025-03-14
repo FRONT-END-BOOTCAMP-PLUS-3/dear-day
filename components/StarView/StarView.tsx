@@ -10,7 +10,6 @@ const StarView = ({ starImage, starName }: StarViewProps) => {
   return (
     <div className={styles.starViewContainer}>
       <div className={styles.starImage}>
-
         <Image
           src={process.env.NEXT_PUBLIC_FRONT_IMG + starImage}
           alt={starName}
@@ -18,7 +17,6 @@ const StarView = ({ starImage, starName }: StarViewProps) => {
           className={styles.image}
           unoptimized
         />
-
       </div>
       <p className={styles.starName}>{starName}</p>
     </div>
