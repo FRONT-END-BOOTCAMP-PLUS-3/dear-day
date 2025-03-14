@@ -42,9 +42,10 @@ const TicketCardView: React.FC<
         <div className={styles.smallCardWrapper}>
           <Image
             className={styles.smallCardImg}
-            src={mainImage}
+            src={process.env.NEXT_PUBLIC_FRONT_IMG + mainImage}
             alt={title}
             fill
+            unoptimized
           />
           {/* mode 값에 따라 다른 UI 렌더링 */}
           {mode === "RESERVATION" ? (

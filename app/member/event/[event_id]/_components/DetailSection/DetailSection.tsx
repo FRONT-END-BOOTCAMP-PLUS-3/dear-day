@@ -9,7 +9,14 @@ export default function DetailSection({ eventData }: Props) {
   return (
     <div>
       {eventData.detailImage.map((img, idx) => (
-        <Image key={idx} src={img} alt="Event Image" width={500} height={300} />
+        <Image
+          key={idx}
+          src={process.env.NEXT_PUBLIC_FRONT_IMG + img}
+          alt="Event Image"
+          width={500}
+          height={300}
+          unoptimized
+        />
       ))}
     </div>
   );
