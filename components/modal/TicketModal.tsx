@@ -102,7 +102,7 @@ const TicketModal = ({
           <div className={styles.ticketHeader}>
             <div className={styles.imageContainer}>
               <Image
-                src={process.env.NEXT_PUBLIC_FRONT_SRC + data.mainImage}
+                src={data.mainImage}
                 alt="Ticket Thumbnail"
                 width={200}
                 height={0}

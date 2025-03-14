@@ -55,12 +55,7 @@ const ListView: React.FC<ListViewProps> = ({
     <Link className={styles.listView} href={newPath} passHref>
       <li className={styles.listItemContainer}>
         <div className={styles.listContent}>
-          <Image
-            src={process.env.NEXT_PUBLIC_FRONT_SRC + mainImage}
-            alt={title}
-            width={78}
-            height={100}
-          />
+          <Image src={mainImage} alt={title} width={78} height={100} />
           <div>
             <h3 className={styles.listTitle}>{title}</h3>
             <div className={styles.listText}>
