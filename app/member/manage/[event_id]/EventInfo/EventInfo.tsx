@@ -31,7 +31,7 @@ const EventInfo: React.FC<EventInfoProps> = ({
   return (
     <div className={styles.eventInfoContainer}>
       <Image
-        src={process.env.NEXT_PUBLIC_FRONT_SRC + imgSrc}
+        src={imgSrc}
         alt={`${title}포스터`}
         width={107}
         height={127}

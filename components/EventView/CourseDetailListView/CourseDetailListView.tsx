@@ -58,7 +58,7 @@ const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
         <>
           <Image
             className={styles.courseDetailImg}
-            src={process.env.NEXT_PUBLIC_FRONT_SRC + eventImage}
+            src={eventImage}
             alt={title}
             width={56}
             height={56}
