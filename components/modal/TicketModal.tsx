@@ -13,6 +13,7 @@ type TicketModalProps = {
   eventId: number;
   isOpen: boolean;
   onClose: () => void;
+  onTicketCancel?: () => void;
 };
 
 type TicketData = {
@@ -35,7 +36,7 @@ const TicketModal = ({
   isOpen,
   onClose,
   onTicketCancel,
-}: TicketModalProps & { onTicketCancel: () => void }) => {
+}: TicketModalProps) => {
   const [data, setData] = useState<TicketData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isReservationModalOpen, toggleReservationModal] = useToggle(false);
@@ -82,7 +83,7 @@ const TicketModal = ({
         throw new Error("Failed to cancel the ticket");
       }
       onClose();
-      onTicketCancel();
+      onTicketCancel?.();
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.error("🚨 :", error);
