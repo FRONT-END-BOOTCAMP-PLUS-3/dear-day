@@ -30,7 +30,12 @@ type TicketData = {
   waitingAhead?: number;
 };
 
-const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
+const TicketModal = ({
+  eventId,
+  isOpen,
+  onClose,
+  onTicketCancel,
+}: TicketModalProps & { onTicketCancel: () => void }) => {
   const [data, setData] = useState<TicketData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isReservationModalOpen, toggleReservationModal] = useToggle(false);
@@ -77,6 +82,7 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
         throw new Error("Failed to cancel the ticket");
       }
       onClose();
+      onTicketCancel();
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.error("🚨 :", error);
@@ -96,7 +102,7 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
           <div className={styles.ticketHeader}>
             <div className={styles.imageContainer}>
               <Image
-                src={process.env.NEXT_PUBLIC_FRONT_SRC + data.mainImage}
+                src={data.mainImage}
                 alt="Ticket Thumbnail"
                 width={200}
                 height={0}

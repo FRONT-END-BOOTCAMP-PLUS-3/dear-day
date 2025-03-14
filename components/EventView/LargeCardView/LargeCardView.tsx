@@ -41,7 +41,7 @@ const LargeCardView: React.FC<LargeCardViewProps> = ({
     <li className={isPast ? styles.pastLargeCardView : styles.LargeCardView}>
       <Image
         className={styles.LargeCardImg}
-        src={process.env.NEXT_PUBLIC_FRONT_SRC + mainImage}
+        src={mainImage}
         alt={title}
         width={106}
         height={128}

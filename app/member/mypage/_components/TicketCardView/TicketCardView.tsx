@@ -15,7 +15,9 @@ interface TicketCardViewProps {
   reservationConfirmedAt?: string;
 }
 
-const TicketCardView: React.FC<TicketCardViewProps> = ({
+const TicketCardView: React.FC<
+  TicketCardViewProps & { onTicketCancel: () => void }
+> = ({
   mode,
   eventId,
   mainImage,
@@ -25,6 +27,7 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
   waitingNumber,
   waitingAhead,
   reservationConfirmedAt,
+  onTicketCancel,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,7 +42,7 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
         <div className={styles.smallCardWrapper}>
           <Image
             className={styles.smallCardImg}
-            src={process.env.NEXT_PUBLIC_FRONT_SRC + mainImage}
+            src={mainImage}
             alt={title}
             fill
           />
@@ -81,6 +84,7 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
           eventId={eventId}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          onTicketCancel={onTicketCancel}
         />
       )}
     </>
