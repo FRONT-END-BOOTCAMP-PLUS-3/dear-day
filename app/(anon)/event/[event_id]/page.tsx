@@ -18,9 +18,10 @@ async function getEventData(
     const queryParams = new URLSearchParams({ eventId }).toString();
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_PORT}/api/event?${queryParams}`,
+      `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_PORT}/api/anon/event?${queryParams}`,
       {
         method: "GET",
+        credentials: "include", // 서버에서도 인증 필요
         cache: "no-store", // 최신 데이터 가져오기
       }
     );
