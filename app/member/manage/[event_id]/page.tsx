@@ -176,7 +176,7 @@ const ManagePage = () => {
                 <ReservationWaitList
                   key={reservation.id}
                   id={reservation.id}
-                  index={index + 1}
+                  index={index}
                   userId={reservation.userId}
                   name={reservation.name}
                   email={reservation.email}
