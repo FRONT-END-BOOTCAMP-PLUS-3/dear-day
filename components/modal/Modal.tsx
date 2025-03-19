@@ -47,6 +47,8 @@ const Modal: React.FC<ModalProps> = ({
     [contents]
   );
 
+  const isAlertType = contents.some((content) => content.type === "alert");
+
   // inputFormData 변경 시 유효성 검사 실행
   useEffect(() => {
     setIsValid(validateForm(inputFormData));
@@ -64,13 +66,15 @@ const Modal: React.FC<ModalProps> = ({
           </div>
         ))}
         <div className={styles["actions"]}>
-          <button
-            type="button"
-            className={styles["cancel-btn"]}
-            onClick={handleClose}
-          >
-            {cancelText}
-          </button>
+          {!isAlertType && (
+            <button
+              type="button"
+              className={styles["cancel-btn"]}
+              onClick={handleClose}
+            >
+              {cancelText}
+            </button>
+          )}
           <button
             type="button"
             className={styles["confirm-btn"]}
