@@ -1,5 +1,7 @@
 .homeContainer {
   @include pageContainer;
+  width: 100%;
+  position: relative;
 }
 
 .listTitle {
@@ -11,4 +13,12 @@
 .noReservation {
   margin-top: var(--padding-lg);
   text-align: center;
+}
+
+.editButton {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%); // 가운데 정렬
+  width: 90%;
 }
