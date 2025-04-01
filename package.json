@@ -34,6 +34,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/navermaps": "^3.7.9",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "cross-env": "^7.0.3",
