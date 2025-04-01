@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { SendEmailDto } from "./dto/SendEmailDto";
 
+// 이메일 전송을 위한 SMTP 설정
 const smtpTransport = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -11,11 +12,12 @@ const smtpTransport = nodemailer.createTransport({
 
 const otpStorage: { [key: string]: string } = {}; // 이메일별 OTP 저장
 
+// 이메일로 인증 코드를 전송하는 함수
 export const SendEmailUsecase = async (
   email: string
 ): Promise<SendEmailDto> => {
   if (!email) {
-    return { ok: false };
+    return { ok: false, message: "이메일 주소가 필요합니다." }; // 이메일 주소가 없을 경우
   }
 
   const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -30,9 +32,13 @@ export const SendEmailUsecase = async (
 
   try {
     await smtpTransport.sendMail(mailOptions);
-    return { ok: true, code: generatedCode };
+    return {
+      ok: true,
+      code: generatedCode,
+      message: "인증 코드가 발송되었습니다.",
+    };
   } catch (error) {
-    console.error("Email sending error:", error);
-    return { ok: false };
+    console.error("이메일 발송 오류:", error);
+    return { ok: false, message: "이메일 발송에 실패했습니다." };
   }
 };
