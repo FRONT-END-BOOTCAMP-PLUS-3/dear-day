@@ -26,8 +26,12 @@ export const SendEmailUsecase = async (
   const mailOptions = {
     from: process.env.NODE_MAILER_ID,
     to: email,
-    subject: "[광운대학교 강의실 예약 시스템] 인증코드",
-    html: `인증번호는 <strong>${generatedCode}</strong> 이며, 만료시간 3분 내에 입력해주시길 바랍니다.`,
+    subject: "[DearDay] 회원가입 인증코드",
+    html: `
+  <h3 style="font-family: Arial, sans-serif;">인증번호: <span style="color:blue; font-size: 20px;">${generatedCode}</span></h3>
+  <p style="font-family: Arial, sans-serif;">인증번호는 <strong>3분</strong> 이내에 입력하셔야 유효합니다.</p>
+  <p style="font-family: Arial, sans-serif;">감사합니다.</p>
+`,
   };
 
   try {
