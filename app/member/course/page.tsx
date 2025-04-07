@@ -96,7 +96,7 @@ export default function CoursePage() {
         confirmText="완료"
         cancelText="취소"
       />
-      {courseList.length > 0 ? (
+      {courseList.length > 0 || pastCourseList.length > 0 ? (
         <>
           <p>다가오는 코스</p>
           {courseList.map((course) => (
