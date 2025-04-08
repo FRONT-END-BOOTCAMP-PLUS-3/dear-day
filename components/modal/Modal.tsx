@@ -18,11 +18,11 @@ const Modal: React.FC<ModalProps> = ({
     setInputFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setInputFormData({});
     setIsValid(false);
     onCancel();
-  };
+  }, [onCancel]);
 
   // 폼 유효성 검사
   const validateForm = useCallback(
@@ -47,15 +47,33 @@ const Modal: React.FC<ModalProps> = ({
     [contents]
   );
 
+  const isAlertType = contents.some((content) => content.type === "alert");
+
   // inputFormData 변경 시 유효성 검사 실행
   useEffect(() => {
     setIsValid(validateForm(inputFormData));
   }, [inputFormData, validateForm]);
 
+  // ESC 키 눌렀을 때 닫히지 않게 (alert만 예외)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !isAlertType) {
+        handleClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isAlertType, handleClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className={styles["modalContainer"]} onClick={handleClose}>
+    <div
+      className={styles["modalContainer"]}
+      onClick={() => {
+        if (!isAlertType) handleClose();
+      }}
+    >
       <div className={styles["modal"]} onClick={(e) => e.stopPropagation()}>
         {contents.map((content, idx) => (
           <div key={idx} className={styles["modalItem"]}>
@@ -64,19 +82,19 @@ const Modal: React.FC<ModalProps> = ({
           </div>
         ))}
         <div className={styles["actions"]}>
-          <button
-            type="button"
-            className={styles["cancel-btn"]}
-            onClick={handleClose}
-          >
-            {cancelText}
-          </button>
+          {!isAlertType && (
+            <button
+              type="button"
+              className={styles["cancel-btn"]}
+              onClick={handleClose}
+            >
+              {cancelText}
+            </button>
+          )}
           <button
             type="button"
             className={styles["confirm-btn"]}
-            onClick={() => {
-              onConfirm(inputFormData);
-            }}
+            onClick={() => onConfirm(inputFormData)}
             disabled={!isValid}
           >
             {confirmText}

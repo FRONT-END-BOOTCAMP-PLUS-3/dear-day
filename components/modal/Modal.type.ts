@@ -1,10 +1,16 @@
 export type ModalContent =
   | TextOnlyModalContent
+  | AlertModalContent
   | TextInputModalContent
   | CalendarModalContent;
 
 type TextOnlyModalContent = {
   type: "textOnly";
+  title: string;
+};
+
+type AlertModalContent = {
+  type: "alert";
   title: string;
 };
 
