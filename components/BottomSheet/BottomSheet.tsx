@@ -23,27 +23,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (sheetState !== "closed") {
-      const handleOutsideClick = (e: MouseEvent) => {
-        if (sheetRef.current && !sheetRef.current.contains(e.target as Node)) {
-          setSheetState("closed");
-        }
-      };
-      document.addEventListener("click", handleOutsideClick);
-      return () => {
-        document.removeEventListener("click", handleOutsideClick);
-      };
-    }
-  }, [sheetState]);
-
-  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    if (sheetState === "middle") {
-      setSheetState("open");
-    }
-  };
-
   const handleDragStart = (
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
   ) => {
@@ -120,17 +99,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
     };
   }, [dragging, handleDragMove, handleDragEnd]);
 
-  const handleDragHandleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    if (sheetState === "closed") {
-      setSheetState("middle");
-    } else if (sheetState === "middle") {
-      setSheetState("closed");
-    } else if (sheetState === "open") {
-      setSheetState("middle");
-    }
-  };
-
   const windowHeight = mounted ? window.innerHeight : 800;
   let heightValue = "";
   switch (sheetState) {
@@ -154,13 +122,11 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
         ref={sheetRef}
         className={styles.bottomSheet}
         style={{ height: appliedHeight }}
-        onClick={handleContainerClick}
       >
         <div
           className={styles.dragHandle}
           onMouseDown={handleDragStart}
           onTouchStart={handleDragStart}
-          onClick={handleDragHandleClick}
         >
           <div className={styles.handleBar}></div>
         </div>

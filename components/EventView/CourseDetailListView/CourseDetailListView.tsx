@@ -62,7 +62,6 @@ const CourseDetailListView: React.FC<CourseDetailListViewProps> = ({
             alt={title}
             width={56}
             height={56}
-            unoptimized
           />
           <div className={styles.courseDetailContent}>
             <div className={styles.courseDetailText}>
