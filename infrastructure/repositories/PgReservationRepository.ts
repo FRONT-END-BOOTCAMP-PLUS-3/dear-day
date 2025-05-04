@@ -10,7 +10,13 @@ export class PgReservationRepository implements ReservationRepository {
     userId: string
   ): Promise<ReservationCardViewDto[]> {
     const reservations = await prisma.reservation.findMany({
-      where: { userId, status: "CONFIRMED" },
+      where: {
+        userId,
+        status: "CONFIRMED",
+        reservationConfirmedAt: {
+          gte: new Date(), // 현재 시간 이후인 예약만
+        },
+      },
       include: {
         event: {
           select: {
