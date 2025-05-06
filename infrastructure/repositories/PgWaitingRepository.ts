@@ -2,6 +2,7 @@ import { PrismaClient, Waiting } from "@prisma/client";
 import { WaitingRepository } from "@/domain/repositories/WaitingRepository";
 import { HeadCountDto } from "@/application/usecases/ticket/dto/HeadCountDto";
 import { WaitingCardViewDto } from "@/application/usecases/mypage/dto/WaitingCardViewDto";
+import { ssePublisher } from "../sse/ssePublisher";
 
 const prisma = new PrismaClient();
 
@@ -142,6 +143,62 @@ export class PgWaitingRepository implements WaitingRepository {
         console.error("🚨 예약 상태 변경 중 오류 발생:", error);
       }
       throw new Error("예약 상태 변경 중 오류가 발생했습니다.");
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
+  async alertWaitingUpdate(waitingId: number): Promise<void> {
+    try {
+      const entered = await prisma.waiting.findUnique({
+        where: { id: waitingId },
+        select: {
+          eventId: true,
+          waitingNumber: true,
+          event: {
+            select: {
+              title: true,
+            },
+          },
+        },
+      });
+
+      if (!entered) {
+        throw new Error("입장한 대기 정보를 찾을 수 없습니다.");
+      }
+
+      const { eventId, waitingNumber: enteredWaitingNumber, event } = entered;
+      const eventTitle = event.title;
+
+      const affectedUsers = await prisma.waiting.findMany({
+        where: {
+          eventId,
+          status: "PENDING",
+          waitingNumber: { gt: enteredWaitingNumber },
+        },
+        select: { userId: true, waitingNumber: true },
+      });
+
+      for (const user of affectedUsers) {
+        const waitingAhead = await prisma.waiting.count({
+          where: {
+            eventId,
+            status: "PENDING",
+            waitingNumber: { lt: user.waitingNumber },
+          },
+        });
+
+        ssePublisher.publishToUser(user.userId, {
+          type: "QUEUE_UPDATED",
+          payload: {
+            title: eventTitle,
+            waitingNumber: user.waitingNumber,
+            waitingAhead,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("🚨 대기 알림 전송 중 오류:", error);
     } finally {
       await prisma.$disconnect();
     }
