@@ -32,7 +32,13 @@ export default function RootLayout({
 
   let HeaderComponent;
   if (headerInfo?.type === "back") {
-    HeaderComponent = <BackHeader title={headerInfo.title!} />;
+    if (headerInfo.isBackConfirmRequired) {
+      HeaderComponent = (
+        <BackHeader title={headerInfo.title!} isBackConfirmRequired={true} />
+      );
+    } else {
+      HeaderComponent = <BackHeader title={headerInfo.title!} />;
+    }
   } else if (headerInfo?.type === "detail") {
     HeaderComponent = <DetailHeader />;
   } else if (headerInfo?.type === "dynamic") {
