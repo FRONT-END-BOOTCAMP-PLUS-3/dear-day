@@ -3,6 +3,7 @@ export type HeaderType = "main" | "back" | "detail" | "dynamic";
 interface HeaderConfig {
   type: HeaderType;
   title?: string; // backHeader, detailHeader일 때 필요
+  isBackConfirmRequired?: boolean; // backHeader일 때 필요
 }
 
 // 정규식 기반 동적 경로 매칭을 위한 배열
@@ -24,7 +25,7 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   },
   {
     pattern: /^\/member\/course\/create$/,
-    config: { type: "back", title: "코스 만들기" },
+    config: { type: "back", title: "코스 만들기", isBackConfirmRequired: true },
   },
   {
     pattern: /^\/member\/course\/[^/]+$/,
@@ -32,7 +33,7 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
   }, // /member/course/[course_id]
   {
     pattern: /^\/member\/course\/[^/]+\/edit$/,
-    config: { type: "back", title: "코스 수정" },
+    config: { type: "back", title: "코스 수정", isBackConfirmRequired: true },
   }, // /member/course/[courseId]/edit
   { pattern: /^\/member\/event\/[^/]+$/, config: { type: "back", title: "" } }, // /member/event/[event_id]
   { pattern: /^\/member\/list$/, config: { type: "back", title: "생카 목록" } },
@@ -52,11 +53,19 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
 
   {
     pattern: /^\/member\/register_event$/,
-    config: { type: "back", title: "생카 등록하기" },
+    config: {
+      type: "back",
+      title: "생카 등록하기",
+      isBackConfirmRequired: true,
+    },
   },
   {
     pattern: /^\/member\/register_star$/,
-    config: { type: "back", title: "스타 등록하기" },
+    config: {
+      type: "back",
+      title: "스타 등록하기",
+      isBackConfirmRequired: true,
+    },
   },
   {
     pattern: /^\/member\/search_star\/[^/]+$/,
