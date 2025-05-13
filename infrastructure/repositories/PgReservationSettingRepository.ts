@@ -34,4 +34,31 @@ export class PgReservationSettingRepository
       await prisma.$disconnect();
     }
   }
+
+  async updateReservationSettingByEventId(
+    eventId: number,
+    data: Partial<ReservationSetting>
+  ): Promise<boolean> {
+    try {
+      const reservationId = await prisma.reservationSetting.findFirst({
+        where: { eventId },
+      });
+
+      if (!reservationId) {
+        return false;
+      }
+
+      await prisma.reservationSetting.update({
+        where: { id: reservationId.id },
+        data,
+      });
+
+      return true;
+    } catch (error) {
+      console.error("예약 설정 업데이트 중 오류 발생:", error);
+      return false;
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
