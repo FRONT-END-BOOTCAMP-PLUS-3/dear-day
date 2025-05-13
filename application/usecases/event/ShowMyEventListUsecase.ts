@@ -15,13 +15,13 @@ export const showMyEventListUsecase = async (
 ): Promise<showMyEventListDto[]> => {
   const events = await eventRepository.findAllEventsByUserId(userId);
 
-  const formattedDate = (date: Date, time: string): Date => {
-    const mergedDate = new Date(date.getTime() - 9 * 60 * 60 * 1000);
-    const [hours, minutes] = time.split(":").map(Number);
+  // const formattedDate = (date: Date, time: string): Date => {
+  //   const mergedDate = new Date(date);
+  //   const [hours, minutes] = time.split(":").map(Number);
 
-    mergedDate.setUTCHours(hours, minutes, 0, 0);
-    return mergedDate;
-  };
+  //   // mergedDate.setUTCHours(hours, minutes, 0, 0);
+  //   return mergedDate;
+  // };
 
   const today = new Date();
   const getEventStatus = (
@@ -40,10 +40,10 @@ export const showMyEventListUsecase = async (
     events.map(async (event) => {
       const star = await starRepository.findStarByStarId(event.starId);
 
-      const openDate = formattedDate(event.startDate, event.startTime);
-      const endDate = formattedDate(event.endDate, event.endTime);
+      // const openDate = formattedDate(event.startDate, event.startTime);
+      // const endDate = formattedDate(event.endDate, event.endTime);
 
-      const status = getEventStatus(today, openDate, endDate);
+      const status = getEventStatus(today, event.startDate, event.endDate);
 
       return {
         id: event.id,
@@ -51,8 +51,8 @@ export const showMyEventListUsecase = async (
         mainImage: event.mainImage,
         starName: star?.stageName || "unknown",
         address: event.address,
-        startDate: openDate,
-        endDate: endDate,
+        startDate: event.startDate,
+        endDate: event.endDate,
         status: status,
       };
     })
