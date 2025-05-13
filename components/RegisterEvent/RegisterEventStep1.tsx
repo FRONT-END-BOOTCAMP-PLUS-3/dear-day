@@ -7,7 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import DateSelectButton from "../ComboBox/DateComboBox/DateComboBox";
 import TimeSelectButton from "../ComboBox/TimeComboBox/TimeComboBox";
 import { useRegisterEventStore } from "@/store/registerEventStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LocationSearch from "@/app/member/register_event/components/LocationSearch/LocationSearch";
 
 export interface RegisterEventStep1Form {
@@ -26,15 +26,17 @@ export interface RegisterEventStep1Form {
 const RegisterEventStep1 = ({
   onNext,
 }: {
-  onNext: (data: RegisterEventStep1Form) => void;
+  onNext: (data: Partial<RegisterEventStep1Form>) => void;
 }) => {
-  const { eventData, updateEventData } = useRegisterEventStore();
+  const { eventData, updateEventData, isEditing } = useRegisterEventStore();
+  const [hasInitalized, setHasInitialized] = useState(false);
 
   const {
     control,
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { isValid },
   } = useForm<RegisterEventStep1Form>({
     mode: "onChange",
@@ -52,6 +54,13 @@ const RegisterEventStep1 = ({
     },
   });
 
+  useEffect(() => {
+    if (!hasInitalized && isEditing && eventData) {
+      reset(eventData);
+      setHasInitialized(true);
+    }
+  }, [isEditing, eventData, reset, hasInitalized]);
+
   const startDate = watch("startDate");
   const endDate = watch("endDate");
 
@@ -61,18 +70,7 @@ const RegisterEventStep1 = ({
     }
   }, [startDate, endDate, setValue]);
 
-  // store 값이 변경될 때 form 값도 자동 업데이트
-  useEffect(() => {
-    if (eventData) {
-      setValue("placeName", eventData.placeName || "");
-      setValue("address", eventData.address || "");
-      setValue("latitude", eventData.latitude || 0);
-      setValue("longitude", eventData.longitude || 0);
-    }
-  }, [eventData, setValue]);
-
   const onSubmit = (data: RegisterEventStep1Form) => {
-    console.log("Step1 제출 데이터:", data);
     updateEventData({
       placeName: data.placeName,
       address: data.address,
@@ -85,7 +83,6 @@ const RegisterEventStep1 = ({
       startTime: data.startTime,
       endTime: data.endTime,
     });
-
     onNext(data);
   };
 

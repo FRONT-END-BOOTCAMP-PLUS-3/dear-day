@@ -9,7 +9,7 @@ import Icon from "../Icon/Icon";
 import CheckboxTag from "../Tag/CheckboxTag/CheckboxTag";
 import ConfirmCancelButton from "@/app/member/register_event/components/ConfirmCancelButton/ConfirmCancelBytton";
 import { BENEFITS } from "@/constants/benefits";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 export interface RegisterEventStep3Form {
   mainImage: string;
@@ -23,8 +23,11 @@ const RegisterEventStep3 = ({
   onNext: (data: RegisterEventStep3Form) => void;
   onPrev: () => void;
 }) => {
-  const { eventData, updateEventData } = useRegisterEventStore();
+  const { event_id } = useParams();
+  const pathname = usePathname();
   const router = useRouter();
+  const { eventData, updateEventData, isEditing, resetEventData } =
+    useRegisterEventStore();
   const [selectedMainImage, setSelectedMainImage] = useState<File | null>(null);
   const [selectedDetailImages, setSelectedDetailImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,14 +71,34 @@ const RegisterEventStep3 = ({
     });
   }, [eventData, reset]);
 
+  useEffect(() => {
+    if (selectedMainImage) {
+      updateEventData({
+        ...eventData,
+        mainImage: URL.createObjectURL(selectedMainImage), // Store에 반영
+      });
+    }
+  }, [selectedMainImage]);
+
+  useEffect(() => {
+    if (selectedDetailImages.length > 0) {
+      const updatedDetailImages = selectedDetailImages.map((file) =>
+        URL.createObjectURL(file)
+      );
+      updateEventData({
+        ...eventData,
+        detailImage: updatedDetailImages, // Store에 반영
+      });
+    }
+  }, [selectedDetailImages]);
+
   const onSubmit = async (data: RegisterEventStep3Form) => {
+    console.log("isEditing:", isEditing);
+    console.log("Step3 제출 데이터:", data);
     if (isSubmitting) return;
     setIsSubmitting(true); // 버튼 비활성화 (중복 제출 방지)
 
-    updateEventData({
-      ...eventData,
-      benefits: data.benefits,
-    });
+    await updateEventData(data);
 
     const formData = new FormData();
 
@@ -86,30 +109,50 @@ const RegisterEventStep3 = ({
 
     formData.append(
       "eventData",
-      JSON.stringify({
-        ...useRegisterEventStore.getState().eventData,
-        benefits: data.benefits,
-      })
+      JSON.stringify(useRegisterEventStore.getState().eventData)
     );
 
     try {
-      const response = await fetch("/api/event", {
-        method: "POST",
-        body: formData,
-      });
+      if (isEditing) {
+        const response = await fetch(
+          `/api/manage/update-my-event?eventId=${event_id}`,
+          {
+            method: "PATCH",
+            body: formData,
+          }
+        );
 
-      if (!response.ok) throw new Error("이벤트 등록 실패");
+        if (!response.ok) {
+          throw new Error("이벤트 정보를 불러오는 데 실패했습니다.");
+        }
 
-      const result = await response.json();
-      console.log("이벤트 등록 성공:", result);
+        resetEventData(); // Store 초기화
+        alert("생일 카페 수정 완료!");
 
-      updateEventData({
-        mainImage: result.mainImage,
-        detailImage: result.detailImage,
-      });
+        if (pathname.startsWith("/member/manage/edit/")) {
+          const newPath = pathname.replace("/edit", ""); // "edit" 제거
+          router.replace(newPath); // 새로운 URL로 이동
+        }
+      } else {
+        const response = await fetch("/api/event", {
+          method: "POST",
+          body: formData,
+        });
 
-      alert("생일 카페 등록 완료!");
-      router.replace(`/member/event/${result.eventId}`);
+        if (!response.ok) throw new Error("이벤트 등록 실패");
+
+        const result = await response.json();
+        console.log("이벤트 등록 성공:", result);
+
+        updateEventData({
+          mainImage: result.mainImage,
+          detailImage: result.detailImage,
+        });
+
+        alert("생일 카페 등록 완료!");
+        useRegisterEventStore.getState().resetEventData();
+        router.replace(`/member/event/${result.eventId}`);
+      }
     } catch (error) {
       console.error("이벤트 등록 중 오류:", error);
       setIsSubmitting(false);
@@ -126,6 +169,21 @@ const RegisterEventStep3 = ({
       <div className={styles.containerItem}>
         <p>메인 이미지</p>
         <PosterUploadButton onChange={handleMainImageChange} />
+
+        {/* isEditing 모드에서 기존 이미지 표시 */}
+        {isEditing && !selectedMainImage && eventData.mainImage && (
+          <div className={styles.imageWrapper}>
+            <Image
+              src={eventData.mainImage}
+              alt="기존 메인 이미지"
+              width={300}
+              height={400}
+              className={styles.previewImage}
+              unoptimized
+            />
+          </div>
+        )}
+
         {selectedMainImage && (
           <div className={styles.imageWrapper}>
             <Image
@@ -153,6 +211,24 @@ const RegisterEventStep3 = ({
         <PosterUploadButton onChange={handleDetailImagesChange} />
         <div className={styles.imageScrollContainer}>
           <div className={styles.imagePreviewContainer}>
+            {/* isEditing 모드에서 기존 이미지 표시 */}
+            {isEditing &&
+              eventData.detailImage &&
+              eventData.detailImage.length > 0 &&
+              selectedDetailImages.length === 0 &&
+              eventData.detailImage.map((image, index) => (
+                <div key={index} className={styles.imageWrapper}>
+                  <Image
+                    src={image}
+                    alt={`기존 상세 이미지 ${index + 1}`}
+                    width={300}
+                    height={400}
+                    className={styles.previewImage}
+                    unoptimized
+                  />
+                </div>
+              ))}
+
             {selectedDetailImages.map((file, index) => (
               <div key={index} className={styles.imageWrapper}>
                 <Image

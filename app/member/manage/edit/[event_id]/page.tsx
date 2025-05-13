@@ -30,12 +30,6 @@ export default function EditEventPage() {
     | RegisterEventStep2Form
     | RegisterEventStep3Form;
 
-  useEffect(() => {
-    setTimeout(() => {
-      setStep(1);
-    }, 100);
-  }, [setStep]);
-
   const fetchEventData = async () => {
     try {
       const response = await fetch(
@@ -53,8 +47,6 @@ export default function EditEventPage() {
       }
 
       const data = await response.json();
-      console.log("🚀 이벤트 데이터 가져오기 성공:", data.event);
-
       loadEventData(data.event.eventDetail); // store에 데이터 저장
     } catch (error) {
       console.error("이벤트 정보 불러오기 실패: ", error);
@@ -63,6 +55,7 @@ export default function EditEventPage() {
 
   const { eventData } = useRegisterEventStore();
 
+  // 이벤트 데이터가 있으면 수정모드
   useEffect(() => {
     if (!event_id) {
       setEditingMode(false);
@@ -71,14 +64,9 @@ export default function EditEventPage() {
     }
 
     setEditingMode(true);
-    console.log("🚀 이벤트 수정 모드로 설정 완료!");
-
+    setStep(1);
     fetchEventData();
-  }, [event_id]);
-
-  // useEffect(() => {
-  //   console.log("📢 Store 업데이트된 eventData:", eventData);
-  // }, [eventData]);
+  }, [event_id, setEditingMode, resetEventData, setStep]);
 
   const handleNext = async (data?: Partial<RegisterEventForm>) => {
     if (data) {
@@ -93,11 +81,6 @@ export default function EditEventPage() {
             ? new Date(data.endDate)
             : eventData.endDate,
       });
-
-      console.log(
-        "🚀 최신 Store 데이터:",
-        useRegisterEventStore.getState().eventData
-      );
     }
 
     if (step < 3) {
