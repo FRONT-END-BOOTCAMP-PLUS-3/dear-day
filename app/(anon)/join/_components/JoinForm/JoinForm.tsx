@@ -29,6 +29,10 @@ export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
 
   const [isEmailValid, setIsEmailValid] = useState(false); // 이메일 중복 검사 상태
   const [emailError, setEmailError] = useState<string | null>(null); // 이메일 에러 메시지
+  const [passwordError, setPasswordError] = useState<string | null>(null); // 비밀번호 에러 메시지
+  const [passwordConfirmError, setPasswordConfirmError] = useState<
+    string | null
+  >(null); // 비밀번호 확인 에러 메시지
   const [isVerificationSent, setIsVerificationSent] = useState(false); // 이메일 인증 버튼 상태
   const [isValidForm, setIsValidForm] = useState(false); // ✅ 전체 폼 유효 상태
   const [isEmailVerified, setIsEmailVerified] = useState(false); // 이메일 인증 여부
@@ -40,6 +44,15 @@ export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
   const [verificationCodeError, setVerificationCodeError] = useState<
     string | null
   >(null); // 인증 코드 에러 메시지
+
+  const validatePassword = (password: string): boolean => {
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const isLongEnough = password.length >= 8;
+
+    return hasLetter && hasNumber && hasSpecial && isLongEnough;
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -73,13 +86,48 @@ export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
       }
     }
 
+    // 비밀번호 유효성 검사
+    if (name === "password") {
+      if (!validatePassword(value)) {
+        setPasswordError(
+          "비밀번호는 영문, 숫자, 특수문자를 포함한 8자 이상이어야 합니다."
+        );
+      } else {
+        setPasswordError(null);
+      }
+
+      // 비밀번호 확인 필드가 비어있지 않은 경우 일치 여부 검사
+      if (formData.passwordConfirm) {
+        if (value !== formData.passwordConfirm) {
+          setPasswordConfirmError("비밀번호가 일치하지 않습니다.");
+        } else {
+          setPasswordConfirmError(null);
+        }
+      }
+    }
+
+    // 비밀번호 확인 필드 검사
+    if (name === "passwordConfirm") {
+      if (value !== formData.password) {
+        setPasswordConfirmError("비밀번호가 일치하지 않습니다.");
+      } else {
+        setPasswordConfirmError(null);
+      }
+    }
+
     checkFormValidity({ ...formData, [name]: value }, isEmailValid);
   };
 
   const checkFormValidity = (data: FormDataType, emailValid: boolean) => {
     const allFilled = Object.values(data).every((val) => val.trim() !== "");
     const passwordMatch = data.password === data.passwordConfirm;
-    const isValid = allFilled && emailValid && passwordMatch && isEmailVerified;
+    const isPasswordValid = validatePassword(data.password);
+    const isValid =
+      allFilled &&
+      emailValid &&
+      passwordMatch &&
+      isEmailVerified &&
+      isPasswordValid;
 
     setIsFormValid(isValid);
     setIsValidForm(isValid);
@@ -259,9 +307,10 @@ export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
           name="password"
           type="password"
           value={formData.password}
-          placeholder="8자 이상 문자를 입력해주세요."
+          placeholder="영문, 숫자, 특수문자 조합 8자 이상 입력해주세요."
           onChange={handleChange}
         />
+        {passwordError && <p className={styles.errorText}>{passwordError}</p>}
       </div>
       <div>
         <label className={styles.label}>비밀번호 확인</label>
@@ -272,6 +321,9 @@ export default function JoinForm({ setIsFormValid, onSubmit }: JoinFormProps) {
           placeholder="비밀번호를 다시 입력해주세요."
           onChange={handleChange}
         />
+        {passwordConfirmError && (
+          <p className={styles.errorText}>{passwordConfirmError}</p>
+        )}
       </div>
     </form>
   );
