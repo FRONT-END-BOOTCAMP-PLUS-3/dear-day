@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import styles from "./LoginForm.module.scss";
 import Input from "@/components/Input/Input/Input";
 
 const LoginForm = () => {
   const login = useAuthStore((state) => state.login);
-  const router = useRouter();
+  // const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,9 +21,11 @@ const LoginForm = () => {
     try {
       await login(email, password);
       alert("로그인 성공!");
-      router.push("/member");
+      window.location.href = "/member";
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 로그인 실패:", error);
+      }
       alert("로그인 실패"); // ✅ 사용자에게 에러 메시지 표시
     }
   }

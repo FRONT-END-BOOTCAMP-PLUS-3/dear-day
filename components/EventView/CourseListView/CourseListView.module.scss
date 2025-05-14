@@ -34,8 +34,8 @@
 }
 
 .courseListTitle {
-  font-size: var(--font-size-md);
-  font-weight: 600;
+  font-size: var(--font-size-lg);
+  font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -45,7 +45,7 @@
 
 .courseListTime {
   color: var(--color-gray-2);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
 }
 
 .courseCount {

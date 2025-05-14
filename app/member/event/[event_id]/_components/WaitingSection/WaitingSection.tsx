@@ -145,7 +145,9 @@ export default function WaitingSection({ eventData }: Props) {
       toggleModal();
     } catch (error) {
       alert("대기 중 오류가 발생했습니다. 다시 시도해주세요.");
-      console.error("대기 오류:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 대기 목록:", error);
+      }
     }
   };
 

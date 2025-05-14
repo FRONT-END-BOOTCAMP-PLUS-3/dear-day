@@ -18,7 +18,9 @@ export async function GET() {
 
     return NextResponse.json(likedStars, { status: 200 });
   } catch (error) {
-    console.error("Error fetching liked stars:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 API 요청 처리 중 오류 발생:", error);
+    }
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

@@ -47,7 +47,10 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("❌ 검색 요청 실패:", response.status, errorText);
+
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 검색 요청 실패:", response.status, errorText);
+        }
         throw new Error(
           `HTTP error! status: ${response.status}, body: ${errorText}`
         );
@@ -56,19 +59,20 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
       const data: { places: LocationData[] } = await response.json();
 
       if (data.places) {
-        console.log("🔹 검색된 장소 데이터:", data.places);
         setSearchResults(data.places);
       } else {
-        console.warn("⚠️ 검색 결과 없음!");
+        if (process.env.NODE_ENV === "development") {
+          console.warn("⚠️ 검색 결과 없음");
+        }
       }
     } catch (error) {
-      console.error("❌ 장소 검색 실패:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 장소 검색 실패:", error);
+      }
     }
   };
 
   const handleSelectLocation = (place: LocationData) => {
-    console.log("✅ 선택한 장소 데이터:", place);
-
     onChange({
       placeName: place.placeName,
       address: place.address,
@@ -82,11 +86,6 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
       latitude: place.latitude,
       longitude: place.longitude,
     });
-
-    console.log(
-      "🔵 업데이트된 store 데이터:",
-      useRegisterEventStore.getState().eventData
-    );
 
     setInputText(place.placeName);
     setIsModalOpen(false);
@@ -123,7 +122,7 @@ const LocationSearch = ({ value, onChange }: LocationSearchProps) => {
               <ul className={styles.resultList}>
                 {searchResults.map((place) => (
                   <li
-                    key={place.address}
+                    key={place.placeName}
                     onClick={() => handleSelectLocation(place)}
                   >
                     <strong>{place.placeName}</strong>

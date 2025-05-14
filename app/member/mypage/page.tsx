@@ -1,4 +1,5 @@
 "use client";
+
 import Profile from "./_components/Profile/Profile";
 import Tab from "./_components/Tab/Tab";
 import Wishlist from "./_components/Wishlist/Wishlist";
@@ -20,7 +21,9 @@ const Page = () => {
         const data: UserInfoDto = await response.json();
         setUserInfo(data);
       } catch (error) {
-        console.error("Error:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 사용자 정보 불러오기 실패:", error);
+        }
       }
     };
 

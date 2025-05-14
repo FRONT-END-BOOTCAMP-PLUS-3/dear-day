@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import MainHeader from "@/components/Header/MainHeader/MainHeader";
 import BackHeader from "@/components/Header/BackHeader/BackHeader";
 import DetailHeader from "@/components/Header/DetailHeader/DetailHeader";
@@ -8,6 +8,7 @@ import { headerConfig } from "@/config/headerConfig";
 import "./globals.scss";
 import Script from "next/script";
 import { useHeaderStore } from "@/store/HeaderStore";
+import { useEffect } from "react";
 
 export default function RootLayout({
   children,
@@ -15,6 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const dynamicTitle = useHeaderStore((state) => state.title); // Zustand에서 title 가져오기
 
   // 현재 경로와 일치하는 헤더 설정 찾기
@@ -22,9 +24,21 @@ export default function RootLayout({
     pattern.test(pathname as string)
   )?.config;
 
+  useEffect(() => {
+    if (!headerInfo) {
+      router.replace("/login"); // headerConfig에 없는 경로면 로그인 페이지로 리다이렉트
+    }
+  }, [pathname, headerInfo, router]);
+
   let HeaderComponent;
   if (headerInfo?.type === "back") {
-    HeaderComponent = <BackHeader title={headerInfo.title!} />;
+    if (headerInfo.isBackConfirmRequired) {
+      HeaderComponent = (
+        <BackHeader title={headerInfo.title!} isBackConfirmRequired={true} />
+      );
+    } else {
+      HeaderComponent = <BackHeader title={headerInfo.title!} />;
+    }
   } else if (headerInfo?.type === "detail") {
     HeaderComponent = <DetailHeader />;
   } else if (headerInfo?.type === "dynamic") {
@@ -42,7 +56,7 @@ export default function RootLayout({
           content="원하는 생일카페를 쉽게 찾고 주최해보세요!"
         />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/icons/icon512_rounded.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
 

@@ -33,7 +33,9 @@ export async function POST(req: Request) {
 
     return response;
   } catch (error) {
-    console.error("로그인 처리 중 서버 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 로그인 처리 중 오류 발생:", error);
+    }
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }

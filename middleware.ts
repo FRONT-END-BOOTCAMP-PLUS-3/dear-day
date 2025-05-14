@@ -2,18 +2,18 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("auth_token")?.value;
+  const token = req.cookies.get("auth_token")?.value || "";
   const { pathname } = req.nextUrl;
 
   // 로그인하지 않은 사용자가 /member 경로 접근하면 anon 또는 /login으로 리디렉트
   if (pathname.startsWith("/member") && !token) {
-    const anonPath = pathname.replace("/member", ""); // "/member/mypage" → "/mypage"
+    const anonPath = pathname.replace(/^\/member/, ""); // "/member/mypage" → "/mypage"
     const availableAnonPaths = [
       "/",
       "/login",
       "/join",
       "/list",
-      "/search_star", // "/search/[star_id]" 대응
+      "/search_star", // "/search_star/[star_id]" 대응
       "/event", // "/event/[event_id]" 대응
     ];
 
@@ -57,7 +57,5 @@ export const config = {
     "/login", // ✅ 로그인 페이지 보호
     "/join", // ✅ 회원가입 페이지 보호
     "/list", // ✅ 리스트 페이지 보호
-    "/search_star/:path*", // ✅ "/search/[star_id]" 대응
-    "/event/:path*", // ✅ "/event/[event_id]" 대응
   ],
 };

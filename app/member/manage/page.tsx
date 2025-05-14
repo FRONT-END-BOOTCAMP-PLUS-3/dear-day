@@ -25,7 +25,9 @@ const ManagePage = () => {
         const data = await response.json();
         setEvents(data.results);
       } catch (error) {
-        console.error("이벤트 조회 실패: ", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 이벤트 조회 실패:", error);
+        }
       }
     };
     fetchMyEvent();

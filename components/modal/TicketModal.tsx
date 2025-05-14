@@ -13,6 +13,7 @@ type TicketModalProps = {
   eventId: number;
   isOpen: boolean;
   onClose: () => void;
+  onTicketCancel?: () => void;
 };
 
 type TicketData = {
@@ -30,7 +31,12 @@ type TicketData = {
   waitingAhead?: number;
 };
 
-const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
+const TicketModal = ({
+  eventId,
+  isOpen,
+  onClose,
+  onTicketCancel,
+}: TicketModalProps) => {
   const [data, setData] = useState<TicketData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isReservationModalOpen, toggleReservationModal] = useToggle(false);
@@ -51,7 +57,9 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
         const result: TicketData = await response.json();
         setData(result);
       } catch (error) {
-        console.error(error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 :", error);
+        }
       } finally {
         setLoading(false);
       }
@@ -75,8 +83,11 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
         throw new Error("Failed to cancel the ticket");
       }
       onClose();
+      onTicketCancel?.();
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 :", error);
+      }
       alert("취소에 실패했습니다.");
     }
   };
@@ -92,12 +103,13 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
           <div className={styles.ticketHeader}>
             <div className={styles.imageContainer}>
               <Image
-                src={data.mainImage}
+                src={process.env.NEXT_PUBLIC_FRONT_IMG + data.mainImage}
                 alt="Ticket Thumbnail"
                 width={200}
                 height={0}
                 objectFit="cover"
                 className={styles.thumbnail}
+                unoptimized
               />
             </div>
             <div className={styles.text}>
@@ -183,20 +195,28 @@ const TicketModal = ({ eventId, isOpen, onClose }: TicketModalProps) => {
                 </ul>
               </div>
               <div className={styles.waitingFooter}>
-                <p>
-                  내 앞에{" "}
-                  <span className={styles.waitingNumber}>
-                    <strong>{data.waitingAhead}</strong>
-                  </span>{" "}
-                  팀
-                </p>
-                <h1>
-                  대기 번호{" "}
-                  <span className={styles.waitingNumber}>
-                    <strong>{data.waitingNumber}</strong>
-                  </span>{" "}
-                  번
-                </h1>
+                {data.waitingAhead === 0 ? (
+                  <div className={styles.floatingText}>
+                    <h2>지금 바로 입장하세요 !</h2>
+                  </div>
+                ) : (
+                  <>
+                    <p>
+                      내 앞에{" "}
+                      <span className={styles.waitingNumber}>
+                        <strong>{data.waitingAhead}</strong>
+                      </span>{" "}
+                      팀
+                    </p>
+                    <h1>
+                      대기 번호{" "}
+                      <span className={styles.waitingNumber}>
+                        <strong>{data.waitingNumber}</strong>
+                      </span>{" "}
+                      번
+                    </h1>
+                  </>
+                )}
               </div>
             </>
           )}

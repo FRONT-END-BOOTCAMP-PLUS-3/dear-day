@@ -12,7 +12,6 @@ import useToggle from "@/hooks/useToggle";
 import { useCourseStore } from "@/store/courseStore";
 import { InputFormData } from "@/components/modal/Modal.type";
 import { ShowCourseListDto } from "@/application/usecases/course/dto/ShowCourseListDto";
-import ScrollCardContainer from "@/components/CardContainer/ScrollCardContainer";
 
 export default function CoursePage() {
   const router = useRouter();
@@ -24,23 +23,34 @@ export default function CoursePage() {
   useEffect(() => {
     const fetchCourseList = async () => {
       try {
-        const response = await fetch("/api/course");
+        const response = await fetch("/api/course", {
+          credentials: "include",
+        });
+
         if (!response.ok) {
-          console.error("코스 목록 불러오기 실패");
+          if (process.env.NODE_ENV === "development") {
+            console.error("🚨 코스 목록 불러오기 실패");
+          }
           return;
         }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
         const data: ShowCourseListDto[] = await response.json();
 
         const currentCourse = data.filter(
-          (course) => new Date(course.date) > new Date()
+          (course) => new Date(course.date) >= today
         );
         const pastCourse = data.filter(
-          (course) => new Date(course.date) < new Date()
+          (course) => new Date(course.date) < today
         );
         setCourseList(currentCourse);
         setPastCourseList(pastCourse);
       } catch (error) {
-        console.error("코스 목록 불러오기 실패:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 코스 목록 불러오기 실패:", error);
+        }
       }
     };
     fetchCourseList();
@@ -77,14 +87,8 @@ export default function CoursePage() {
       </div>
       <Modal
         contents={[
-          {
-            type: "text",
-            title: "코스 이름을 작성해 주세요",
-          },
-          {
-            type: "calendar",
-            title: "코스 이용 날짜를 선택해 주세요",
-          },
+          { type: "text", title: "코스 이름을 작성해 주세요" },
+          { type: "calendar", title: "코스 이용 날짜를 선택해 주세요" },
         ]}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
@@ -92,29 +96,34 @@ export default function CoursePage() {
         confirmText="완료"
         cancelText="취소"
       />
-      {courseList.length > 0 ? (
+      {courseList.length > 0 || pastCourseList.length > 0 ? (
         <>
           <p>다가오는 코스</p>
-          <ScrollCardContainer variant="list">
-            {courseList.map((course) => (
-              <div key={course.id} onClick={() => handleCourseClick(course)}>
+          {courseList.map((course) => (
+            <div key={course.id} className={styles.container}>
+              <div
+                onClick={() => handleCourseClick(course)}
+                className={styles.courseListView}
+              >
                 <CourseListView {...course} isPast={false} />
               </div>
-            ))}
-          </ScrollCardContainer>
-          <p>종료된 코스</p>
-          <ScrollCardContainer variant="list">
-            {pastCourseList.length > 0
-              ? pastCourseList.map((course) => (
+            </div>
+          ))}
+          {pastCourseList.length > 0 && (
+            <>
+              <p>종료된 코스</p>
+              {pastCourseList.map((course) => (
+                <div key={course.id} className={styles.container}>
                   <div
-                    key={course.id}
                     onClick={() => handleCourseClick(course)}
+                    className={styles.courseListView}
                   >
                     <CourseListView {...course} isPast={true} />
                   </div>
-                ))
-              : null}
-          </ScrollCardContainer>
+                </div>
+              ))}
+            </>
+          )}
         </>
       ) : (
         <div className={styles.emptyNoticeContainer}>

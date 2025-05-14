@@ -34,7 +34,9 @@ export async function POST(req: NextRequest) {
       throw error; // 다른 예상치 못한 에러는 그대로 던짐
     }
   } catch (error) {
-    console.error("서버 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 API 요청 처리 중 오류 발생:", error);
+    }
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }

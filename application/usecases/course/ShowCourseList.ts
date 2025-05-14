@@ -23,7 +23,7 @@ export const ShowCourseList = async (
       if (eventData) {
         imgSrc = eventData.mainImage;
       }
-      console.log(imgSrc);
+
       return {
         id: course.id,
         name: course.name,

@@ -15,4 +15,9 @@
     font-size: var(--font-size-sm);
     color: rgb(240, 110, 110);
   }
+  .verificationContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--margin-sm);
+  }
 }

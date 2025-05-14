@@ -80,7 +80,9 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ message: "삭제 완료", result }, { status: 200 });
   } catch (error) {
-    console.error("삭제 요청 실패:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 API 요청 처리 중 오류 발생:", error);
+    }
     return NextResponse.json(
       { error: "삭제 요청 처리 중 오류 발생" },
       { status: 500 }

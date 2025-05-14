@@ -6,3 +6,76 @@
   display: flex;
   justify-content: center;
 }
+.profileContainer {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border:1px solid var(--divider);
+  padding: var(--padding-md);
+  border-radius: 15px;
+
+}
+.imageBox {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.profile {
+  flex-grow: 1;
+  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}.info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+}
+
+.info p {
+  font-size: 16px;
+  color: var(--color-gray-1);
+}
+
+.starBox {
+  position: absolute;
+  right: 15px;
+  bottom: 50%;
+  transform: translateY(50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.starBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.starBtn:hover {
+  transform: scale(1.1);
+}
+
+.noResult{
+  margin-top: var(--margin-md);
+}

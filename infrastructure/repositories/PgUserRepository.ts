@@ -76,7 +76,9 @@ export class PgUserRepository implements UserRepository {
         },
       });
     } catch (error) {
-      console.error("유저 탈퇴 업데이트 실패:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 유저 탈퇴 중 오류 발생:", error);
+      }
       throw new Error("유저 탈퇴 업데이트 중 오류 발생");
     }
   }

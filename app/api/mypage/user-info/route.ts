@@ -14,7 +14,9 @@ export async function GET() {
 
     return NextResponse.json(userInfo, { status: 200 });
   } catch (error) {
-    console.error("Error fetching user info:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 API 요청 처리 중 오류 발생:", error);
+    }
     return NextResponse.json(
       { error: "Failed to fetch user info" },
       { status: 500 }

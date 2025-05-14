@@ -37,7 +37,9 @@ export async function POST(req: Request) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("❌ 네이버 검색 API 요청 실패:", errorText);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 API 요청 처리 중 오류 발생:", errorText);
+      }
       return NextResponse.json(
         { error: `HTTP error! status: ${response.status}, body: ${errorText}` },
         { status: response.status }
@@ -87,7 +89,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ places }, { status: 200 });
   } catch (error) {
-    console.error("❌ 네이버 API 요청 실패:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 네이버 검색 중 오류 발생:", error);
+    }
     return NextResponse.json(
       { error: "네이버 API 요청 실패" },
       { status: 500 }

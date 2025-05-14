@@ -20,7 +20,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json(createdUser, { status: 201 }); // 201 Created 반환
   } catch (error) {
-    console.error("회원가입 오류:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 회원가입 오류:", error);
+    }
     return NextResponse.json(
       { error: "회원가입 중 오류가 발생했습니다." },
       { status: 500 }

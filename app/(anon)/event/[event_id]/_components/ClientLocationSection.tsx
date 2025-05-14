@@ -23,7 +23,9 @@ export default function ClientLocationSection({ eventData }: Props) {
       await navigator.clipboard.writeText(address);
       alert("주소가 복사되었습니다!");
     } catch (err) {
-      console.error("복사 실패:", err);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 주소 복사 실패:", err);
+      }
       alert("주소 복사에 실패했습니다.");
     }
   };

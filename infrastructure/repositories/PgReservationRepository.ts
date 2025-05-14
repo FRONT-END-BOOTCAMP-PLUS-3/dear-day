@@ -10,7 +10,7 @@ export class PgReservationRepository implements ReservationRepository {
     userId: string
   ): Promise<ReservationCardViewDto[]> {
     const reservations = await prisma.reservation.findMany({
-      where: { userId },
+      where: { userId, status: "CONFIRMED" },
       include: {
         event: {
           select: {
@@ -61,7 +61,9 @@ export class PgReservationRepository implements ReservationRepository {
           reservation?.reservationConfirmedAt?.toISOString() || "",
       };
     } catch (error) {
-      console.error("예약 시간 조회 중 오류 발생:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 예약시간 조회 중 오류 발생:", error);
+      }
       throw new Error("예약 시간을 불러오는 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect();
@@ -74,7 +76,9 @@ export class PgReservationRepository implements ReservationRepository {
         where: { eventId },
       });
     } catch (error) {
-      console.error("예약 조회 중 오류 발생:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 예약 조회 중 오류 발생:", error);
+      }
       throw new Error("예약 목록을 불러오는 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect();
@@ -107,7 +111,9 @@ export class PgReservationRepository implements ReservationRepository {
 
       return !!updated;
     } catch (error) {
-      console.error("예약 상태 변경 중 오류 발생:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 예약 상태 변경 중 오류 발생:", error);
+      }
       throw new Error("예약 상태 변경 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect();

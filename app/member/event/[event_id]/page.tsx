@@ -64,7 +64,9 @@ export default function EventDetail() {
       })
       .then((data: ShowEventDetailDto) => setEventData(data))
       .catch((err) => {
-        console.log(err.message);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 이벤트 상세 불러오기 실패", err);
+        }
         setEventData(demoEventData);
       });
 

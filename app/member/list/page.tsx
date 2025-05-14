@@ -31,7 +31,9 @@ export default function ListPage() {
         setLikedStars(likedStarsData);
         setEventList(eventListData);
       } catch (error) {
-        console.error("데이터를 불러오는 중 오류 발생:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 데이터 불러오는 중 오류 발생:", error);
+        }
       } finally {
         setIsLoading(false);
       }

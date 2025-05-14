@@ -41,7 +41,9 @@ const UpcomingEvent = () => {
         const shuffled = shuffleArray(eventsArray);
         setUpcomingEvents(shuffled);
       } catch (error) {
-        console.log(error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 다가오는 이벤트 목록 에러:", error);
+        }
       }
     };
 

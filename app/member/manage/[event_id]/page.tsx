@@ -37,7 +37,9 @@ const ManagePage = () => {
         const data = await response.json();
         setEvent(data.results);
       } catch (error) {
-        console.error("예약자 명단 조회 실패: ", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("🚨 예약자 명단 조회 실패:", error);
+        }
         setEvent(null);
       }
     };
@@ -94,7 +96,9 @@ const ManagePage = () => {
         } as showReservationListDto;
       });
     } catch (error) {
-      console.error("예약 상태 변경 실패: ", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 예약 상태 변경 실패:", error);
+      }
     }
   };
 
@@ -125,7 +129,9 @@ const ManagePage = () => {
         } as showWaitingListDto;
       });
     } catch (error) {
-      console.error("예약 상태 변경 실패: ", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 예약 상태 변경 실패:", error);
+      }
     }
   };
 
@@ -175,7 +181,7 @@ const ManagePage = () => {
                 <ReservationWaitList
                   key={reservation.id}
                   id={reservation.id}
-                  index={index + 1}
+                  index={index}
                   userId={reservation.userId}
                   name={reservation.name}
                   email={reservation.email}

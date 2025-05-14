@@ -1,4 +1,4 @@
-import styles from "@/app/member/mypage/page.module.scss";
+import styles from "./SearchStarModal.module.scss";
 import Icon from "@/components/Icon/Icon";
 import SearchStar from "@/components/SearchStar/SearchStar";
 import { useAuthStore } from "@/store/authStore";

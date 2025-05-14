@@ -28,7 +28,9 @@ export async function GET() {
       { status: 201 }
     );
   } catch (error) {
-    console.error("API 요청 처리 중 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 API 요청 처리 중 오류 발생:", error);
+    }
     return NextResponse.json(
       NextResponse.json({ message: "서버 오류 발생" }, { status: 500 })
     );

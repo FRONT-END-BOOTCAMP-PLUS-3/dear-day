@@ -18,7 +18,7 @@ async function getEventData(
     const queryParams = new URLSearchParams({ eventId }).toString();
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_PORT}/api/event?${queryParams}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/anon/event?${queryParams}`,
       {
         method: "GET",
         credentials: "include", // 서버에서도 인증 필요
@@ -29,7 +29,9 @@ async function getEventData(
     if (!res.ok) throw new Error("Failed to fetch event data");
     return await res.json();
   } catch (error) {
-    console.error("Error fetching event data:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 fetch 에러:", error);
+    }
     return null;
   }
 }

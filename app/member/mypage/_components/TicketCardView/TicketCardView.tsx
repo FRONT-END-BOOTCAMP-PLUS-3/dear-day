@@ -15,7 +15,9 @@ interface TicketCardViewProps {
   reservationConfirmedAt?: string;
 }
 
-const TicketCardView: React.FC<TicketCardViewProps> = ({
+const TicketCardView: React.FC<
+  TicketCardViewProps & { onTicketCancel: () => void }
+> = ({
   mode,
   eventId,
   mainImage,
@@ -25,6 +27,7 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
   waitingNumber,
   waitingAhead,
   reservationConfirmedAt,
+  onTicketCancel,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,16 +36,16 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
       <li
         className={styles.smallCardView}
         onClick={() => {
-          console.log("✅ TicketCardView 클릭됨!");
           setIsModalOpen(true);
         }}
       >
         <div className={styles.smallCardWrapper}>
           <Image
             className={styles.smallCardImg}
-            src={mainImage}
+            src={process.env.NEXT_PUBLIC_FRONT_IMG + mainImage}
             alt={title}
             fill
+            unoptimized
           />
           {/* mode 값에 따라 다른 UI 렌더링 */}
           {mode === "RESERVATION" ? (
@@ -82,6 +85,7 @@ const TicketCardView: React.FC<TicketCardViewProps> = ({
           eventId={eventId}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          onTicketCancel={onTicketCancel}
         />
       )}
     </>

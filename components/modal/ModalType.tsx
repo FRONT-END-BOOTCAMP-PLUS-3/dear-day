@@ -27,6 +27,10 @@ const ModalType = ({ content, onChange }: ModalTypeProps) => {
     return null;
   }
 
+  if (content.type === "alert") {
+    return null;
+  }
+
   if (content.type === "text") {
     return (
       <Input

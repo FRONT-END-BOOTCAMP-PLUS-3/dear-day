@@ -23,7 +23,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("이메일 확인 중 서버 오류 발생:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 이메일 확인 중 서버 오류 발생:", error);
+    }
     return NextResponse.json({ error: "서버 오류 발생" }, { status: 500 });
   }
 }

@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export class PgWaitingRepository implements WaitingRepository {
   async findAllWaitingByUserId(userId: string): Promise<WaitingCardViewDto[]> {
     const waitings = await prisma.waiting.findMany({
-      where: { userId },
+      where: { userId, status: "PENDING" },
       include: {
         event: {
           select: {
@@ -85,7 +85,9 @@ export class PgWaitingRepository implements WaitingRepository {
         waitingAhead,
       };
     } catch (error) {
-      console.error("대기 정보 불러오기 오류 발생", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 대기 정보 불러오는 중 오류 발생:", error);
+      }
       throw new Error("대기 정보 불러오기 오류 발생했습니다.");
     } finally {
       await prisma.$disconnect();
@@ -99,7 +101,9 @@ export class PgWaitingRepository implements WaitingRepository {
         where: { eventId },
       });
     } catch (error) {
-      console.error("대기 명단 조회 중 오류 발생:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 대기 명단 조회 중 오류 발생:", error);
+      }
       throw new Error("대기 명단을 불러오는 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect(); // DB 연결 해제
@@ -134,7 +138,9 @@ export class PgWaitingRepository implements WaitingRepository {
 
       return !!updated;
     } catch (error) {
-      console.error("예약 상태 변경 중 오류 발생:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🚨 예약 상태 변경 중 오류 발생:", error);
+      }
       throw new Error("예약 상태 변경 중 오류가 발생했습니다.");
     } finally {
       await prisma.$disconnect();
