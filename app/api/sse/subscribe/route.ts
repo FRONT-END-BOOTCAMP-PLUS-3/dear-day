@@ -1,36 +1,59 @@
-import { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 import { ssePublisher } from "@/infrastructure/sse/ssePublisher";
 
-export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
-export function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const userId = searchParams.get("userId");
+export async function GET() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token")?.value;
 
-  if (!userId) {
-    return new Response("Missing userId", { status: 400 });
+  if (!token) {
+    return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  // Response 스트림 생성
+  let userId: string;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: string;
+    };
+    userId = decoded.id;
+  } catch {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const encoder = new TextEncoder();
+  let interval: NodeJS.Timeout;
+
   const stream = new ReadableStream({
     start(controller) {
-      const encoder = new TextEncoder();
-
       ssePublisher.addClient(userId, {
-        write: (data: string) => {
-          controller.enqueue(encoder.encode(data));
-        },
-        close: () => {
-          controller.close();
-        },
+        write: (data) => controller.enqueue(encoder.encode(data)),
+        close: () => controller.close(),
       });
+
+      controller.enqueue(
+        encoder.encode(`data: ${JSON.stringify({ type: "CONNECTED" })}\n\n`)
+      );
+
+      interval = setInterval(() => {
+        controller.enqueue(
+          encoder.encode(
+            `data: ${JSON.stringify({ type: "PING", timestamp: Date.now() })}\n\n`
+          )
+        );
+      }, 10000);
     },
+
     cancel() {
+      clearInterval(interval);
       ssePublisher.removeClient(userId);
     },
   });
 
-  return new Response(stream, {
+  return new NextResponse(stream, {
+    status: 200,
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",

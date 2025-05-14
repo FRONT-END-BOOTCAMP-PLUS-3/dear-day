@@ -1,36 +1,38 @@
-type SSEWritable = {
+type Client = {
   write: (data: string) => void;
   close: () => void;
 };
 
 class SSEPublisher {
-  private clients: { userId: string; stream: SSEWritable }[] = [];
+  private clients = new Map<string, Client>();
+  id = Math.random();
 
-  addClient(userId: string, stream: SSEWritable) {
-    this.removeClient(userId);
-    this.clients.push({ userId, stream });
+  addClient(userId: string, client: Client) {
+    this.clients.set(userId, client);
   }
 
   removeClient(userId: string) {
-    this.clients = this.clients.filter((c) => c.userId !== userId);
+    this.clients.delete(userId);
   }
 
-  publishToUser<T = unknown>(
-    userId: string,
-    event: { type: string; payload: T }
-  ) {
-    const data = `data: ${JSON.stringify(event)}\n\n`;
+  publishToUser(userId: string, message: object) {
+    const client = this.clients.get(userId);
 
-    this.clients
-      .filter((c) => c.userId === userId)
-      .forEach((c) => {
-        try {
-          c.stream.write(data);
-        } catch (e) {
-          console.error(`SSE 전송 실패: ${userId}`, e);
-        }
-      });
+    if (!client) {
+      return;
+    }
+
+    const data = `data: ${JSON.stringify(message)}\n\n`;
+    client.write(data);
+  }
+
+  getConnectedUserIds() {
+    return Array.from(this.clients.keys());
   }
 }
 
-export const ssePublisher = new SSEPublisher();
+const globalForSSE = globalThis as unknown as {
+  ssePublisher?: SSEPublisher;
+};
+
+export const ssePublisher = (globalForSSE.ssePublisher ??= new SSEPublisher());
