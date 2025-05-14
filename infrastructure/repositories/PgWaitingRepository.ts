@@ -180,6 +180,8 @@ export class PgWaitingRepository implements WaitingRepository {
       });
 
       for (const user of affectedUsers) {
+        const id = String(user.userId);
+
         const waitingAhead = await prisma.waiting.count({
           where: {
             eventId,
@@ -188,11 +190,11 @@ export class PgWaitingRepository implements WaitingRepository {
           },
         });
 
-        ssePublisher.publishToUser(user.userId, {
+        ssePublisher.publishToUser(id, {
           type: "QUEUE_UPDATED",
           payload: {
             title: eventTitle,
-            waitingNumber: user.waitingNumber,
+            waitingNumber: enteredWaitingNumber,
             waitingAhead,
           },
         });
