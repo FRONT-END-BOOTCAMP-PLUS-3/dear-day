@@ -10,8 +10,6 @@ import Script from "next/script";
 import { useHeaderStore } from "@/store/HeaderStore";
 import { useEffect } from "react";
 import GlobalAlert from "@/components/Alert/GlobalAlert/GlobalAlert";
-import { useAuthStore } from "@/store/authStore";
-import SSEConnector from "@/components/Alert/SSEConnector";
 
 export default function RootLayout({
   children,
@@ -21,7 +19,6 @@ export default function RootLayout({
   const pathname = usePathname();
   const router = useRouter();
   const dynamicTitle = useHeaderStore((state) => state.title); // Zustand에서 title 가져오기
-  const { user } = useAuthStore();
 
   // 현재 경로와 일치하는 헤더 설정 찾기
   const headerInfo = headerConfig.find(({ pattern }) =>
@@ -62,7 +59,6 @@ export default function RootLayout({
         <div id="root">
           {HeaderComponent} {/* 동적으로 선택된 헤더 렌더링 */}
           {children}
-          <SSEConnector userId={user?.id} />
           <GlobalAlert />
         </div>
         <Script

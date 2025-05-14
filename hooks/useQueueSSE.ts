@@ -3,33 +3,31 @@
 import { useEffect } from "react";
 import { useAlertStore } from "@/store/useAlertStore";
 
-export const useQueueSSE = (userId: string | undefined) => {
+export const useQueueSSE = () => {
   const showAlert = useAlertStore((state) => state.showAlert);
 
   useEffect(() => {
-    if (!userId) return;
-
-    const eventSource = new EventSource(`/api/sse/subscribe?userId=${userId}`);
-
-    eventSource.onmessage = (event) => {
+    const connectSSE = async () => {
       try {
-        const data = JSON.parse(event.data);
+        const res = await fetch("/api/auth/user", { credentials: "include" });
+        if (!res.ok) return;
 
-        if (data.type === "QUEUE_UPDATED") {
-          const { title, waitingNumber, waitingAhead } = data.payload;
-          showAlert("waiting", { title, waitingNumber, waitingAhead });
-        }
-      } catch (e) {
-        console.error("SSE message parse error:", e);
-      }
+        const eventSource = new EventSource("/api/sse/subscribe");
+
+        eventSource.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          if (data.type === "QUEUE_UPDATED") {
+            const { title, waitingNumber, waitingAhead } = data.payload;
+            showAlert("waiting", { title, waitingNumber, waitingAhead });
+          }
+        };
+
+        eventSource.onerror = () => {
+          eventSource.close();
+        };
+      } catch {}
     };
 
-    eventSource.onerror = () => {
-      console.warn("SSE connection error. Will retry...");
-    };
-
-    return () => {
-      eventSource.close();
-    };
-  }, [userId, showAlert]);
+    connectSSE();
+  }, [showAlert]);
 };

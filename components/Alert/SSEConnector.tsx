@@ -2,11 +2,7 @@
 
 import { useQueueSSE } from "@/hooks/useQueueSSE";
 
-interface SSEConnectorProps {
-  userId: string | undefined;
-}
-
-export default function SSEConnector({ userId }: SSEConnectorProps) {
-  useQueueSSE(userId);
+export default function SSEConnector() {
+  useQueueSSE();
   return null;
 }
