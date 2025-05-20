@@ -44,7 +44,6 @@ const RegisterStarPage = () => {
     <div className={styles.homeContainer}>
       <div className={styles.registerStarForm}>
         <fieldset className={styles.registerStarImg}>
-          스타이미지
           <StarUploadButton
             previewImage={previewImage}
             onChange={handleImageChange}
@@ -54,7 +53,7 @@ const RegisterStarPage = () => {
       <Tab
         tabs={[
           {
-            label: "개인 스타 등록",
+            label: "개인",
             content: (
               <RegisterPersonal
                 previewImage={previewImage}
@@ -63,7 +62,7 @@ const RegisterStarPage = () => {
             ),
           },
           {
-            label: "단체 스타 등록",
+            label: "그룹",
             content: (
               <RegisterGroup
                 previewImage={previewImage}
