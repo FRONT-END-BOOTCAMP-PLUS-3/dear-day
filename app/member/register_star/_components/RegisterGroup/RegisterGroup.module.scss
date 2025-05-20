@@ -1,0 +1,17 @@
+.personalContainer {
+  align-items: center;
+  width: 100%;
+}
+
+.personalContainer fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
