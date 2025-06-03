@@ -9,6 +9,7 @@ import "./globals.scss";
 import Script from "next/script";
 import { useHeaderStore } from "@/store/HeaderStore";
 import { useEffect } from "react";
+import GlobalAlert from "@/components/Alert/GlobalAlert/GlobalAlert";
 
 export default function RootLayout({
   children,
@@ -64,6 +65,7 @@ export default function RootLayout({
         <div id="root">
           {HeaderComponent} {/* 동적으로 선택된 헤더 렌더링 */}
           {children}
+          <GlobalAlert />
         </div>
         <Script
           src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&submodules=geocoder`}

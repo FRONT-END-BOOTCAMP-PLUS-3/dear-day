@@ -7,12 +7,14 @@ import styles from "./page.module.scss";
 import SearchStarModal from "../(anon)/_components/SearchStarModal/SearchStarModal";
 import useToggle from "@/hooks/useToggle";
 import SearchInput from "@/components/Input/SearchInput/SearchInput";
+import SSEConnector from "@/components/Alert/SSEConnector";
 
 export default function HomePage() {
   const [isModalOpen, toggleModal] = useToggle(false);
 
   return (
     <div className={styles.homeContainer}>
+      <SSEConnector />
       <Banner />
       <div className={styles.contentsWrapper}>
         <SearchInput onFocus={toggleModal} />

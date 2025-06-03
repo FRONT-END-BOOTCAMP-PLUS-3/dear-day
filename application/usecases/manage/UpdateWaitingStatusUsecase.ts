@@ -17,6 +17,10 @@ export const updateWaitingStatusUsecase = async (
     };
   }
 
+  if (status === "ENTERED") {
+    await waitingRepository.alertWaitingUpdate(waitingId);
+  }
+
   return {
     success: true,
     updatedWaiting: {

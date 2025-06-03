@@ -9,4 +9,5 @@ export interface WaitingRepository {
   deleteWaiting(eventId: number, userId: string): Promise<void>; // 대기 취소하는 메서드
   findAllWaitingByUserId(userId: string): Promise<WaitingCardViewDto[]>;
   updateWaitingByWaitingId(waitingId: number, status: string): Promise<boolean>; // 대기 상태 변경하는 메서드
+  alertWaitingUpdate(waitingId: number): Promise<void>; // 대기 상태 변경 사항을 알리는 메서드
 }
