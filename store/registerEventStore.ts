@@ -51,6 +51,7 @@ interface RegisterEventState {
   isEditing: boolean;
   setEditingMode: (isEditing: boolean) => void;
   loadEventData: (data: RegisterEventData) => void;
+  isLoading: boolean;
 }
 
 // Store 생성
@@ -59,6 +60,7 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
   setStep: (step) => set({ step }),
   isEditing: false, // 초기값은 등록모드
   setEditingMode: (isEditing) => set({ isEditing }),
+  isLoading: false, // 로딩 상태 추가
 
   eventData: {
     starId: 0,
@@ -94,6 +96,7 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
     set({
       step: 0, // 초기 상태도 0으로 초기화
       isEditing: false,
+      isLoading: false,
       eventData: {
         starId: 0,
         placeName: "",
@@ -122,6 +125,7 @@ export const useRegisterEventStore = create<RegisterEventState>((set) => ({
     set({
       eventData: data,
       isEditing: true,
+      isLoading: true,
     });
   },
 }));

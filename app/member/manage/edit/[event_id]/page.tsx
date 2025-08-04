@@ -23,6 +23,7 @@ export default function EditEventPage() {
     resetEventData,
     updateEventData,
     setEditingMode,
+    isLoading,
   } = useRegisterEventStore();
   // 모든 단계 폼 타입
   type RegisterEventForm =
@@ -96,12 +97,18 @@ export default function EditEventPage() {
 
   return (
     <div className={styles.homeContainer}>
-      {step === 1 && <RegisterEventStep1 onNext={handleNext} />}
-      {step === 2 && (
-        <RegisterEventStep2 onNext={handleNext} onPrev={handlePrev} />
-      )}
-      {step === 3 && (
-        <RegisterEventStep3 onNext={handleNext} onPrev={handlePrev} />
+      {!isLoading ? (
+        <p>로딩중</p>
+      ) : (
+        <>
+          {step === 1 && <RegisterEventStep1 onNext={handleNext} />}
+          {step === 2 && (
+            <RegisterEventStep2 onNext={handleNext} onPrev={handlePrev} />
+          )}
+          {step === 3 && (
+            <RegisterEventStep3 onNext={handleNext} onPrev={handlePrev} />
+          )}
+        </>
       )}
     </div>
   );
