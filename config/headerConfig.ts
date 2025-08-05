@@ -45,6 +45,10 @@ export const headerConfig: { pattern: RegExp; config: HeaderConfig }[] = [
     pattern: /^\/member\/manage\/[^/]+$/,
     config: { type: "back", title: "생카 관리" },
   }, // /member/manage/[event_id]
+  {
+    pattern: /^\/member\/manage\/edit\/[^/]+$/,
+    config: { type: "back", title: "생카 수정하기" },
+  }, // /member/manage/edit/[event_id]
   { pattern: /^\/member\/mypage$/, config: { type: "back", title: "프로필" } },
   {
     pattern: /^\/member\/mypage\/setting$/,

@@ -202,4 +202,25 @@ export class PgEventRepository implements EventRepository {
       await prisma.$disconnect();
     }
   }
+
+  async updateEventByEventId(
+    eventId: number,
+    data: Partial<Event>
+  ): Promise<boolean> {
+    try {
+      const updatedEvent = await prisma.event.update({
+        where: { id: eventId },
+        data: {
+          ...data,
+        },
+      });
+
+      return !!updatedEvent;
+    } catch (error) {
+      console.error("이벤트 수정 중 오류 발생:", error);
+      throw new Error("이벤트를 수정하는 중 오류가 발생했습니다.");
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }

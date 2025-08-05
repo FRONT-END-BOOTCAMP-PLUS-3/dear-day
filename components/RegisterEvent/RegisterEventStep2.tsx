@@ -23,8 +23,8 @@ const RegisterEventStep2 = ({
   onNext: (data: RegisterEventStep2Form) => void;
   onPrev: () => void;
 }) => {
-  const { eventData, updateEventData } = useRegisterEventStore();
-  const { startDate } = eventData; // ✅ eventData에서 직접 가져오기
+  const { eventData, updateEventData, isEditing } = useRegisterEventStore();
+  const { startDate } = eventData;
   const {
     control,
     handleSubmit,
@@ -45,23 +45,78 @@ const RegisterEventStep2 = ({
   const [isConfirmDisabled, setIsConfirmDisabled] = useState(true);
   const modeValue = watch("mode");
 
+  const ensureNotNull = <T,>(
+    value: T | null | undefined,
+    defaultValue: NonNullable<T> | undefined
+  ): NonNullable<T> | undefined =>
+    value !== null && value !== undefined
+      ? (value as NonNullable<T>)
+      : defaultValue;
+
   useEffect(() => {
-    // "대기(WAITING)" 선택 시 즉시 버튼 활성화
-    if (modeValue === "WAITING") {
-      setIsConfirmDisabled(false);
+    if (isEditing) {
+      setIsConfirmDisabled(false); // 수정 모드일 때 버튼 활성화
+    } else if (modeValue === "WAITING") {
+      setIsConfirmDisabled(false); // "대기(WAITING)" 선택 시 즉시 버튼 활성화
     } else {
       setIsConfirmDisabled(!(isValid && isDirty));
     }
   }, [modeValue, isValid, isDirty]); // mode 변경 시 즉시 반응하도록 추가
 
   useEffect(() => {
-    reset({
-      mode: eventData.mode || "RESERVATION",
-      openAt: eventData.openAt ?? undefined,
-      breaktime: eventData.breaktime || 10,
-      limit: eventData.limit || 0,
-    });
-  }, [eventData, reset]);
+    if (isEditing) {
+      reset({
+        mode: ensureNotNull(watch("mode"), "RESERVATION"),
+        openAt: ensureNotNull(watch("openAt"), undefined),
+        breaktime: ensureNotNull(watch("breaktime"), 10),
+        limit: ensureNotNull(watch("limit"), 0),
+      });
+    } else {
+      reset({
+        mode: eventData.mode || "RESERVATION",
+        openAt: ensureNotNull(eventData.openAt, undefined),
+        breaktime: ensureNotNull(eventData.breaktime, 10),
+        limit: ensureNotNull(eventData.limit, 0),
+      });
+    }
+  }, [isEditing, eventData, reset]);
+
+  const handleModeChange = (value: string) => {
+    if (isEditing) {
+      setTimeout(() => {
+        reset({
+          mode: value,
+          openAt:
+            value === "WAITING"
+              ? ensureNotNull(watch("openAt"), undefined)
+              : ensureNotNull(eventData.openAt, undefined),
+          breaktime:
+            value === "WAITING"
+              ? ensureNotNull(watch("breaktime"), 10)
+              : ensureNotNull(eventData.breaktime, 10),
+          limit:
+            value === "WAITING"
+              ? ensureNotNull(watch("limit"), 0)
+              : ensureNotNull(eventData.limit, 0),
+        });
+      }, 0);
+    } else {
+      reset({
+        mode: value,
+        openAt:
+          value === "WAITING"
+            ? undefined
+            : ensureNotNull(eventData.openAt, undefined),
+        breaktime:
+          value === "WAITING" ? 0 : ensureNotNull(eventData.breaktime, 10),
+        limit: value === "WAITING" ? 0 : ensureNotNull(eventData.limit, 0),
+      });
+    }
+
+    if (value === "WAITING") {
+      setIsConfirmDisabled(false);
+    }
+  };
 
   const onSubmit = (data: RegisterEventStep2Form) => {
     updateEventData({
@@ -109,13 +164,15 @@ const RegisterEventStep2 = ({
               value={field.value}
               onChange={(value) => {
                 field.onChange(value);
-                reset({
-                  ...watch(),
-                  mode: value,
-                  openAt: value === "WAITING" ? undefined : watch("openAt"),
-                  breaktime: value === "WAITING" ? 0 : watch("breaktime"),
-                  limit: value === "WAITING" ? 0 : watch("limit"),
-                });
+                // reset({
+                //   ...watch(),
+                //   mode: value,
+                //   openAt: value === "WAITING" ? undefined : watch("openAt"),
+                //   breaktime: value === "WAITING" ? 0 : watch("breaktime"),
+                //   limit: value === "WAITING" ? 0 : watch("limit"),
+                // });
+
+                handleModeChange(value);
 
                 if (value === "WAITING") {
                   setIsConfirmDisabled(false);

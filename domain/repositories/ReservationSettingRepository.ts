@@ -8,4 +8,8 @@ export interface ReservationSettingRepository {
   findReservationSettingByEventId(
     eventId: number
   ): Promise<ReservationSetting | null>; // 이벤트 아이디로 예약설정 찾는 메서드
+  updateReservationSettingByEventId(
+    eventId: number,
+    data: Partial<ReservationSetting>
+  ): Promise<boolean>; // 이벤트 아이디로 예약설정 수정하는 메서드
 }

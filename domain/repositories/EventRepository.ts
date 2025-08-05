@@ -10,4 +10,5 @@ export interface EventRepository {
   findAllEventListByStarId(starId: number): Promise<Event[]>;
   findAllEventsByUserId(userId: string): Promise<Event[]>; // 사용자의 이벤트 조회
   findVisitedEventsByUserId(userId: string): Promise<VisitedEventDto[]>;
+  updateEventByEventId(eventId: number, data: Partial<Event>): Promise<boolean>; // 이벤트 수정
 }

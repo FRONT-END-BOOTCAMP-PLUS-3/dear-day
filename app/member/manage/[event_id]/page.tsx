@@ -8,6 +8,7 @@ import ReservationWaitList from "./ReservationWaitList/ReservationWaitList";
 import { useParams } from "next/navigation";
 import { showWaitingListDto } from "@/application/usecases/manage/dto/ShowWaitingListDto";
 import { showReservationListDto } from "@/application/usecases/manage/dto/ShowReservationListDto";
+import FixedButton from "@/components/Button/FixedButton/FixedButton";
 
 const ManagePage = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -134,6 +135,10 @@ const ManagePage = () => {
     }
   };
 
+  const handleEdit = () => {
+    console.log("생카 수정하기 버튼 클릭");
+  };
+
   return (
     <div className={styles.homeContainer}>
       <EventInfo
@@ -208,10 +213,6 @@ const ManagePage = () => {
           )}
         </ul>
       </div>
-
-      {/* <div>
-        <ul className={styles.reservationListContianer}></ul>
-      </div> */}
     </div>
   );
 };
